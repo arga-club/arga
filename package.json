@@ -10,7 +10,7 @@
 		"test": "hardhat test",
 		"deploy": "hardhat run scripts/deploy.ts",
 		"prettier": "prettier .",
-		"prettier:fix": "prettier --write ."
+		"prettier:fix": "prettier --write --plugin=prettier-plugin-solidity ."
 	},
 	"keywords": [],
 	"author": "",
@@ -33,6 +33,7 @@
 		"hardhat-gas-reporter": "1.0.8",
 		"ms": "^2.1.3",
 		"prettier": "^3.2.4",
+		"prettier-plugin-solidity": "^1.3.1",
 		"solidity-coverage": "^0.8.5",
 		"ts-node": "^10.9.2",
 		"typescript": "~5.0.4",
