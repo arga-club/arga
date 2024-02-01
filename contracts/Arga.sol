@@ -5,10 +5,23 @@ import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
 pragma solidity ^0.8.22;
 
 contract Arga is Ownable {
-	address public feeReceiver;
+	address public treasurer;
 
-	constructor(address initialOwner, address initialFeeReceiver) Ownable(initialOwner) {
-		feeReceiver = initialFeeReceiver;
+	event TreasurerChanged(address treasurer);
+
+	modifier validAddress(address _addr) {
+		require(_addr != address(0), 'Invalid address');
+		_;
+	}
+
+	constructor(address initialOwner, address initialTreasurer) Ownable(initialOwner) validAddress(initialTreasurer) {
+		treasurer = initialTreasurer;
+		emit TreasurerChanged(initialTreasurer);
+	}
+
+	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
+		treasurer = newTreasurer;
+		emit TreasurerChanged(newTreasurer);
 	}
 
 	struct Declaration {

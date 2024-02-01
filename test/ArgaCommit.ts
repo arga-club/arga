@@ -19,21 +19,12 @@ const declaration: Arga.DeclarationStruct = {
 
 const fixture = async () => {
 	// @ts-expect-error getSigners is actually defined
-	const [owner, actor, witness, feeReceiver] = await hre.ethers.getSigners()
+	const [owner, actor, witness, treasurer] = await hre.ethers.getSigners()
 	const arga = await hre.ethers.deployContract('Arga', [owner])
-	return { arga, actor, witness, owner, feeReceiver }
+	return { arga, actor, witness, owner, treasurer }
 }
 
 describe('Declaration', function () {
-	describe('fee receiver', () => {
-		it('sets feeReceiver on deploy', async () => {})
-		it('rejects zero address for feeReceiver', async () => {
-			const { arga, feeReceiver } = await loadFixture(fixture)
-			await expect(hre.ethers.deployContract('Arga', [hre.ethers.ZeroAddress, feeReceiver]))
-				.to.be.revertedWithCustomError({ interface: arga.interface }, 'OwnableInvalidOwner')
-				.withArgs(hre.ethers.ZeroAddress)
-		})
-	})
 	describe('declare', () => {
 		it.skip('emits declaration event', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
