@@ -8,7 +8,9 @@
     "dev": "hardhat node",
     "dev:deploy": "hardhat run scripts/deploy.ts --network localhost",
     "test": "hardhat test",
-    "deploy": "hardhat run scripts/deploy.ts"
+    "deploy": "hardhat run scripts/deploy.ts",
+    "prettier": "prettier .",
+    "prettier:fix": "prettier --write ."
   },
   "keywords": [],
   "author": "",
