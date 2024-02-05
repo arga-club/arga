@@ -25,7 +25,7 @@ contract Arga is Ownable {
 	}
 
 	struct Declaration {
-		bytes32 summary;
+		string summary;
 		string description;
 		address actor;
 		address witness;
@@ -46,8 +46,9 @@ contract Arga is Ownable {
 	event DeclarationConcluded(Declaration declaration);
 
 	function declareWithEther(
-		bytes32 summary,
+		string memory summary,
 		string memory description,
+		address actor,
 		address witness,
 		uint startDate,
 		uint endDate,
@@ -56,7 +57,7 @@ contract Arga is Ownable {
 		Declaration memory declaration = Declaration(
 			summary,
 			description,
-			msg.sender, // actor
+			actor,
 			witness,
 			startDate,
 			endDate,
@@ -67,8 +68,9 @@ contract Arga is Ownable {
 		emit DeclarationMade(declaration);
 	}
 	function declareWithToken(
-		bytes32 summary,
+		string memory summary,
 		string memory description,
+		address actor,
 		address witness,
 		uint startDate,
 		uint endDate,
@@ -79,7 +81,7 @@ contract Arga is Ownable {
 		Declaration memory declaration = Declaration(
 			summary,
 			description,
-			msg.sender, // actor
+			actor,
 			witness,
 			startDate,
 			endDate,
