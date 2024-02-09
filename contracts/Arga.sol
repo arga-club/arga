@@ -37,10 +37,8 @@ contract Arga is Ownable {
 	}
 
 	Declaration[] public declarations;
-	mapping(address => uint[]) public actorDeclarationsActive;
-	mapping(address => uint[]) public actorDeclarations;
-	mapping(address => uint[]) public witnessDeclarations;
-	mapping(address => uint[]) public witnessDeclarationsActive;
+	mapping(address => uint[]) _actorDeclarations;
+	mapping(address => uint[]) _witnessDeclarations;
 
 	event DeclarationMade(Declaration declaration);
 	event DeclarationConcluded(Declaration declaration);
@@ -66,6 +64,10 @@ contract Arga is Ownable {
 			address(0)
 		);
 		emit DeclarationMade(declaration);
+		uint declarationIndex = declarations.length;
+		declarations.push(declaration);
+		_actorDeclarations[actor].push(declarationIndex);
+		_witnessDeclarations[witness].push(declarationIndex);
 	}
 	function declareWithToken(
 		string memory summary,
@@ -90,5 +92,23 @@ contract Arga is Ownable {
 			collateralErc20Address
 		);
 		emit DeclarationMade(declaration);
+		// not implemented yet
+	}
+
+	function actorDeclarations(address actor) public view returns (Declaration[] memory) {
+		uint[] memory indices = _actorDeclarations[actor];
+		Declaration[] memory result = new Declaration[](indices.length);
+		for (uint index; index < indices.length; index++) {
+			result[index] = declarations[index];
+		}
+		return result;
+	}
+	function witnessDeclarations(address witness) public view returns (Declaration[] memory) {
+		uint[] memory indices = _witnessDeclarations[witness];
+		Declaration[] memory result = new Declaration[](indices.length);
+		for (uint index; index < indices.length; index++) {
+			result[index] = declarations[index];
+		}
+		return result;
 	}
 }

@@ -57,7 +57,36 @@ describe('Declaration', function () {
 						declarationArg.collateralErc20Address === hre.ethers.ZeroAddress,
 				)
 		})
-		it('adds declaration to list', () => {})
+		it('declareWithEther adds declaration to list', async () => {
+			const { arga, actor, witness } = await loadFixture(fixture)
+			const value = hre.ethers.parseEther('1')
+			await arga
+				.connect(actor)
+				.declareWithEther(
+					declaration.summary,
+					declaration.description,
+					actor.address,
+					witness.address,
+					declaration.startDate,
+					declaration.endDate,
+					declaration.witnessByDate,
+					{ value },
+				)
+			const expectedDeclaration = [
+				declaration.summary,
+				declaration.description,
+				actor.address,
+				witness.address,
+				declaration.startDate,
+				declaration.endDate,
+				declaration.witnessByDate,
+				value,
+				hre.ethers.ZeroAddress,
+			]
+			expect(await arga.declarations(0)).to.deep.equal(expectedDeclaration)
+			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
+			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
+		})
 	})
 	describe('witness', () => {
 		it('emits conclusion event', () => {})
