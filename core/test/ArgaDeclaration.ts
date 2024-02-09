@@ -24,6 +24,38 @@ const fixture = async () => {
 	return { arga, actor, witness, owner, treasurer }
 }
 
+const value = hre.ethers.parseEther('1')
+const makeDeclaration = async ({
+	arga,
+	actor,
+	witness,
+}: Pick<Awaited<ReturnType<typeof fixture>>, 'arga' | 'actor' | 'witness'>) => {
+	await arga
+		.connect(actor)
+		.declareWithEther(
+			declaration.summary,
+			declaration.description,
+			actor.address,
+			witness.address,
+			declaration.startDate,
+			declaration.endDate,
+			declaration.witnessByDate,
+			{ value },
+		)
+	const expectedDeclaration = [
+		declaration.summary,
+		declaration.description,
+		actor.address,
+		witness.address,
+		declaration.startDate,
+		declaration.endDate,
+		declaration.witnessByDate,
+		value,
+		hre.ethers.ZeroAddress,
+	]
+	return { expectedDeclaration }
+}
+
 describe('Declaration', function () {
 	describe('declare', () => {
 		it('declareWithEther emits declaration event', async () => {
@@ -59,30 +91,7 @@ describe('Declaration', function () {
 		})
 		it('declareWithEther adds declaration to list', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
-			const value = hre.ethers.parseEther('1')
-			await arga
-				.connect(actor)
-				.declareWithEther(
-					declaration.summary,
-					declaration.description,
-					actor.address,
-					witness.address,
-					declaration.startDate,
-					declaration.endDate,
-					declaration.witnessByDate,
-					{ value },
-				)
-			const expectedDeclaration = [
-				declaration.summary,
-				declaration.description,
-				actor.address,
-				witness.address,
-				declaration.startDate,
-				declaration.endDate,
-				declaration.witnessByDate,
-				value,
-				hre.ethers.ZeroAddress,
-			]
+			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			expect(await arga.declarations(0)).to.deep.equal(expectedDeclaration)
 			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
 			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])

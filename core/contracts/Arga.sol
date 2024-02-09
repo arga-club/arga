@@ -36,12 +36,34 @@ contract Arga is Ownable {
 		address collateralErc20Address;
 	}
 
+	// all declarations go here
 	Declaration[] public declarations;
-	mapping(address => uint[]) _actorDeclarations;
-	mapping(address => uint[]) _witnessDeclarations;
 
+	// events
 	event DeclarationMade(Declaration declaration);
 	event DeclarationConcluded(Declaration declaration);
+
+	// we store indices of declarations per actor address
+	mapping(address => uint[]) _actorDeclarations;
+	function actorDeclarations(address actor) public view returns (Declaration[] memory) {
+		uint[] memory indices = _actorDeclarations[actor];
+		Declaration[] memory result = new Declaration[](indices.length);
+		for (uint index; index < indices.length; index++) {
+			result[index] = declarations[index];
+		}
+		return result;
+	}
+
+	// we store indices of declarations per witness address
+	mapping(address => uint[]) _witnessDeclarations;
+	function witnessDeclarations(address witness) public view returns (Declaration[] memory) {
+		uint[] memory indices = _witnessDeclarations[witness];
+		Declaration[] memory result = new Declaration[](indices.length);
+		for (uint index; index < indices.length; index++) {
+			result[index] = declarations[index];
+		}
+		return result;
+	}
 
 	function declareWithEther(
 		string memory summary,
@@ -93,22 +115,5 @@ contract Arga is Ownable {
 		);
 		emit DeclarationMade(declaration);
 		// not implemented yet
-	}
-
-	function actorDeclarations(address actor) public view returns (Declaration[] memory) {
-		uint[] memory indices = _actorDeclarations[actor];
-		Declaration[] memory result = new Declaration[](indices.length);
-		for (uint index; index < indices.length; index++) {
-			result[index] = declarations[index];
-		}
-		return result;
-	}
-	function witnessDeclarations(address witness) public view returns (Declaration[] memory) {
-		uint[] memory indices = _witnessDeclarations[witness];
-		Declaration[] memory result = new Declaration[](indices.length);
-		for (uint index; index < indices.length; index++) {
-			result[index] = declarations[index];
-		}
-		return result;
 	}
 }
