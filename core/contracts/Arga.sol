@@ -25,6 +25,7 @@ contract Arga is Ownable {
 	}
 
 	struct Declaration {
+		uint id;
 		string summary;
 		string description;
 		address actor;
@@ -74,7 +75,9 @@ contract Arga is Ownable {
 		uint endDate,
 		uint witnessByDate
 	) public payable {
+		uint declarationIndex = declarations.length + 1;
 		Declaration memory declaration = Declaration(
+			declarationIndex,
 			summary,
 			description,
 			actor,
@@ -86,7 +89,6 @@ contract Arga is Ownable {
 			address(0)
 		);
 		emit DeclarationMade(declaration);
-		uint declarationIndex = declarations.length;
 		declarations.push(declaration);
 		_actorDeclarations[actor].push(declarationIndex);
 		_witnessDeclarations[witness].push(declarationIndex);
