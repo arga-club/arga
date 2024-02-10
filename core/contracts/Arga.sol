@@ -24,6 +24,10 @@ contract Arga is Ownable {
 		emit TreasurerChanged(newTreasurer);
 	}
 
+	struct Collateral {
+		uint value;
+		address erc20Address;
+	}
 	struct Declaration {
 		uint id;
 		string summary;
@@ -33,8 +37,7 @@ contract Arga is Ownable {
 		uint startDate;
 		uint endDate;
 		uint witnessByDate;
-		uint collateralValue;
-		address collateralErc20Address;
+		Collateral collateral;
 	}
 
 	// all declarations go here
@@ -85,8 +88,7 @@ contract Arga is Ownable {
 			startDate,
 			endDate,
 			witnessByDate,
-			msg.value,
-			address(0)
+			Collateral(msg.value, address(0))
 		);
 		emit DeclarationMade(declaration);
 		declarations.push(declaration);

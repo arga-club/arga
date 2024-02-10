@@ -14,8 +14,10 @@ const declaration: Arga.DeclarationStruct = {
 	startDate: BigInt(Date.now()),
 	endDate: BigInt(Date.now() + ms('5d')),
 	witnessByDate: BigInt(Date.now() + ms('10d')),
-	collateralValue: 1,
-	collateralErc20Address: hre.ethers.ZeroAddress,
+	collateral: {
+		value: hre.ethers.parseEther('1'),
+		erc20Address: hre.ethers.ZeroAddress,
+	},
 }
 
 const fixture = async () => {
@@ -52,8 +54,7 @@ const makeDeclaration = async ({
 		declaration.startDate,
 		declaration.endDate,
 		declaration.witnessByDate,
-		value,
-		hre.ethers.ZeroAddress,
+		[value, hre.ethers.ZeroAddress],
 	]
 	return { expectedDeclaration }
 }
@@ -88,8 +89,8 @@ describe('Declaration', function () {
 						declarationArg.startDate === declaration.startDate &&
 						declarationArg.endDate === declaration.endDate &&
 						declarationArg.witnessByDate === declaration.witnessByDate &&
-						declarationArg.collateralValue === value &&
-						declarationArg.collateralErc20Address === hre.ethers.ZeroAddress,
+						declarationArg.collateral.value === declaration.collateral.value &&
+						declarationArg.collateral.erc20Address === declaration.collateral.erc20Address,
 				)
 		})
 		it('declareWithEther adds declaration to list', async () => {
