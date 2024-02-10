@@ -5,7 +5,7 @@ import ms from 'ms'
 import { Arga } from '../typechain-types/contracts/Arga'
 
 const declaration: Arga.DeclarationStruct = {
-	id: 1n,
+	id: 0n,
 	summary: 'successfully test Arga contract',
 	description:
 		'this is a test description this is a test description this is a test description this is a test description this is a test description this is a test description',
@@ -44,7 +44,7 @@ const makeDeclaration = async ({
 			{ value },
 		)
 	const expectedDeclaration = [
-		1,
+		0,
 		declaration.summary,
 		declaration.description,
 		actor.address,

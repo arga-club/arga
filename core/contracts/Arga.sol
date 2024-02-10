@@ -75,7 +75,7 @@ contract Arga is Ownable {
 		uint endDate,
 		uint witnessByDate
 	) public payable {
-		uint declarationIndex = declarations.length + 1;
+		uint declarationIndex = declarations.length;
 		Declaration memory declaration = Declaration(
 			declarationIndex,
 			summary,
