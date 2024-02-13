@@ -122,6 +122,11 @@ contract Arga is Ownable {
 		// not implemented yet
 	}
 
+	mapping(address => Collateral[]) _redemptions;
+	function redemptions(address party) public view returns (Collateral[] memory) {
+		return _redemptions[party];
+	}
+
 	error InvalidWitness(address sender);
 	modifier onlyWitness(uint id) {
 		address witness = declarations[id].witness;
@@ -133,6 +138,8 @@ contract Arga is Ownable {
 
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
 		Declaration storage declaration = declarations[id];
+		_redemptions[declaration.actor].push(declaration.collateral);
+		_redemptions[declaration.witness].push(declaration.collateral);
 		emit DeclarationConcludedWithApproval(declaration);
 	}
 }
