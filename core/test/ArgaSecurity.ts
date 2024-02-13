@@ -59,50 +59,9 @@ const makeDeclaration = async ({
 	return { expectedDeclaration }
 }
 
-describe('Declaration', function () {
-	describe('declare', () => {
-		it('declareWithEther emits declaration event', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
-			const value = hre.ethers.parseEther('1')
-			await expect(
-				arga
-					.connect(actor)
-					.declareWithEther(
-						declaration.summary,
-						declaration.description,
-						actor.address,
-						witness.address,
-						declaration.startDate,
-						declaration.endDate,
-						declaration.witnessByDate,
-						{ value },
-					),
-			)
-				.to.emit(arga, 'DeclarationMade')
-				.withArgs(
-					(declarationArg: Arga.DeclarationStruct) =>
-						declarationArg.id === declaration.id &&
-						declarationArg.summary === declaration.summary &&
-						declarationArg.description === declaration.description &&
-						declarationArg.actor === actor.address &&
-						declarationArg.witness === witness.address &&
-						declarationArg.startDate === declaration.startDate &&
-						declarationArg.endDate === declaration.endDate &&
-						declarationArg.witnessByDate === declaration.witnessByDate &&
-						declarationArg.collateral.value === declaration.collateral.value &&
-						declarationArg.collateral.erc20Address === declaration.collateral.erc20Address,
-				)
-		})
-		it('declareWithEther adds declaration to list', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
-			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
-			expect(await arga.declarations(0)).to.deep.equal(expectedDeclaration)
-			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
-			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
-		})
-	})
+describe('Security', function () {
 	describe('witness', () => {
-		it('emits conclusion event', async () => {
+		it('only witness can conclude declaration', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
@@ -121,14 +80,9 @@ describe('Declaration', function () {
 						declarationArg.collateral.value === declaration.collateral.value &&
 						declarationArg.collateral.erc20Address === declaration.collateral.erc20Address,
 				)
+			await expect(arga.connect(actor).concludeDeclarationWithApproval(id))
+				.to.be.revertedWithCustomError(arga, 'InvalidWitness')
+				.withArgs(actor)
 		})
-		it('allows witness to collect compensation', () => {})
-	})
-	describe('view', () => {
-		it('all declarations', () => {})
-		it('all active declarations', () => {})
-		it('user declarations', () => {})
-		it('user active declarations', () => {})
-		it('witness compensation', () => {})
 	})
 })

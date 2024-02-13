@@ -45,7 +45,8 @@ contract Arga is Ownable {
 
 	// events
 	event DeclarationMade(Declaration declaration);
-	event DeclarationConcluded(Declaration declaration);
+	event DeclarationConcludedWithApproval(Declaration declaration);
+	event DeclarationConcludedWithRejection(Declaration declaration);
 
 	// we store indices of declarations per actor address
 	mapping(address => uint[]) _actorDeclarations;
@@ -119,5 +120,19 @@ contract Arga is Ownable {
 		);
 		emit DeclarationMade(declaration);
 		// not implemented yet
+	}
+
+	error InvalidWitness(address sender);
+	modifier onlyWitness(uint id) {
+		address witness = declarations[id].witness;
+		if (msg.sender != witness) {
+			revert InvalidWitness(msg.sender);
+		}
+		_;
+	}
+
+	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
+		Declaration storage declaration = declarations[id];
+		emit DeclarationConcludedWithApproval(declaration);
 	}
 }
