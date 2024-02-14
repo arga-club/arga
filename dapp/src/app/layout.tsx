@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 
 import { TRPCReactProvider } from '~/trpc/react'
+import StyledComponentsRegistry from '~/styles/registry'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-				<TRPCReactProvider cookies={cookies().toString()}>{children}</TRPCReactProvider>
+				<TRPCReactProvider cookies={cookies().toString()}>
+					<StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+				</TRPCReactProvider>
 			</body>
 		</html>
 	)
