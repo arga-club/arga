@@ -78,7 +78,7 @@ contract Arga is Ownable {
 		uint startDate,
 		uint endDate,
 		uint witnessByDate
-	) public payable {
+	) public payable returns (Declaration memory) {
 		uint declarationIndex = declarations.length;
 		Declaration memory declaration = Declaration(
 			declarationIndex,
@@ -95,6 +95,7 @@ contract Arga is Ownable {
 		declarations.push(declaration);
 		_actorDeclarations[actor].push(declarationIndex);
 		_witnessDeclarations[witness].push(declarationIndex);
+		return declaration;
 	}
 	function declareWithToken(
 		string memory summary,
