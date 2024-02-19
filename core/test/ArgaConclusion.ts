@@ -86,7 +86,7 @@ describe('Conclusion', function () {
 			expectedDeclaration: [id],
 		} = await makeDeclaration({ arga, actor, witness })
 		await arga.connect(witness).concludeDeclarationWithApproval(id)
-		expect(await arga.redemptions(actor)).to.deep.equal([[value, hre.ethers.ZeroAddress]])
+		expect(await arga.redemptionsForParty(actor)).to.deep.equal([[value, hre.ethers.ZeroAddress]])
 	})
 	it('allows witness to collect compensation', async () => {
 		const { arga, actor, witness } = await loadFixture(fixture)
@@ -94,6 +94,6 @@ describe('Conclusion', function () {
 			expectedDeclaration: [id],
 		} = await makeDeclaration({ arga, actor, witness })
 		await arga.connect(witness).concludeDeclarationWithApproval(id)
-		expect(await arga.redemptions(witness)).to.deep.equal([[value, hre.ethers.ZeroAddress]])
+		expect(await arga.redemptionsForParty(witness)).to.deep.equal([[value, hre.ethers.ZeroAddress]])
 	})
 })
