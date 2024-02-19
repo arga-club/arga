@@ -81,20 +81,14 @@ describe('Conclusion', function () {
 					declarationArg.collateral.erc20Address === declaration.collateral.erc20Address,
 			)
 	})
-	it('allows actor to collect compensation', async () => {
-		const { arga, actor, witness } = await loadFixture(fixture)
+	it('allows actor, witness, treasurer to collect compensation', async () => {
+		const { arga, actor, witness, owner } = await loadFixture(fixture)
 		const {
 			expectedDeclaration: [id],
 		} = await makeDeclaration({ arga, actor, witness })
 		await arga.connect(witness).concludeDeclarationWithApproval(id)
-		expect(await arga.redemptionsForParty(actor)).to.deep.equal([[value, hre.ethers.ZeroAddress]])
-	})
-	it('allows witness to collect compensation', async () => {
-		const { arga, actor, witness } = await loadFixture(fixture)
-		const {
-			expectedDeclaration: [id],
-		} = await makeDeclaration({ arga, actor, witness })
-		await arga.connect(witness).concludeDeclarationWithApproval(id)
-		expect(await arga.redemptionsForParty(witness)).to.deep.equal([[value, hre.ethers.ZeroAddress]])
+		expect(await arga.redemptionsForParty(actor)).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
+		expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
+		expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
 	})
 })

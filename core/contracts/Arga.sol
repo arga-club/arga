@@ -6,6 +6,7 @@ pragma solidity ^0.8.22;
 
 contract Arga is Ownable {
 	address public treasurer;
+	uint256 public treasurerRedemptionPercentage = 2;
 
 	event TreasurerChanged(address treasurer);
 
@@ -23,6 +24,7 @@ contract Arga is Ownable {
 		changeTreasurer(msg.sender);
 	}
 
+	uint256 witnessRedemptionPercentage = 2;
 	struct Collateral {
 		uint value;
 		address erc20Address;
@@ -138,8 +140,14 @@ contract Arga is Ownable {
 
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
 		Declaration storage declaration = declarations[id];
-		redemptions[declaration.actor].push(declaration.collateral);
-		redemptions[declaration.witness].push(declaration.collateral);
+		// distribute collateral to relevant parties
+		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
+		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
+		redemptions[treasurer].push(Collateral(treasurerValue, declaration.collateral.erc20Address));
+		redemptions[declaration.witness].push(Collateral(witnessValue, declaration.collateral.erc20Address));
+		redemptions[declaration.actor].push(
+			Collateral(declaration.collateral.value - treasurerValue - witnessValue, declaration.collateral.erc20Address)
+		);
 		emit DeclarationConcludedWithApproval(declaration);
 	}
 }
