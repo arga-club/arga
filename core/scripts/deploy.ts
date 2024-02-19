@@ -2,10 +2,11 @@ import hre from 'hardhat'
 
 async function main() {
 	// @ts-expect-error getSigners is actually defined
-	const [owner, treasurer] = await hre.ethers.getSigners()
-	const arga = await hre.viem.deployContract('Arga', [owner.address, treasurer.address])
+	const [owner] = await hre.ethers.getSigners()
+	const argaContract = await hre.ethers.getContractFactory('Arga')
+	const arga = await argaContract.connect(owner).deploy()
 	console.log('Arga deployed')
-	console.log({ contract: arga.address, owner: owner.address, treasurer: treasurer.address })
+	console.log({ contract: arga.target, owner: owner.address })
 }
 
 // We recommend this pattern to be able to use async/await everywhere

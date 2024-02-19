@@ -14,14 +14,13 @@ contract Arga is Ownable {
 		_;
 	}
 
-	constructor(address initialOwner, address initialTreasurer) Ownable(initialOwner) validAddress(initialTreasurer) {
-		treasurer = initialTreasurer;
-		emit TreasurerChanged(initialTreasurer);
-	}
-
 	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
 		treasurer = newTreasurer;
 		emit TreasurerChanged(newTreasurer);
+	}
+
+	constructor() Ownable(msg.sender) {
+		changeTreasurer(msg.sender);
 	}
 
 	struct Collateral {

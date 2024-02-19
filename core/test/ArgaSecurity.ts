@@ -22,9 +22,10 @@ const declaration: Arga.DeclarationStruct = {
 
 const fixture = async () => {
 	// @ts-expect-error getSigners is actually defined
-	const [owner, actor, witness, treasurer] = await hre.ethers.getSigners()
-	const arga = await hre.ethers.deployContract('Arga', [owner, treasurer])
-	return { arga, actor, witness, owner, treasurer }
+	const [owner, actor, witness] = await hre.ethers.getSigners()
+	const argaContract = await hre.ethers.getContractFactory('Arga')
+	const arga = await argaContract.connect(owner).deploy()
+	return { arga, actor, witness, owner }
 }
 
 const value = hre.ethers.parseEther('1')

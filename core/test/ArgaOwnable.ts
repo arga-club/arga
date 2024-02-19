@@ -4,9 +4,10 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 
 const fixture = async () => {
 	// @ts-expect-error getSigners is actually defined
-	const [owner, other, feeReceiver] = await hre.ethers.getSigners()
-	const ownable = await hre.ethers.deployContract('Arga', [owner, feeReceiver])
-	return { owner, other, ownable, feeReceiver }
+	const [owner, other] = await hre.ethers.getSigners()
+	const argaContract = await hre.ethers.getContractFactory('Arga')
+	const ownable = await argaContract.connect(owner).deploy()
+	return { ownable, other, owner }
 }
 
 describe('Ownable', function () {
@@ -15,13 +16,6 @@ describe('Ownable', function () {
 		await expect(ownable.deploymentTransaction())
 			.to.emit(ownable, 'OwnershipTransferred')
 			.withArgs(hre.ethers.ZeroAddress, owner)
-	})
-
-	it('rejects zero address for initialOwner', async function () {
-		const { ownable, feeReceiver } = await loadFixture(fixture)
-		await expect(hre.ethers.deployContract('Arga', [hre.ethers.ZeroAddress, feeReceiver]))
-			.to.be.revertedWithCustomError({ interface: ownable.interface }, 'OwnableInvalidOwner')
-			.withArgs(hre.ethers.ZeroAddress)
 	})
 
 	it('has an owner', async function () {
