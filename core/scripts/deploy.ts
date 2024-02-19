@@ -1,19 +1,11 @@
-import { formatEther, parseEther } from 'viem'
 import hre from 'hardhat'
 
 async function main() {
-	const currentTimestampInSeconds = Math.round(Date.now() / 1000)
-	const unlockTime = BigInt(currentTimestampInSeconds + 60)
-
-	const lockedAmount = parseEther('0.001')
-
-	const lock = await hre.viem.deployContract('Lock', [unlockTime], {
-		value: lockedAmount,
-	})
-
-	console.log(
-		`Lock with ${formatEther(lockedAmount)}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`,
-	)
+	// @ts-expect-error getSigners is actually defined
+	const [owner, treasurer] = await hre.ethers.getSigners()
+	const arga = await hre.viem.deployContract('Arga', [owner.address, treasurer.address])
+	console.log('Arga deployed')
+	console.log({ contract: arga.address, owner: owner.address, treasurer: treasurer.address })
 }
 
 // We recommend this pattern to be able to use async/await everywhere
