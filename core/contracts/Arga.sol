@@ -136,6 +136,11 @@ contract Arga is Ownable {
 		return redemptions[party];
 	}
 
+	Collateral[] pool;
+	function poolCollateral() public view returns (Collateral[] memory) {
+		return pool;
+	}
+
 	error InvalidWitness(address sender);
 	modifier onlyWitness(uint id) {
 		address witness = declarations[id].witness;
@@ -154,9 +159,26 @@ contract Arga is Ownable {
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		redemptions[treasurer].push(Collateral(treasurerValue, declaration.collateral.erc20Address));
 		redemptions[declaration.witness].push(Collateral(witnessValue, declaration.collateral.erc20Address));
+		// remaining original collateral goes back to actor
 		redemptions[declaration.actor].push(
 			Collateral(declaration.collateral.value - treasurerValue - witnessValue, declaration.collateral.erc20Address)
 		);
 		emit DeclarationConcludedWithApproval(declaration);
+	}
+
+	function concludeDeclarationWithRejection(uint id) public onlyWitness(id) {
+		Declaration storage declaration = declarations[id];
+		// change status
+		declaration.status = DeclarationStatus.Rejected;
+		// distribute collateral to relevant parties
+		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
+		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
+		redemptions[treasurer].push(Collateral(treasurerValue, declaration.collateral.erc20Address));
+		redemptions[declaration.witness].push(Collateral(witnessValue, declaration.collateral.erc20Address));
+		// remaining original collateral goes to pool
+		pool.push(
+			Collateral(declaration.collateral.value - treasurerValue - witnessValue, declaration.collateral.erc20Address)
+		);
+		emit DeclarationConcludedWithRejection(declaration);
 	}
 }
