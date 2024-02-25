@@ -6,6 +6,7 @@ import { Arga } from '../typechain-types/contracts/Arga'
 
 const declaration: Arga.DeclarationStruct = {
 	id: 0n,
+	status: 0n,
 	summary: 'successfully test Arga contract',
 	description:
 		'this is a test description this is a test description this is a test description this is a test description this is a test description this is a test description',
@@ -70,6 +71,7 @@ describe('Conclusion', function () {
 			.withArgs(
 				(declarationArg: Arga.DeclarationStruct) =>
 					declarationArg.id === declaration.id &&
+					declarationArg.status === 1n && // approved
 					declarationArg.summary === declaration.summary &&
 					declarationArg.description === declaration.description &&
 					declarationArg.actor === actor.address &&

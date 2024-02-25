@@ -29,8 +29,14 @@ contract Arga is Ownable {
 		uint value;
 		address erc20Address;
 	}
+	enum DeclarationStatus {
+		Active,
+		Approved,
+		Rejected
+	}
 	struct Declaration {
 		uint id;
+		DeclarationStatus status;
 		string summary;
 		string description;
 		address actor;
@@ -83,6 +89,7 @@ contract Arga is Ownable {
 		uint declarationIndex = declarations.length;
 		Declaration memory declaration = Declaration(
 			declarationIndex,
+			DeclarationStatus.Active,
 			summary,
 			description,
 			actor,
@@ -140,6 +147,8 @@ contract Arga is Ownable {
 
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
 		Declaration storage declaration = declarations[id];
+		// change status
+		declaration.status = DeclarationStatus.Approved;
 		// distribute collateral to relevant parties
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
