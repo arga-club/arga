@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import styles from '~/index.module.css'
 import { api } from '~/trpc/react'
 
 export function CreatePost() {
@@ -22,16 +21,20 @@ export function CreatePost() {
 				e.preventDefault()
 				createPost.mutate({ name })
 			}}
-			className={styles.form}
+			className='flex flex-col gap-2'
 		>
 			<input
 				type='text'
 				placeholder='Title'
 				value={name}
 				onChange={e => setName(e.target.value)}
-				className={styles.input}
+				className='text-black w-full rounded-full px-4 py-2'
 			/>
-			<button type='submit' className={styles.submitButton} disabled={createPost.isLoading}>
+			<button
+				type='submit'
+				className='bg-white/10 hover:bg-white/20 rounded-full px-10 py-3 font-semibold transition'
+				disabled={createPost.isLoading}
+			>
 				{createPost.isLoading ? 'Submitting...' : 'Submit'}
 			</button>
 		</form>

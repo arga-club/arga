@@ -1,5 +1,6 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { PrismaAdapter } from '@auth/prisma-adapter'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
+import { type Adapter } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
 import { env } from '~/env'
 import { db } from '~/server/db'
@@ -40,7 +41,7 @@ export const authOptions: NextAuthOptions = {
 			},
 		}),
 	},
-	adapter: PrismaAdapter(db),
+	adapter: PrismaAdapter(db) as Adapter,
 	providers: [
 		DiscordProvider({
 			clientId: env.DISCORD_CLIENT_ID,
