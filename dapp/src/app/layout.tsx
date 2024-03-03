@@ -6,6 +6,9 @@ import { cookies } from 'next/headers'
 import { TRPCReactProvider } from '~/trpc/react'
 import StyledComponentsRegistry from '~/styles/registry'
 import '../styles/theme-config.css'
+import { WagmiProvider } from 'wagmi'
+import { wagmiConfig } from '~/lib/wagmi-config'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export const metadata = {
 	title: 'Create T3 App',
@@ -13,14 +16,20 @@ export const metadata = {
 	icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 
+const queryClient = new QueryClient()
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
 			<body style={{ margin: 0 }}>
 				<TRPCReactProvider cookies={cookies().toString()}>
-					<Theme>
-						<StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-					</Theme>
+					<WagmiProvider config={wagmiConfig}>
+						<QueryClientProvider client={queryClient}>
+							<Theme>
+								<StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+							</Theme>
+						</QueryClientProvider>
+					</WagmiProvider>
 				</TRPCReactProvider>
 			</body>
 		</html>

@@ -30,6 +30,8 @@
 		"react-dom": "18.2.0",
 		"server-only": "^0.0.1",
 		"superjson": "^2.2.1",
+		"viem": "2.x",
+		"wagmi": "^2.5.7",
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
