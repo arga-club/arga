@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
+// import "hardhat/console.sol";
+// https://hardhat.org/hardhat-network/docs/reference#console.log
 
 pragma solidity ^0.8.22;
 
@@ -39,8 +41,11 @@ contract Arga is Ownable {
 		DeclarationStatus status;
 		string summary;
 		string description;
+		// address sender;
+		// uint group id;
 		address actor;
 		address witness;
+		// uint witnessRedemptionValue;
 		uint startDate;
 		uint endDate;
 		uint witnessByDate;
@@ -65,6 +70,7 @@ contract Arga is Ownable {
 		}
 		return result;
 	}
+	// TODO: lastActorDeclaration
 
 	// we store indices of declarations per witness address
 	mapping(address => uint[]) _witnessDeclarations;
@@ -76,6 +82,7 @@ contract Arga is Ownable {
 		}
 		return result;
 	}
+	// TODO: lastWitnessDeclaration
 
 	function declareWithEther(
 		string memory summary,
@@ -116,18 +123,18 @@ contract Arga is Ownable {
 		uint collateralValue,
 		address collateralErc20Address
 	) public {
-		Declaration memory declaration = Declaration(
-			summary,
-			description,
-			actor,
-			witness,
-			startDate,
-			endDate,
-			witnessByDate,
-			collateralValue,
-			collateralErc20Address
-		);
-		emit DeclarationMade(declaration);
+		// Declaration memory declaration = Declaration(
+		// 	summary,
+		// 	description,
+		// 	actor,
+		// 	witness,
+		// 	startDate,
+		// 	endDate,
+		// 	witnessByDate,
+		// 	collateralValue,
+		// 	collateralErc20Address
+		// );
+		// emit DeclarationMade(declaration);
 		// not implemented yet
 	}
 

@@ -1,11 +1,9 @@
 import '@radix-ui/themes/styles.css'
 import { Theme } from '@radix-ui/themes'
-
 import { cookies } from 'next/headers'
-
 import { TRPCReactProvider } from '~/trpc/react'
 import StyledComponentsRegistry from '~/styles/registry'
-import '../styles/theme-config.css'
+import '~/styles/theme-config.css'
 import { ClientProviders } from '~/app/_components/client-providers'
 
 export const metadata = {

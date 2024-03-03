@@ -2,9 +2,8 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
+import styles from '~/index.module.css'
 import { api } from '~/trpc/react'
-import styles from '../index.module.css'
 
 export function CreatePost() {
 	const router = useRouter()
