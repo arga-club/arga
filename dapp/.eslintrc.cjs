@@ -4,8 +4,9 @@ const config = {
 	parserOptions: {
 		project: true,
 	},
-	plugins: ['@typescript-eslint'],
+	plugins: ['@typescript-eslint', 'import'],
 	extends: [
+		'plugin:import/typescript',
 		'plugin:@next/next/recommended',
 		'plugin:@typescript-eslint/recommended-type-checked',
 		'plugin:@typescript-eslint/stylistic-type-checked',
@@ -31,6 +32,16 @@ const config = {
 				checksVoidReturn: { attributes: false },
 			},
 		],
+		'import/order': ['error', { 'newlines-between': 'never' }],
+		'import/no-relative-packages': 'error',
+		'no-restricted-imports': ['error', { patterns: ['./*', '../*'] }],
+	},
+	settings: {
+		'import/resolver': {
+			typescript: {
+				alwaysTryTypes: true,
+			},
+		},
 	},
 }
 
