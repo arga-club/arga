@@ -7,8 +7,8 @@ await import('./src/env.js')
 /** @type {import("next").NextConfig} */
 const config = {
 	compiler: {
-		styledComponents: true
-	}
+		styledComponents: true,
+	},
 }
 
 export default config
