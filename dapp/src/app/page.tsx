@@ -5,7 +5,7 @@ import { Button } from '~/app/_components/ui/button'
 
 export default function Home() {
 	return (
-		<div>
+		<div className='container'>
 			<h1>Arga</h1>
 			<h2>Declarations</h2>
 			<p>No declarations..</p>
