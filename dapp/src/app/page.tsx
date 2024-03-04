@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import styled from 'styled-components'
+import { Button } from '~/app/_components/ui/button'
 
 export default function Home() {
 	return (
@@ -10,7 +11,7 @@ export default function Home() {
 			<h2>Declarations</h2>
 			<p>No declarations..</p>
 			<Link href='/declaration/new'>
-				<button>New Declaration</button>
+				<Button>New Declaration</Button>
 			</Link>
 		</Root>
 	)
