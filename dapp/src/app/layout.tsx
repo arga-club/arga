@@ -18,7 +18,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang='en' style={{ background: '#3457D5' }}>
+		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
