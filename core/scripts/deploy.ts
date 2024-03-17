@@ -40,6 +40,11 @@ async function main() {
 			{ value },
 		)
 	console.debug({ declarationMade })
+	const transferToTester = await owner.sendTransaction({
+		to: '0x2D9E9CCf7EaDcb8d42C85F7678d0311A0479DD50',
+		value: hre.ethers.parseEther('100'),
+	})
+	console.debug({ transferToTester })
 }
 
 // We recommend this pattern to be able to use async/await everywhere
