@@ -1,11 +1,10 @@
 import { http, createConfig } from 'wagmi'
-import { mainnet, sepolia } from 'wagmi/chains'
+import { hardhat } from 'wagmi/chains'
 
 export const wagmiConfig = createConfig({
-	chains: [mainnet, sepolia],
+	chains: [hardhat],
 	transports: {
-		[mainnet.id]: http(),
-		[sepolia.id]: http(),
+		[hardhat.id]: http(),
 	},
 })
 
