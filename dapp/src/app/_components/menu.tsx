@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import tw, { styled } from 'twin.macro'
 import {
 	NavigationMenu,
@@ -16,14 +15,14 @@ export const Menu = () => {
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
-						<Link href='/'>
-							<NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
-						</Link>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/'>
+							Home
+						</NavigationMenuLink>
 					</NavigationMenuItem>
 					<NavigationMenuItem>
-						<Link href='/declaration/new'>
-							<NavigationMenuLink className={navigationMenuTriggerStyle()}>New Declaration</NavigationMenuLink>
-						</Link>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declaration/new'>
+							New Declaration
+						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
