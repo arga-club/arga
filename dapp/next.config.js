@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+// eslint-disable-next-line no-restricted-imports
 import withTwin from './withTwin.mjs'
 
 /**
@@ -10,6 +14,14 @@ await import('./src/env.js')
 const config = withTwin({
 	compiler: {
 		styledComponents: true,
+	},
+	webpack: (config, context) => {
+		config.plugins?.push(
+			new context.webpack.IgnorePlugin({
+				resourceRegExp: /^(pino-pretty|encoding)$/,
+			}),
+		)
+		return config
 	},
 })
 
