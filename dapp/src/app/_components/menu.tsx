@@ -26,10 +26,20 @@ export const Menu = () => {
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
+			<NavigationMenu>
+				<NavigationMenuList>
+					<NavigationMenuItem>
+						<w3m-button></w3m-button>
+					</NavigationMenuItem>
+				</NavigationMenuList>
+			</NavigationMenu>
 		</Root>
 	)
 }
 
 const Root = styled.div`
 	${tw`container py-4 border-b`}
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `

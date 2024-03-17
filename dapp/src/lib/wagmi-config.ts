@@ -14,7 +14,7 @@ const metadata = {
 export const wagmiConfig = createConfig({
 	chains: [hardhat],
 	transports: {
-		[hardhat.id]: http(),
+		[hardhat.id]: http('http://127.0.0.1:8545/'),
 	},
 	connectors: [
 		walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false }),

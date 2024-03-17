@@ -1,9 +1,12 @@
 import { Inter } from 'next/font/google'
+import { cookieToInitialState } from 'wagmi'
+import { headers } from 'next/headers'
 import { TRPCReactProvider } from '~/trpc/react'
 import '~/styles/globals.css'
 import { ClientProviders } from '~/app/_components/client-providers'
 import { Menu } from '~/app/_components/menu'
 import StyledComponentsRegistry from '~/styles/registry'
+import { wagmiConfig } from '~/lib/wagmi-config'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -17,12 +20,14 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+	const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
+
 	return (
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
-						<ClientProviders>
+						<ClientProviders initialState={initialState}>
 							<Menu />
 							{children}
 						</ClientProviders>
