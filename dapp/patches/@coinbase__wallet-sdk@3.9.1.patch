@@ -1,0 +1,15 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index c08cc2cea6a4d8a3fa9ee392b76a3af0155a1c04..85c3cfd3751ba2044973305be620df99e4949bb6 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -7,10 +7,6 @@ declare global {
+     interface Window {
+         CoinbaseWalletSDK: typeof CoinbaseWalletSDK;
+         CoinbaseWalletProvider: typeof CoinbaseWalletProvider;
+-        /**
+-         * For CoinbaseWalletSDK, window.ethereum is `CoinbaseWalletProvider`
+-         */
+-        ethereum?: any;
+         coinbaseWalletExtension?: CoinbaseWalletProvider;
+         /**
+          * @deprecated Legacy API

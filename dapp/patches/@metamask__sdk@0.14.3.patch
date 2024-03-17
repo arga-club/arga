@@ -1,0 +1,15 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index 0490079428326a2bd868b1b5e6179dcf57f40b22..0000000000000000000000000000000000000000
+diff --git a/dist/browser/es/src/index.d.ts b/dist/browser/es/src/index.d.ts
+index b665a32a4ce3413fe3ecf83cc8959d8c3cdc1d71..bad3f7e712f3cd35d067d676e0f9f28e6fb72706 100644
+--- a/dist/browser/es/src/index.d.ts
++++ b/dist/browser/es/src/index.d.ts
+@@ -10,7 +10,6 @@ declare global {
+     interface Window {
+         ReactNativeWebView?: WebView;
+         sdkProvider: SDKProvider;
+-        ethereum?: SDKProvider;
+         mmsdk?: MetaMaskSDK;
+         extension?: MetaMaskInpageProvider;
+         extensions?: any[];
