@@ -6,7 +6,7 @@
  *
  */
 export const argaAbi = [
-	{ stateMutability: 'nonpayable', type: 'constructor', inputs: [] },
+	{ type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
 	{
 		type: 'error',
 		inputs: [{ name: 'sender', internalType: 'address', type: 'address' }],
@@ -177,8 +177,8 @@ export const argaAbi = [
 		],
 		name: 'TreasurerChanged',
 	},
+	{ type: 'fallback', stateMutability: 'payable' },
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [{ name: 'actor', internalType: 'address', type: 'address' }],
 		name: 'actorDeclarations',
@@ -217,30 +217,30 @@ export const argaAbi = [
 				],
 			},
 		],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [{ name: 'newTreasurer', internalType: 'address', type: 'address' }],
 		name: 'changeTreasurer',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
 		name: 'concludeDeclarationWithApproval',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
 		name: 'concludeDeclarationWithRejection',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
 		name: 'declarations',
@@ -268,9 +268,9 @@ export const argaAbi = [
 				],
 			},
 		],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'payable',
 		type: 'function',
 		inputs: [
 			{ name: 'summary', internalType: 'string', type: 'string' },
@@ -317,9 +317,9 @@ export const argaAbi = [
 				],
 			},
 		],
+		stateMutability: 'payable',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [
 			{ name: 'summary', internalType: 'string', type: 'string' },
@@ -338,16 +338,23 @@ export const argaAbi = [
 		],
 		name: 'declareWithToken',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
+		type: 'function',
+		inputs: [],
+		name: 'name',
+		outputs: [{ name: '', internalType: 'string', type: 'string' }],
 		stateMutability: 'view',
+	},
+	{
 		type: 'function',
 		inputs: [],
 		name: 'owner',
 		outputs: [{ name: '', internalType: 'address', type: 'address' }],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [],
 		name: 'poolCollateral',
@@ -362,9 +369,9 @@ export const argaAbi = [
 				],
 			},
 		],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [{ name: 'party', internalType: 'address', type: 'address' }],
 		name: 'redemptionsForParty',
@@ -379,37 +386,37 @@ export const argaAbi = [
 				],
 			},
 		],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [],
 		name: 'renounceOwnership',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
 		name: 'transferOwnership',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [],
 		name: 'treasurer',
 		outputs: [{ name: '', internalType: 'address', type: 'address' }],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [],
 		name: 'treasurerRedemptionPercentage',
 		outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [{ name: 'witness', internalType: 'address', type: 'address' }],
 		name: 'witnessDeclarations',
@@ -448,7 +455,9 @@ export const argaAbi = [
 				],
 			},
 		],
+		stateMutability: 'view',
 	},
+	{ type: 'receive', stateMutability: 'payable' },
 ] as const
 
 /**
@@ -469,9 +478,9 @@ export const argaConfig = { address: argaAddress, abi: argaAbi } as const
 
 export const lockAbi = [
 	{
-		stateMutability: 'payable',
 		type: 'constructor',
 		inputs: [{ name: '_unlockTime', internalType: 'uint256', type: 'uint256' }],
+		stateMutability: 'payable',
 	},
 	{
 		type: 'event',
@@ -493,25 +502,25 @@ export const lockAbi = [
 		name: 'Withdrawal',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [],
 		name: 'owner',
 		outputs: [{ name: '', internalType: 'address payable', type: 'address' }],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [],
 		name: 'unlockTime',
 		outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [],
 		name: 'withdraw',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 ] as const
 
@@ -550,24 +559,24 @@ export const ownableAbi = [
 		name: 'OwnershipTransferred',
 	},
 	{
-		stateMutability: 'view',
 		type: 'function',
 		inputs: [],
 		name: 'owner',
 		outputs: [{ name: '', internalType: 'address', type: 'address' }],
+		stateMutability: 'view',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [],
 		name: 'renounceOwnership',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
-		stateMutability: 'nonpayable',
 		type: 'function',
 		inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
 		name: 'transferOwnership',
 		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 ] as const
