@@ -91,7 +91,7 @@ contract Arga is Ownable {
 		uint[] storage indices = _actorDeclarations[actor];
 		Declaration[] memory result = new Declaration[](indices.length);
 		for (uint index; index < indices.length; index++) {
-			result[index] = declarations[index];
+			result[index] = declarations[indices[index]];
 		}
 		return result;
 	}
@@ -103,7 +103,7 @@ contract Arga is Ownable {
 		uint[] storage indices = _witnessDeclarations[witness];
 		Declaration[] memory result = new Declaration[](indices.length);
 		for (uint index; index < indices.length; index++) {
-			result[index] = declarations[index];
+			result[index] = declarations[indices[index]];
 		}
 		return result;
 	}
