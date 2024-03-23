@@ -5,6 +5,14 @@ import '@nomicfoundation/hardhat-toolbox-viem'
 
 const config: HardhatUserConfig = {
 	solidity: '0.8.22',
+	networks: {
+		hardhat: {
+			mining: {
+				auto: false,
+				interval: 5000,
+			},
+		},
+	},
 	ethernal: {
 		disableSync: false,
 		disableTrace: false,
