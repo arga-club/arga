@@ -7,9 +7,10 @@ import tw from 'twin.macro'
 import { z } from 'zod'
 import { addWeeks, format } from 'date-fns'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { useWriteContract } from 'wagmi'
+import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 import { useRouter } from 'next/navigation'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter } from '~/app/_components/ui/card'
 import {
@@ -43,6 +44,9 @@ const formSchema = z.object({
 
 export default function DeclarationNew() {
 	const router = useRouter()
+	const { open } = useWeb3Modal()
+	const { reconnectAsync } = useReconnect()
+	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading } = useWriteContract()
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -50,17 +54,19 @@ export default function DeclarationNew() {
 		defaultValues: {
 			summary: 'test summary',
 			description: 'test description',
-			actorAddress: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+			actorAddress: address,
 			witnessAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
 			witnessCriteria: 'test witness criteria',
 			startDate: addWeeks(new Date(), 1),
 			endDate: addWeeks(new Date(), 2),
 			witnessByDate: addWeeks(new Date(), 3),
-			collateralValue: 12,
+			collateralValue: 1,
 		},
 	})
 
 	const submit = form.handleSubmit(async declaration => {
+		isDisconnected && (await open())
+		await reconnectAsync()
 		await writeContractAsync({
 			abi: argaAbi,
 			address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
@@ -79,6 +85,7 @@ export default function DeclarationNew() {
 		})
 		router.push('/')
 	})
+
 	return (
 		<div tw='container'>
 			<div tw='px-3 pt-16 pb-20'>

@@ -7,6 +7,7 @@ import { ClientProviders } from '~/app/_components/client-providers'
 import { Menu } from '~/app/_components/menu'
 import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
+import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<StyledComponentsRegistry>
 						<ClientProviders initialState={initialState}>
 							<Menu />
-							{children}
+							<DeclarationWatcher>{children}</DeclarationWatcher>
 						</ClientProviders>
 					</StyledComponentsRegistry>
 				</TRPCReactProvider>

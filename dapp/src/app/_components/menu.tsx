@@ -29,7 +29,7 @@ export const Menu = () => {
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
-						<w3m-button></w3m-button>
+						<w3m-button />
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>

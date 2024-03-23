@@ -40,6 +40,7 @@
 		"superjson": "^2.2.1",
 		"tailwind-merge": "^2.2.1",
 		"tailwindcss-animate": "^1.0.7",
+		"use-session-storage-state": "^18.2.0",
 		"viem": "^2.7.18",
 		"wagmi": "^2.5.7",
 		"zod": "^3.22.4"
@@ -63,6 +64,7 @@
 		"eslint-config-next": "^14.1.0",
 		"eslint-import-resolver-typescript": "^3.6.1",
 		"eslint-plugin-import": "npm:eslint-plugin-i@^2.29.1",
+		"eslint-plugin-react": "^7.34.1",
 		"postcss": "^8.4.34",
 		"prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.5.11",
@@ -71,7 +73,9 @@
 		"styled-components": "^6.1.8",
 		"tailwindcss": "^3.4.1",
 		"twin.macro": "^3.4.1",
-		"typescript": "^5.3.3"
+		"type-fest": "^4.13.1",
+		"typescript": "^5.3.3",
+		"zustand": "^4.5.2"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.28.0"

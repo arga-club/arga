@@ -10,6 +10,7 @@ const config = {
 		'plugin:@typescript-eslint/recommended-type-checked',
 		'plugin:@typescript-eslint/stylistic-type-checked',
 		'plugin:import/typescript',
+		'plugin:react/recommended',
 	],
 	rules: {
 		// These opinionated rules are enabled in stylistic-type-checked above.
@@ -34,6 +35,13 @@ const config = {
 		'import/order': ['error', { 'newlines-between': 'never' }],
 		'import/no-relative-packages': 'error',
 		'no-restricted-imports': ['error', { patterns: ['./*', '../*'] }],
+		// maybe re-enable these after development
+		'@typescript-eslint/no-unsafe-assignment': 'off',
+		'@typescript-eslint/no-unsafe-call': 'off',
+		// react
+		'react/no-unknown-property': ['error', { ignore: ['tw', 'css'], requireDataLowercase: true }],
+		'react/self-closing-comp': 'error',
+		'react/react-in-jsx-scope': 'off',
 	},
 	settings: {
 		'import/resolver': {
