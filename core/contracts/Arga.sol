@@ -58,6 +58,7 @@ contract Arga is Ownable {
 	}
 	enum DeclarationStatus {
 		Active,
+		ProofSubmitted,
 		Approved,
 		Rejected
 	}
@@ -83,6 +84,7 @@ contract Arga is Ownable {
 
 	// events
 	event DeclarationMade(Declaration declaration);
+	event DeclarationProofSubmitted(Declaration declaration);
 	event DeclarationConcludedWithApproval(Declaration declaration);
 	event DeclarationConcludedWithRejection(Declaration declaration);
 
@@ -182,6 +184,24 @@ contract Arga is Ownable {
 			revert InvalidWitness(msg.sender);
 		}
 		_;
+	}
+
+	error InvalidActor(address sender);
+	modifier onlyActor(uint id) {
+		address actor = declarations[id].actor;
+		if (msg.sender != actor) {
+			revert InvalidActor(msg.sender);
+		}
+		_;
+	}
+
+	function submitDeclarationProof(uint id, string memory proof) public onlyActor(id) {
+		Declaration storage declaration = declarations[id];
+		// add proof
+		declaration.proof = proof;
+		// change status
+		declaration.status = DeclarationStatus.ProofSubmitted;
+		emit DeclarationProofSubmitted(declaration);
 	}
 
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {

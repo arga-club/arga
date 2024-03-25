@@ -10,9 +10,16 @@ const fixture = async () => {
 	return { arga, actor, witness, owner }
 }
 
+export const declarationStatus = {
+	active: 0n,
+	proofSubmitted: 1n,
+	approved: 2n,
+	rejected: 3n,
+}
+
 export const declaration: Arga.DeclarationStruct = {
 	id: 0n,
-	status: 0n,
+	status: declarationStatus.active,
 	summary: 'successfully test Arga contract',
 	description:
 		'this is a test description this is a test description this is a test description this is a test description this is a test description this is a test description',
@@ -28,7 +35,9 @@ export const declaration: Arga.DeclarationStruct = {
 	proof: '',
 }
 
+export const proof = 'test proof value'
 export const value = hre.ethers.parseEther('1')
+
 export const makeDeclaration = async ({
 	arga,
 	actor,
@@ -58,6 +67,28 @@ export const makeDeclaration = async ({
 		declaration.witnessByDate,
 		[value, hre.ethers.ZeroAddress],
 		declaration.proof,
+	]
+	return { expectedDeclaration }
+}
+
+export const submitDeclarationProof = async ({
+	arga,
+	actor,
+	witness,
+}: Pick<Awaited<ReturnType<typeof fixture>>, 'arga' | 'actor' | 'witness'>) => {
+	await arga.connect(actor).submitDeclarationProof(declaration.id, proof)
+	const expectedDeclaration = [
+		declaration.id,
+		declaration.status,
+		declaration.summary,
+		declaration.description,
+		actor.address,
+		witness.address,
+		declaration.startDate,
+		declaration.endDate,
+		declaration.witnessByDate,
+		[value, hre.ethers.ZeroAddress],
+		proof,
 	]
 	return { expectedDeclaration }
 }
