@@ -1,25 +1,8 @@
 import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import ms from 'ms'
 import { Arga } from '../typechain-types/contracts/Arga'
-
-const declaration: Arga.DeclarationStruct = {
-	id: 0n,
-	status: 0n,
-	summary: 'successfully test Arga contract',
-	description:
-		'this is a test description this is a test description this is a test description this is a test description this is a test description this is a test description',
-	actor: hre.ethers.ZeroAddress,
-	witness: hre.ethers.ZeroAddress,
-	startDate: BigInt(Date.now()),
-	endDate: BigInt(Date.now() + ms('5d')),
-	witnessByDate: BigInt(Date.now() + ms('10d')),
-	collateral: {
-		value: hre.ethers.parseEther('1'),
-		erc20Address: hre.ethers.ZeroAddress,
-	},
-}
+import { declaration, makeDeclaration, value } from './utils'
 
 const fixture = async () => {
 	// @ts-expect-error getSigners is actually defined
@@ -27,38 +10,6 @@ const fixture = async () => {
 	const argaContract = await hre.ethers.getContractFactory('Arga')
 	const arga = await argaContract.connect(owner).deploy()
 	return { arga, actor, witness, owner }
-}
-
-const value = hre.ethers.parseEther('1')
-const makeDeclaration = async ({
-	arga,
-	actor,
-	witness,
-}: Pick<Awaited<ReturnType<typeof fixture>>, 'arga' | 'actor' | 'witness'>) => {
-	await arga
-		.connect(actor)
-		.declareWithEther(
-			declaration.summary,
-			declaration.description,
-			actor.address,
-			witness.address,
-			declaration.startDate,
-			declaration.endDate,
-			declaration.witnessByDate,
-			{ value },
-		)
-	const expectedDeclaration = [
-		0,
-		declaration.summary,
-		declaration.description,
-		actor.address,
-		witness.address,
-		declaration.startDate,
-		declaration.endDate,
-		declaration.witnessByDate,
-		[value, hre.ethers.ZeroAddress],
-	]
-	return { expectedDeclaration }
 }
 
 describe('Conclusion', function () {

@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"compile": "hardhat compile",
-		"dev": "hardhat node",
+		"dev": "cross-env DEV_NODE=true hardhat node",
 		"dev:deploy": "hardhat run scripts/deploy.ts --network localhost",
 		"test": "hardhat test",
 		"deploy": "hardhat run scripts/deploy.ts",
@@ -28,6 +28,7 @@
 		"@types/ms": "^0.7.34",
 		"@types/node": "^20.11.5",
 		"chai": "4.2.0",
+		"cross-env": "^7.0.3",
 		"ethers": "^6.7.1",
 		"hardhat": "^2.19.4",
 		"hardhat-ethernal": "^3.2.5",

@@ -75,6 +75,7 @@ contract Arga is Ownable {
 		uint endDate;
 		uint witnessByDate;
 		Collateral collateral;
+		string proof;
 	}
 
 	// all declarations go here
@@ -129,7 +130,8 @@ contract Arga is Ownable {
 			startDate,
 			endDate,
 			witnessByDate,
-			Collateral(msg.value, address(0))
+			Collateral(msg.value, address(0)),
+			''
 		);
 		emit DeclarationMade(declaration);
 		declarations.push(declaration);
