@@ -6,10 +6,12 @@ import tw from 'twin.macro'
 import { useAccount, useReadContract } from 'wagmi'
 import { hardhat } from 'wagmi/chains'
 import { Button } from '~/app/_components/ui/button'
-import { Card, CardContent } from '~/app/_components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
 import { argaAbi } from '~/lib/generated'
 import { PendingDeclaration } from '~/app/_components/pending-declaration'
 import { usePendingTransactions } from '~/stores/pending-transactions'
+import { normalizeBigJSON } from '~/lib/ethereum-utils'
+import { LazyReactJSON } from '~/lib/react-utils'
 
 export default function ActorDeclarations() {
 	const { address, isConnecting } = useAccount()
@@ -28,7 +30,7 @@ export default function ActorDeclarations() {
 		<div tw='container'>
 			<div tw='px-3 pt-16 pb-20 space-y-10'>
 				<PageHeading>My declarations</PageHeading>
-				<div>
+				<div tw='space-y-4'>
 					{isInitialLoading ? (
 						'Loading..'
 					) : isConnecting ? (
@@ -46,7 +48,15 @@ export default function ActorDeclarations() {
 							))}
 							{actorDeclarations?.map(declaration => (
 								<Card key={declaration.id}>
-									<CardContent>{declaration.summary}</CardContent>
+									<CardHeader>{declaration.summary}</CardHeader>
+									<CardContent>
+										<LazyReactJSON src={normalizeBigJSON(declaration)} collapsed name='declaration' />
+									</CardContent>
+									<CardFooter>
+										<Link href={`/declaration/${declaration.id}`}>
+											<Button>View</Button>
+										</Link>
+									</CardFooter>
 								</Card>
 							))}
 						</>

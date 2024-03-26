@@ -7,3 +7,10 @@ type ActorDeclarationsArgs = ContractFunctionArgs<typeof argaAbi, 'pure' | 'view
 export type Declaration = ArrayValues<
 	NonNullable<UseReadContractReturnType<typeof argaAbi, 'actorDeclarations', ActorDeclarationsArgs>['data']>
 >
+
+export const declarationStatus = {
+	active: 0,
+	proofSubmitted: 1,
+	approved: 2,
+	rejected: 3,
+}

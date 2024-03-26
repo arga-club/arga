@@ -38,6 +38,8 @@ const config = {
 		// maybe re-enable these after development
 		'@typescript-eslint/no-unsafe-assignment': 'off',
 		'@typescript-eslint/no-unsafe-call': 'off',
+		'@typescript-eslint/no-unsafe-return': 'off',
+		'@typescript-eslint/no-unsafe-argument': 'off',
 		// react
 		'react/no-unknown-property': ['error', { ignore: ['tw', 'css'], requireDataLowercase: true }],
 		'react/self-closing-comp': 'error',

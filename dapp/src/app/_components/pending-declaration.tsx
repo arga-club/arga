@@ -3,7 +3,7 @@
 import { type Ref, useEffect, useMemo } from 'react'
 import { parseEventLogs, type Hash, decodeEventLog } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
-import { Card, CardContent } from '~/app/_components/ui/card'
+import { Card, CardContent, CardHeader } from '~/app/_components/ui/card'
 import { withDisplayName } from '~/app/_components/withDisplayName'
 import { argaAbi } from '~/lib/generated'
 import { usePendingTransactions } from '~/stores/pending-transactions'
@@ -52,9 +52,8 @@ export const PendingDeclaration = withDisplayName(
 		return (
 			<Card ref={ref}>
 				<CardContent>
-					Pending:
-					<br />
-					{!declaration ? status : declaration.summary}
+					<CardHeader />
+					{!declaration ? status : `${declaration.summary} (pending)`}
 				</CardContent>
 			</Card>
 		)

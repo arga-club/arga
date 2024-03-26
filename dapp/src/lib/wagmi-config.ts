@@ -1,5 +1,6 @@
 import { hardhat } from 'viem/chains'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
+import { createConfig as createConfigCore } from '@wagmi/core'
 import { walletConnect, injected, coinbaseWallet } from 'wagmi/connectors'
 
 export const walletConnectProjectId = '94c503a4bc0400523c25e21e615cad4d'
@@ -28,4 +29,11 @@ export const wagmiConfig = createConfig({
 	storage: createStorage({
 		storage: cookieStorage,
 	}),
+})
+
+export const wagmiCoreConfig = createConfigCore({
+	chains: [hardhat],
+	transports: {
+		[hardhat.id]: http('http://127.0.0.1:8545/'),
+	},
 })
