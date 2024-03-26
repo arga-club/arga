@@ -80,7 +80,7 @@ contract Arga is Ownable {
 	}
 
 	// all declarations go here
-	Declaration[] public declarations;
+	Declaration[] private _declarations;
 
 	// events
 	event DeclarationMade(Declaration declaration);
@@ -88,13 +88,17 @@ contract Arga is Ownable {
 	event DeclarationConcludedWithApproval(Declaration declaration);
 	event DeclarationConcludedWithRejection(Declaration declaration);
 
+	function declaration(uint index) public view returns (Declaration memory) {
+		return _declarations[index];
+	}
+
 	// we store indices of declarations per actor address
 	mapping(address => uint[]) _actorDeclarations;
 	function actorDeclarations(address actor) public view returns (Declaration[] memory) {
 		uint[] storage indices = _actorDeclarations[actor];
 		Declaration[] memory result = new Declaration[](indices.length);
 		for (uint index; index < indices.length; index++) {
-			result[index] = declarations[indices[index]];
+			result[index] = _declarations[indices[index]];
 		}
 		return result;
 	}
@@ -106,7 +110,7 @@ contract Arga is Ownable {
 		uint[] storage indices = _witnessDeclarations[witness];
 		Declaration[] memory result = new Declaration[](indices.length);
 		for (uint index; index < indices.length; index++) {
-			result[index] = declarations[indices[index]];
+			result[index] = _declarations[indices[index]];
 		}
 		return result;
 	}
@@ -121,8 +125,8 @@ contract Arga is Ownable {
 		uint endDate,
 		uint witnessByDate
 	) public payable returns (Declaration memory) {
-		uint declarationIndex = declarations.length;
-		Declaration memory declaration = Declaration(
+		uint declarationIndex = _declarations.length;
+		Declaration memory _declaration = Declaration(
 			declarationIndex,
 			DeclarationStatus.Active,
 			summary,
@@ -135,11 +139,11 @@ contract Arga is Ownable {
 			Collateral(msg.value, address(0)),
 			''
 		);
-		emit DeclarationMade(declaration);
-		declarations.push(declaration);
+		emit DeclarationMade(_declaration);
+		_declarations.push(_declaration);
 		_actorDeclarations[actor].push(declarationIndex);
 		_witnessDeclarations[witness].push(declarationIndex);
-		return declaration;
+		return _declaration;
 	}
 	function declareWithToken(
 		string memory summary,
@@ -179,7 +183,7 @@ contract Arga is Ownable {
 
 	error InvalidWitness(address sender);
 	modifier onlyWitness(uint id) {
-		address witness = declarations[id].witness;
+		address witness = _declarations[id].witness;
 		if (msg.sender != witness) {
 			revert InvalidWitness(msg.sender);
 		}
@@ -188,7 +192,7 @@ contract Arga is Ownable {
 
 	error InvalidActor(address sender);
 	modifier onlyActor(uint id) {
-		address actor = declarations[id].actor;
+		address actor = _declarations[id].actor;
 		if (msg.sender != actor) {
 			revert InvalidActor(msg.sender);
 		}
@@ -196,43 +200,43 @@ contract Arga is Ownable {
 	}
 
 	function submitDeclarationProof(uint id, string memory proof) public onlyActor(id) {
-		Declaration storage declaration = declarations[id];
+		Declaration storage _declaration = _declarations[id];
 		// add proof
-		declaration.proof = proof;
+		_declaration.proof = proof;
 		// change status
-		declaration.status = DeclarationStatus.ProofSubmitted;
-		emit DeclarationProofSubmitted(declaration);
+		_declaration.status = DeclarationStatus.ProofSubmitted;
+		emit DeclarationProofSubmitted(_declaration);
 	}
 
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
-		Declaration storage declaration = declarations[id];
+		Declaration storage _declaration = _declarations[id];
 		// change status
-		declaration.status = DeclarationStatus.Approved;
+		_declaration.status = DeclarationStatus.Approved;
 		// distribute collateral to relevant parties
-		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
-		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		redemptions[treasurer].push(Collateral(treasurerValue, declaration.collateral.erc20Address));
-		redemptions[declaration.witness].push(Collateral(witnessValue, declaration.collateral.erc20Address));
+		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
+		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
+		redemptions[treasurer].push(Collateral(treasurerValue, _declaration.collateral.erc20Address));
+		redemptions[_declaration.witness].push(Collateral(witnessValue, _declaration.collateral.erc20Address));
 		// remaining original collateral goes back to actor
-		redemptions[declaration.actor].push(
-			Collateral(declaration.collateral.value - treasurerValue - witnessValue, declaration.collateral.erc20Address)
+		redemptions[_declaration.actor].push(
+			Collateral(_declaration.collateral.value - treasurerValue - witnessValue, _declaration.collateral.erc20Address)
 		);
-		emit DeclarationConcludedWithApproval(declaration);
+		emit DeclarationConcludedWithApproval(_declaration);
 	}
 
 	function concludeDeclarationWithRejection(uint id) public onlyWitness(id) {
-		Declaration storage declaration = declarations[id];
+		Declaration storage _declaration = _declarations[id];
 		// change status
-		declaration.status = DeclarationStatus.Rejected;
+		_declaration.status = DeclarationStatus.Rejected;
 		// distribute collateral to relevant parties
-		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
-		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		redemptions[treasurer].push(Collateral(treasurerValue, declaration.collateral.erc20Address));
-		redemptions[declaration.witness].push(Collateral(witnessValue, declaration.collateral.erc20Address));
+		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
+		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
+		redemptions[treasurer].push(Collateral(treasurerValue, _declaration.collateral.erc20Address));
+		redemptions[_declaration.witness].push(Collateral(witnessValue, _declaration.collateral.erc20Address));
 		// remaining original collateral goes to pool
 		pool.push(
-			Collateral(declaration.collateral.value - treasurerValue - witnessValue, declaration.collateral.erc20Address)
+			Collateral(_declaration.collateral.value - treasurerValue - witnessValue, _declaration.collateral.erc20Address)
 		);
-		emit DeclarationConcludedWithRejection(declaration);
+		emit DeclarationConcludedWithRejection(_declaration);
 	}
 }

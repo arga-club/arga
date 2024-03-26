@@ -50,7 +50,7 @@ describe('Declaration', function () {
 		it('declareWithEther adds declaration to list', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
-			expect(await arga.declarations(0)).to.deep.equal(expectedDeclaration)
+			expect(await arga.declaration(0)).to.deep.equal(expectedDeclaration)
 			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
 			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
 		})
