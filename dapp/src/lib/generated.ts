@@ -3,7 +3,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
  */
 export const argaAbi = [
 	{ type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
@@ -536,14 +537,17 @@ export const argaAbi = [
 ] as const
 
 /**
- *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
  */
 export const argaAddress = {
 	31337: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+	11155111: '0x0325c0e405793BF97583F00e42fb7230fD74845B',
 } as const
 
 /**
- *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
  */
 export const argaConfig = { address: argaAddress, abi: argaAbi } as const
 
