@@ -14,12 +14,12 @@ const metadata = {
 	icons: ['https://avatars.githubusercontent.com/u/37784886'], // TODO: set to logo
 }
 
-assert(process.env.CHAIN_NAME)
+assert(process.env.NEXT_PUBLIC_CHAIN_NAME)
 
 export const chainId = {
 	hardhat,
 	sepolia,
-}[process.env.CHAIN_NAME]?.id
+}[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
 assert(chainId)
 
 export const argaInstance = { address: argaAddress[chainId], abi: argaAbi, chainId } as const
@@ -28,7 +28,7 @@ export const wagmiConfig = createConfig({
 	chains: [hardhat, sepolia],
 	transports: {
 		[hardhat.id]: http('http://127.0.0.1:8545/'),
-		[sepolia.id]: http(`https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`),
+		[sepolia.id]: http(`https://sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
 	},
 	connectors: [
 		walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false }),
@@ -48,6 +48,6 @@ export const wagmiCoreConfig = createConfigCore({
 	chains: [hardhat, sepolia],
 	transports: {
 		[hardhat.id]: http('http://127.0.0.1:8545/'),
-		[sepolia.id]: http(`https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`),
+		[sepolia.id]: http(`https://sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
 	},
 })
