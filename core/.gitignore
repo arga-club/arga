@@ -12,3 +12,7 @@ node_modules
 # solidity-coverage files
 /coverage
 /coverage.json
+
+# hardhat ignition
+ignition/deployments/chain-31337
+ignition/deployments/chain-11155111

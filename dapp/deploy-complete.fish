@@ -11,7 +11,7 @@ alias g=git
 funcsave g
 alias ll='ls -la'
 funcsave ll
-cp .env.dev .env
+cp .env.local .env
 sudo yum install nginx -y
 sudo systemctl enable nginx
 sudo systemctl start nginx

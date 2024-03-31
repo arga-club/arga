@@ -7,8 +7,12 @@
 		"compile": "hardhat compile",
 		"dev": "cross-env DEV_NODE=true hardhat node",
 		"dev:deploy": "hardhat run scripts/deploy.ts --network localhost",
+		"vars:set": "hardhat vars set",
+		"vars:get": "hardhat vars get",
+		"vars:list": "hardhat vars list",
 		"test": "hardhat test",
 		"deploy": "hardhat run scripts/deploy.ts",
+		"deploy:sepolia": "hardhat ignition deploy ignition/modules/Arga.ts --network sepolia --verify",
 		"prettier": "prettier .",
 		"prettier:fix": "prettier --write --plugin=prettier-plugin-solidity ."
 	},
@@ -16,6 +20,8 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@nomicfoundation/hardhat-ignition": "^0.15.0",
+		"@nomicfoundation/hardhat-ignition-viem": "^0.15.0",
 		"@nomicfoundation/hardhat-network-helpers": "1.0.0",
 		"@nomicfoundation/hardhat-toolbox": "^4.0.0",
 		"@nomicfoundation/hardhat-toolbox-viem": "2.0.0",
