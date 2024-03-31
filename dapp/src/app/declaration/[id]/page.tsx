@@ -2,8 +2,7 @@
 
 import styled from 'styled-components'
 import tw from 'twin.macro'
-import { useAccount, useReadContract, useReconnect, useWriteContract } from 'wagmi'
-import { hardhat } from 'wagmi/chains'
+import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -11,12 +10,13 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useRouter } from 'next/navigation'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
-import { argaAbi } from '~/lib/generated'
+import { useReadArgaDeclaration } from '~/lib/generated'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
 import { LazyReactJSON, useAutoReconnect } from '~/lib/react-utils'
 import { declarationStatus } from '~/types/arga'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/app/_components/ui/form'
 import { Textarea } from '~/app/_components/ui/textarea'
+import { argaInstance, chainId } from '~/lib/wagmi-config'
 
 const proofFormSchema = z.object({
 	proof: z.string(),
@@ -30,12 +30,9 @@ export default function Declaration({ params }: { params: { id: string } }) {
 	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading } = useWriteContract()
 
-	const { isInitialLoading, data: declaration } = useReadContract({
-		abi: argaAbi,
-		address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-		functionName: 'declaration',
+	const { isInitialLoading, data: declaration } = useReadArgaDeclaration({
 		args: [BigInt(params.id)],
-		chainId: hardhat.id,
+		chainId,
 	})
 
 	const proofForm = useForm<z.infer<typeof proofFormSchema>>({
@@ -49,11 +46,9 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		isDisconnected && (await open())
 		await reconnectAsync()
 		await writeContractAsync({
-			abi: argaAbi,
-			address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+			...argaInstance,
 			functionName: 'submitDeclarationProof',
 			args: [BigInt(params.id), declaration.proof],
-			chainId: hardhat.id,
 		})
 		router.push('/')
 	})
@@ -62,11 +57,9 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		isDisconnected && (await open())
 		await reconnectAsync()
 		await writeContractAsync({
-			abi: argaAbi,
-			address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+			...argaInstance,
 			functionName: 'concludeDeclarationWithApproval',
 			args: [BigInt(params.id)],
-			chainId: hardhat.id,
 		})
 		router.push('/')
 	}
@@ -74,11 +67,9 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		isDisconnected && (await open())
 		await reconnectAsync()
 		await writeContractAsync({
-			abi: argaAbi,
-			address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+			...argaInstance,
 			functionName: 'concludeDeclarationWithApproval',
 			args: [BigInt(params.id)],
-			chainId: hardhat.id,
 		})
 		router.push('/')
 	}

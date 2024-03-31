@@ -4,7 +4,7 @@ import JSONBig from 'json-bigint'
 import { waitForTransactionReceipt } from '@wagmi/core'
 import { type Hash, decodeEventLog, parseEventLogs } from 'viem'
 import { toHexString } from '~/lib/validation-utils'
-import { wagmiCoreConfig } from '~/lib/wagmi-config'
+import { chainId, wagmiCoreConfig } from '~/lib/wagmi-config'
 import { argaAbi } from '~/lib/generated'
 
 export const addChainToWallet = async () => {
@@ -26,7 +26,7 @@ export const normalizeBigJSON = (value: object) => JSON.parse(JSONBig.stringify(
 export const logFromPendingTransaction = async (pendingTransaction: Hash) => {
 	const receipt = await waitForTransactionReceipt(wagmiCoreConfig, {
 		hash: pendingTransaction,
-		chainId: hardhat.id,
+		chainId,
 	})
 	const [logRaw] = parseEventLogs({
 		abi: argaAbi,

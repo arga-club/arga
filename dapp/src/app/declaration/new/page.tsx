@@ -7,8 +7,7 @@ import tw from 'twin.macro'
 import { z } from 'zod'
 import { addWeeks, format } from 'date-fns'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { useAccount, useReconnect, useWriteContract } from 'wagmi'
-import { hardhat } from 'wagmi/chains'
+import { useAccount, useReconnect } from 'wagmi'
 import { useRouter } from 'next/navigation'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { Button } from '~/app/_components/ui/button'
@@ -27,8 +26,9 @@ import { Textarea } from '~/app/_components/ui/textarea'
 import { Popover, PopoverContent, PopoverTrigger } from '~/app/_components/ui/popover'
 import { cn } from '~/lib/shadcn-utils'
 import { Calendar } from '~/app/_components/ui/calendar'
-import { argaAbi } from '~/lib/generated'
+import { useWriteArgaDeclareWithEther } from '~/lib/generated'
 import { bigIntDateSchema, ethAddressSchema, ethValueSchema } from '~/lib/validation-utils'
+import { chainId } from '~/lib/wagmi-config'
 
 const formSchema = z.object({
 	summary: z.string().min(2).max(50),
@@ -47,7 +47,7 @@ export default function DeclarationNew() {
 	const { open } = useWeb3Modal()
 	const { reconnectAsync } = useReconnect()
 	const { address, isDisconnected } = useAccount()
-	const { writeContractAsync, isLoading } = useWriteContract()
+	const { writeContractAsync, isLoading } = useWriteArgaDeclareWithEther()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -68,9 +68,7 @@ export default function DeclarationNew() {
 		isDisconnected && (await open())
 		await reconnectAsync()
 		await writeContractAsync({
-			abi: argaAbi,
-			address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-			functionName: 'declareWithEther',
+			chainId,
 			args: [
 				declaration.summary,
 				declaration.description,
@@ -81,7 +79,6 @@ export default function DeclarationNew() {
 				bigIntDateSchema.parse(declaration.witnessByDate),
 			],
 			value: ethValueSchema.parse(declaration.collateralValue),
-			chainId: hardhat.id,
 		})
 		router.push('/')
 	})

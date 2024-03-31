@@ -3,27 +3,24 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 import tw from 'twin.macro'
-import { useAccount, useReadContract } from 'wagmi'
-import { hardhat } from 'wagmi/chains'
+import { useAccount } from 'wagmi'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
-import { argaAbi } from '~/lib/generated'
+import { useReadArgaActorDeclarations } from '~/lib/generated'
 import { PendingDeclaration } from '~/app/_components/pending-declaration'
 import { usePendingTransactions } from '~/stores/pending-transactions'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
 import { LazyReactJSON } from '~/lib/react-utils'
+import { chainId } from '~/lib/wagmi-config'
 
 export default function ActorDeclarations() {
 	const { address, isConnecting } = useAccount()
 	const { pendingTransactions } = usePendingTransactions()
 
-	const { isInitialLoading, data: actorDeclarations } = useReadContract({
+	const { isInitialLoading, data: actorDeclarations } = useReadArgaActorDeclarations({
 		query: { enabled: !!address, refetchInterval: pendingTransactions.length ? 2000 : undefined },
-		abi: argaAbi,
-		address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-		functionName: 'actorDeclarations',
 		args: address ? [address] : undefined,
-		chainId: hardhat.id,
+		chainId,
 	})
 
 	return (
