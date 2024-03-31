@@ -1,5 +1,5 @@
 import { defineConfig } from '@wagmi/cli'
-import { hardhat as hardhatPlugin, react } from '@wagmi/cli/plugins'
+import { hardhat as hardhatPlugin, react, actions } from '@wagmi/cli/plugins'
 import { hardhat, sepolia } from 'viem/chains'
 
 export default defineConfig({
@@ -20,5 +20,6 @@ export default defineConfig({
 			},
 		}),
 		react(),
+		actions(),
 	],
 })
