@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import { z } from 'zod'
-import { addWeeks, format } from 'date-fns'
+import { format } from 'date-fns'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { useAccount, useReconnect } from 'wagmi'
 import { useRouter } from 'next/navigation'
@@ -32,10 +32,10 @@ import { chainId } from '~/lib/wagmi-config'
 
 const formSchema = z.object({
 	summary: z.string().min(2).max(50),
-	description: z.string().min(2).max(50),
+	description: z.string().min(2).max(250),
 	actorAddress: ethAddressSchema,
 	witnessAddress: ethAddressSchema,
-	witnessCriteria: z.string().min(2).max(50),
+	witnessCriteria: z.string().min(2).max(100),
 	startDate: z.date(),
 	endDate: z.date(),
 	witnessByDate: z.date(),
@@ -50,17 +50,14 @@ export default function DeclarationNew() {
 	const { writeContractAsync, isLoading } = useWriteArgaDeclareWithEther()
 
 	const form = useForm<z.infer<typeof formSchema>>({
+		mode: 'onSubmit',
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			summary: 'test summary',
-			description: 'test description',
-			actorAddress: address,
-			witnessAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-			witnessCriteria: 'test witness criteria',
-			startDate: addWeeks(new Date(), 1),
-			endDate: addWeeks(new Date(), 2),
-			witnessByDate: addWeeks(new Date(), 3),
-			collateralValue: 1,
+			summary: '',
+			description: '',
+			actorAddress: '0x',
+			witnessAddress: '0x',
+			witnessCriteria: '',
 		},
 	})
 
@@ -133,7 +130,18 @@ export default function DeclarationNew() {
 												<FormLabel>Actor address</FormLabel>
 												<FormDescription>Address of person carrying out declaration</FormDescription>
 												<FormControl>
-													<Input placeholder='0xA1B2C3..' {...field} />
+													<InputWithButtonWrapper>
+														<Input placeholder='0xA1B2C3..' {...field} />
+														<Button
+															variant='secondary'
+															onClick={async () => {
+																if (!address) return
+																form.setValue(field.name, address)
+															}}
+														>
+															use my address
+														</Button>
+													</InputWithButtonWrapper>
 												</FormControl>
 												<FormMessage />
 											</FormItem>
@@ -147,7 +155,18 @@ export default function DeclarationNew() {
 												<FormLabel>Witness address</FormLabel>
 												<FormDescription>Address of person witnessing declaration</FormDescription>
 												<FormControl>
-													<Input placeholder='0xA1B2C3..' {...field} />
+													<InputWithButtonWrapper>
+														<Input placeholder='0xA1B2C3..' {...field} />
+														<Button
+															variant='secondary'
+															onClick={async () => {
+																if (!address) return
+																form.setValue(field.name, address)
+															}}
+														>
+															use my address
+														</Button>
+													</InputWithButtonWrapper>
 												</FormControl>
 												<FormMessage />
 											</FormItem>
@@ -301,6 +320,16 @@ export default function DeclarationNew() {
 		</div>
 	)
 }
+
+const InputWithButtonWrapper = styled.div`
+	${tw`flex space-x-4`}
+	> input {
+		flex: 1 1 auto;
+	}
+	> button {
+		flex: 0 0 auto;
+	}
+`
 
 const PageHeading = styled.h1`
 	${tw`text-3xl pb-10`}
