@@ -1,7 +1,9 @@
+import assert from 'assert'
 import { hardhat, sepolia } from 'viem/chains'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
 import { createConfig as createConfigCore } from '@wagmi/core'
 import { walletConnect, injected, coinbaseWallet } from 'wagmi/connectors'
+import { argaAbi, argaAddress } from '~/lib/generated'
 
 export const walletConnectProjectId = '94c503a4bc0400523c25e21e615cad4d'
 
@@ -11,6 +13,16 @@ const metadata = {
 	url: 'https://web3modal.com', // TODO: set to domain
 	icons: ['https://avatars.githubusercontent.com/u/37784886'], // TODO: set to logo
 }
+
+assert(process.env.CHAIN_NAME)
+
+export const chainId = {
+	hardhat,
+	sepolia,
+}[process.env.CHAIN_NAME]?.id
+assert(chainId)
+
+export const argaInstance = { address: argaAddress[chainId], abi: argaAbi, chainId } as const
 
 export const wagmiConfig = createConfig({
 	chains: [hardhat, sepolia],
