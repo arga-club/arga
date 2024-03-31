@@ -29,5 +29,6 @@ alias -s rmnm="find . -name "node_modules" -type d -prune -exec rm -rf '{}' +"
 funcsave rmnm
 ni
 nr db:push
+pm2 build
 pm2 start ecosystem.config.js
 pm2 startup

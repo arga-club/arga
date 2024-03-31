@@ -44,6 +44,7 @@ const config = {
 		'react/no-unknown-property': ['error', { ignore: ['tw', 'css'], requireDataLowercase: true }],
 		'react/self-closing-comp': 'error',
 		'react/react-in-jsx-scope': 'off',
+		'react/prop-types': 'off',
 	},
 	settings: {
 		'import/resolver': {
