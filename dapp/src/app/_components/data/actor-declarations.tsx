@@ -50,7 +50,7 @@ export default function ActorDeclarations() {
 										<LazyReactJSON src={normalizeBigJSON(declaration)} collapsed name='declaration' />
 									</CardContent>
 									<CardFooter>
-										<Link href={`/declaration/${declaration.id}`}>
+										<Link href={`/declarations/${declaration.id}`}>
 											<Button>View</Button>
 										</Link>
 									</CardFooter>
@@ -59,7 +59,7 @@ export default function ActorDeclarations() {
 						</>
 					)}
 				</div>
-				<Link tw='block' href='/declaration/new'>
+				<Link tw='block' href='/declarations/new'>
 					<Button>New Declaration</Button>
 				</Link>
 			</div>

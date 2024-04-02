@@ -15,12 +15,12 @@ export const Menu = () => {
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/'>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declarations'>
 							Home
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 					<NavigationMenuItem>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declaration/new'>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declarations/new'>
 							New Declaration
 						</NavigationMenuLink>
 					</NavigationMenuItem>
