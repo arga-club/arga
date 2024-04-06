@@ -6,7 +6,7 @@
 	"scripts": {
 		"compile": "hardhat compile",
 		"dev": "cross-env DEV_NODE=true hardhat node",
-		"dev:deploy": "hardhat run scripts/deploy.ts --network localhost",
+		"dev:deploy": "cross-env DEV_NODE=true hardhat run scripts/deploy.ts --network localhost",
 		"vars:set": "hardhat vars set",
 		"vars:get": "hardhat vars get",
 		"vars:list": "hardhat vars list",

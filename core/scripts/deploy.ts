@@ -18,6 +18,7 @@ const declaration: Arga.DeclarationStruct = {
 		value: hre.ethers.parseEther('1'),
 		erc20Address: hre.ethers.ZeroAddress,
 	},
+	proof: '',
 }
 
 async function main() {
