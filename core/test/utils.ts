@@ -1,6 +1,8 @@
 import hre from 'hardhat'
 import ms from 'ms'
 import { Arga } from '../typechain-types'
+import assert from 'assert'
+import { ContractTransactionResponse } from 'ethers'
 
 const fixture = async () => {
 	// @ts-expect-error getSigners is actually defined
@@ -67,7 +69,7 @@ export const makeDeclaration = async ({
 		declaration.witnessByDate,
 		[value, hre.ethers.ZeroAddress],
 		declaration.proof,
-	]
+	] as const
 	return { expectedDeclaration }
 }
 
@@ -91,4 +93,10 @@ export const submitDeclarationProof = async ({
 		proof,
 	]
 	return { expectedDeclaration }
+}
+
+export const gasUsedForTransaction = async (transaction: ContractTransactionResponse) => {
+	const receipt = await transaction.wait()
+	assert(receipt, 'No receipt!')
+	return receipt.cumulativeGasUsed * receipt.gasPrice
 }

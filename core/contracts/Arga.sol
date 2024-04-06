@@ -253,4 +253,26 @@ contract Arga is Ownable {
 		addToCollaterals(_pool, Collateral(poolValue, _declaration.collateral.erc20Address));
 		emit DeclarationConcludedWithRejection(_declaration);
 	}
+
+	function redeem(address payable destination, address[] calldata erc20Addresses) public {
+		address party = msg.sender;
+		Collateral[] storage collaterals = _redemptions[party];
+		for (uint i = 0; i < erc20Addresses.length; i++) {
+			address erc20Address = erc20Addresses[i];
+			bool success;
+			for (uint ii = 0; ii < collaterals.length; ii++) {
+				Collateral storage collateral = collaterals[ii];
+				if (collateral.erc20Address != erc20Address) continue;
+				if (erc20Address == address(0)) {
+					// ether
+					(bool sent, ) = destination.call{value: collateral.value}('');
+					require(sent, 'Failed to send Ether');
+					success = true;
+				} else {
+					// token
+				}
+			}
+			require(success, 'No redemption found for address');
+		}
+	}
 }

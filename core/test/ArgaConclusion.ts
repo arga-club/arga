@@ -2,7 +2,15 @@ import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { Arga } from '../typechain-types/contracts/Arga'
-import { declaration, declarationStatus, makeDeclaration, proof, submitDeclarationProof, value } from './utils'
+import {
+	declaration,
+	declarationStatus,
+	gasUsedForTransaction,
+	makeDeclaration,
+	proof,
+	submitDeclarationProof,
+	value,
+} from './utils'
 
 const fixture = async () => {
 	// @ts-expect-error getSigners is actually defined
@@ -73,10 +81,34 @@ describe('Conclusion', function () {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
 			await arga.connect(witness).concludeDeclarationWithApproval(id)
-			expect(await arga.redemptionsForParty(actor)).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
+			const actorRedemption = (value * 96n) / 100n
+			const witnessRedemption = (value * 2n) / 100n
+			const ownerRedemption = (value * 2n) / 100n
+			expect(await arga.redemptionsForParty(actor)).to.deep.equal([[actorRedemption, hre.ethers.ZeroAddress]])
+			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[witnessRedemption, hre.ethers.ZeroAddress]])
+			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[ownerRedemption, hre.ethers.ZeroAddress]])
 			expect(await arga.pool()).to.deep.equal([])
+			{
+				const balanceBefore = await actor.provider.getBalance(actor.address)
+				const transaction = await arga.connect(actor).redeem(actor.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await actor.provider.getBalance(actor.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + actorRedemption)
+			}
+			{
+				const balanceBefore = await witness.provider.getBalance(witness.address)
+				const transaction = await arga.connect(witness).redeem(witness.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await witness.provider.getBalance(witness.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + witnessRedemption)
+			}
+			{
+				const balanceBefore = await owner.provider.getBalance(owner.address)
+				const transaction = await arga.connect(owner).redeem(owner.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await owner.provider.getBalance(owner.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + ownerRedemption)
+			}
 		})
 		it('groups together collaterals of same address', async () => {
 			const { arga, actor, witness, owner } = await loadFixture(fixture)
@@ -88,15 +120,33 @@ describe('Conclusion', function () {
 				await arga.connect(witness).concludeDeclarationWithApproval(id)
 			})
 			// expect double redemptions
-			expect(await arga.redemptionsForParty(actor)).to.deep.equal([
-				[(value * 96n * 2n) / 100n, hre.ethers.ZeroAddress],
-			])
-			expect(await arga.redemptionsForParty(witness)).to.deep.equal([
-				[(value * 2n * 2n) / 100n, hre.ethers.ZeroAddress],
-			])
-			expect(await arga.redemptionsForParty(owner)).to.deep.equal([
-				[(value * 2n * 2n) / 100n, hre.ethers.ZeroAddress],
-			])
+			const actorRedemption = ((value * 96n) / 100n) * 2n
+			const witnessRedemption = ((value * 2n) / 100n) * 2n
+			const ownerRedemption = ((value * 2n) / 100n) * 2n
+			expect(await arga.redemptionsForParty(actor)).to.deep.equal([[actorRedemption, hre.ethers.ZeroAddress]])
+			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[witnessRedemption, hre.ethers.ZeroAddress]])
+			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[ownerRedemption, hre.ethers.ZeroAddress]])
+			{
+				const balanceBefore = await actor.provider.getBalance(actor.address)
+				const transaction = await arga.connect(actor).redeem(actor.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await actor.provider.getBalance(actor.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + actorRedemption)
+			}
+			{
+				const balanceBefore = await witness.provider.getBalance(witness.address)
+				const transaction = await arga.connect(witness).redeem(witness.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await witness.provider.getBalance(witness.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + witnessRedemption)
+			}
+			{
+				const balanceBefore = await owner.provider.getBalance(owner.address)
+				const transaction = await arga.connect(owner).redeem(owner.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await owner.provider.getBalance(owner.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + ownerRedemption)
+			}
 		})
 		it('only witness can conclude', async () => {
 			// test
