@@ -3,7 +3,6 @@ import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 
 const fixture = async () => {
-	// @ts-expect-error getSigners is actually defined
 	const [owner, actor, witness, other] = await hre.ethers.getSigners()
 	const argaContract = await hre.ethers.getContractFactory('Arga')
 	const arga = await argaContract.connect(owner).deploy()

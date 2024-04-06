@@ -5,7 +5,6 @@ import assert from 'assert'
 import { ContractTransactionResponse } from 'ethers'
 
 const fixture = async () => {
-	// @ts-expect-error getSigners is actually defined
 	const [owner, actor, witness] = await hre.ethers.getSigners()
 	const argaContract = await hre.ethers.getContractFactory('Arga')
 	const arga = await argaContract.connect(owner).deploy()

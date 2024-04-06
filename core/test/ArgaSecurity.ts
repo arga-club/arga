@@ -5,7 +5,6 @@ import { Arga } from '../typechain-types/contracts/Arga'
 import { declaration, makeDeclaration } from './utils'
 
 const fixture = async () => {
-	// @ts-expect-error getSigners is actually defined
 	const [owner, actor, witness] = await hre.ethers.getSigners()
 	const argaContract = await hre.ethers.getContractFactory('Arga')
 	const arga = await argaContract.connect(owner).deploy()
