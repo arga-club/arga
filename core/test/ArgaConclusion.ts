@@ -76,7 +76,27 @@ describe('Conclusion', function () {
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.poolCollateral()).to.deep.equal([])
+			expect(await arga.pool()).to.deep.equal([])
+		})
+		it('groups together collaterals of same address', async () => {
+			const { arga, actor, witness, owner } = await loadFixture(fixture)
+			// conclude 2 declarations
+			await makeDeclaration({ arga, actor, witness }).then(async ({ expectedDeclaration: [id] }) => {
+				await arga.connect(witness).concludeDeclarationWithApproval(id)
+			})
+			await makeDeclaration({ arga, actor, witness }).then(async ({ expectedDeclaration: [id] }) => {
+				await arga.connect(witness).concludeDeclarationWithApproval(id)
+			})
+			// expect double redemptions
+			expect(await arga.redemptionsForParty(actor)).to.deep.equal([
+				[(value * 96n * 2n) / 100n, hre.ethers.ZeroAddress],
+			])
+			expect(await arga.redemptionsForParty(witness)).to.deep.equal([
+				[(value * 2n * 2n) / 100n, hre.ethers.ZeroAddress],
+			])
+			expect(await arga.redemptionsForParty(owner)).to.deep.equal([
+				[(value * 2n * 2n) / 100n, hre.ethers.ZeroAddress],
+			])
 		})
 		it('only witness can conclude', async () => {
 			// test
@@ -121,7 +141,7 @@ describe('Conclusion', function () {
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.poolCollateral()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
+			expect(await arga.pool()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
 		})
 		it('only witness can reject', async () => {
 			// test

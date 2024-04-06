@@ -47,7 +47,7 @@ contract Arga is Ownable {
 	}
 
 	receive() external payable {
-		console.log('----- fallback');
+		console.log('----- receive');
 		logFallback();
 	}
 
@@ -171,14 +171,14 @@ contract Arga is Ownable {
 		// not implemented yet
 	}
 
-	mapping(address => Collateral[]) redemptions;
-	function redemptionsForParty(address party) public view returns (Collateral[] memory) {
-		return redemptions[party];
-	}
+	mapping(address => Collateral[]) public _redemptions;
+	Collateral[] public _pool;
 
-	Collateral[] pool;
-	function poolCollateral() public view returns (Collateral[] memory) {
-		return pool;
+	function redemptionsForParty(address party) public view returns (Collateral[] memory) {
+		return _redemptions[party];
+	}
+	function pool() public view returns (Collateral[] memory) {
+		return _pool;
 	}
 
 	error InvalidWitness(address sender);
@@ -208,6 +208,18 @@ contract Arga is Ownable {
 		emit DeclarationProofSubmitted(_declaration);
 	}
 
+	function addToCollaterals(Collateral[] storage collaterals, Collateral memory collateral) private {
+		// try to add to existing collateral if exists
+		for (uint i = 0; i < collaterals.length; i++) {
+			Collateral storage existingCollateral = collaterals[i];
+			if (existingCollateral.erc20Address != collateral.erc20Address) continue;
+			existingCollateral.value = existingCollateral.value + collateral.value;
+			return;
+		}
+		// otherwise add new collateral
+		collaterals.push(collateral);
+	}
+
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
 		Declaration storage _declaration = _declarations[id];
 		// change status
@@ -215,12 +227,13 @@ contract Arga is Ownable {
 		// distribute collateral to relevant parties
 		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		redemptions[treasurer].push(Collateral(treasurerValue, _declaration.collateral.erc20Address));
-		redemptions[_declaration.witness].push(Collateral(witnessValue, _declaration.collateral.erc20Address));
-		// remaining original collateral goes back to actor
-		redemptions[_declaration.actor].push(
-			Collateral(_declaration.collateral.value - treasurerValue - witnessValue, _declaration.collateral.erc20Address)
+		uint actorValue = _declaration.collateral.value - treasurerValue - witnessValue;
+		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
+		addToCollaterals(
+			_redemptions[_declaration.witness],
+			Collateral(treasurerValue, _declaration.collateral.erc20Address)
 		);
+		addToCollaterals(_redemptions[_declaration.actor], Collateral(actorValue, _declaration.collateral.erc20Address));
 		emit DeclarationConcludedWithApproval(_declaration);
 	}
 
@@ -231,12 +244,13 @@ contract Arga is Ownable {
 		// distribute collateral to relevant parties
 		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		redemptions[treasurer].push(Collateral(treasurerValue, _declaration.collateral.erc20Address));
-		redemptions[_declaration.witness].push(Collateral(witnessValue, _declaration.collateral.erc20Address));
-		// remaining original collateral goes to pool
-		pool.push(
-			Collateral(_declaration.collateral.value - treasurerValue - witnessValue, _declaration.collateral.erc20Address)
+		uint poolValue = _declaration.collateral.value - treasurerValue - witnessValue;
+		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
+		addToCollaterals(
+			_redemptions[_declaration.witness],
+			Collateral(treasurerValue, _declaration.collateral.erc20Address)
 		);
+		addToCollaterals(_pool, Collateral(poolValue, _declaration.collateral.erc20Address));
 		emit DeclarationConcludedWithRejection(_declaration);
 	}
 }
