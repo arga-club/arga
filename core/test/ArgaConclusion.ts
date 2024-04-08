@@ -146,6 +146,53 @@ describe('Conclusion', function () {
 				const balanceAfter = await owner.provider.getBalance(owner.address)
 				expect(balanceAfter).to.equal(balanceBefore - gasUsed + ownerRedemption)
 			}
+			const contractBalance = await owner.provider.getBalance(arga)
+			expect(contractBalance).to.equal(0n)
+		})
+		it('wins pool when multiplier is high enough', async () => {
+			const { arga, actor, witness, owner } = await loadFixture(fixture)
+			const {
+				expectedDeclaration: [id],
+			} = await makeDeclaration({ arga, actor, witness })
+			await submitDeclarationProof({ arga, actor, witness })
+			await arga.connect(witness).concludeDeclarationWithRejection(id)
+			const poolAmount = (value * 96n) / 100n
+			expect(await arga.pool()).to.deep.equal([[poolAmount, hre.ethers.ZeroAddress]])
+			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
+			await makeDeclaration({ arga, actor, witness })
+			await arga.connect(actor).submitDeclarationProof(1n, proof)
+			await arga.connect(owner).changeWinMultiplier(25)
+			await expect(await arga.connect(witness).concludeDeclarationWithApproval(1n))
+				.to.emit(arga, 'PoolWon')
+				.withArgs(
+					(declarationArg: Arga.DeclarationStruct) =>
+						declarationArg.id === 1n &&
+						declarationArg.status === declarationStatus.approved &&
+						declarationArg.summary === declaration.summary &&
+						declarationArg.description === declaration.description &&
+						declarationArg.actor === actor.address &&
+						declarationArg.witness === witness.address &&
+						declarationArg.startDate === declaration.startDate &&
+						declarationArg.endDate === declaration.endDate &&
+						declarationArg.witnessByDate === declaration.witnessByDate &&
+						declarationArg.collateral.value === declaration.collateral.value &&
+						declarationArg.collateral.erc20Address === declaration.collateral.erc20Address,
+				)
+			const actorRedemption = (value * 96n) / 100n
+			expect(await arga.redemptionsForParty(actor)).to.deep.equal([
+				[poolAmount + actorRedemption, hre.ethers.ZeroAddress],
+			])
+			{
+				const balanceBefore = await actor.provider.getBalance(actor.address)
+				const transaction = await arga.connect(actor).redeem(actor.address, [hre.ethers.ZeroAddress])
+				const gasUsed = await gasUsedForTransaction(transaction)
+				const balanceAfter = await actor.provider.getBalance(actor.address)
+				expect(balanceAfter).to.equal(balanceBefore - gasUsed + poolAmount + actorRedemption)
+			}
+			await arga.connect(witness).redeem(witness.address, [hre.ethers.ZeroAddress])
+			await arga.connect(owner).redeem(owner.address, [hre.ethers.ZeroAddress])
+			const contractBalance = await owner.provider.getBalance(arga)
+			expect(contractBalance).to.equal(0n)
 		})
 		it('only witness can conclude', async () => {
 			// test
@@ -154,6 +201,9 @@ describe('Conclusion', function () {
 			// test
 		})
 		it('cannot conclude when no proof', async () => {
+			// test
+		})
+		it('cannot conclude when already concluded', async () => {
 			// test
 		})
 	})

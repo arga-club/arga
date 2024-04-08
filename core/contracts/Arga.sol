@@ -77,6 +77,7 @@ contract Arga is Ownable {
 		uint witnessByDate;
 		Collateral collateral;
 		string proof;
+		// bool hasWon;
 	}
 
 	// all declarations go here
@@ -228,6 +229,7 @@ contract Arga is Ownable {
 		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint actorValue = _declaration.collateral.value - treasurerValue - witnessValue;
+		maybeWinPool(_declaration);
 		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[_declaration.witness],
@@ -245,6 +247,7 @@ contract Arga is Ownable {
 		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint poolValue = _declaration.collateral.value - treasurerValue - witnessValue;
+		maybeWinPool(_declaration);
 		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[_declaration.witness],
@@ -252,6 +255,26 @@ contract Arga is Ownable {
 		);
 		addToCollaterals(_pool, Collateral(poolValue, _declaration.collateral.erc20Address));
 		emit DeclarationConcludedWithRejection(_declaration);
+	}
+
+	event PoolWon(Declaration declaration);
+	uint public winMultiplier = 1;
+	function changeWinMultiplier(uint newMultiplier) public onlyOwner {
+		winMultiplier = newMultiplier;
+	}
+	uint randomNonce = 0;
+	function maybeWinPool(Declaration storage _declaration) private {
+		if (_pool.length == 0) return;
+		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
+		randomNonce++;
+		uint feesTotalPercent = treasurerRedemptionPercentage + witnessRedemptionPercentage;
+		uint chanceToWin = (_declaration.collateral.value / _pool[0].value) * feesTotalPercent * winMultiplier;
+		if (random > chanceToWin) return;
+		while (_pool.length > 0) {
+			addToCollaterals(_redemptions[_declaration.actor], _pool[_pool.length - 1]);
+			_pool.pop();
+		}
+		emit PoolWon(_declaration);
 	}
 
 	function redeem(address payable destination, address[] calldata erc20Addresses) public {
@@ -265,7 +288,7 @@ contract Arga is Ownable {
 				if (collateral.erc20Address != erc20Address) continue;
 				if (erc20Address == address(0)) {
 					// ether
-					(bool sent, ) = destination.call{value: collateral.value}('');
+					(bool sent, ) = destination.call{value: collateral.value, gas: 5000}('');
 					require(sent, 'Failed to send Ether');
 					success = true;
 				} else {
