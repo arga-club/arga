@@ -9,7 +9,7 @@ import {
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
 
-export const Menu = () => {
+export const MenuApp = () => {
 	return (
 		<Root>
 			<NavigationMenu>

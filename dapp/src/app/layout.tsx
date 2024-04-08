@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 import { TRPCReactProvider } from '~/trpc/react'
 import '~/styles/globals.css'
 import StyledComponentsRegistry from '~/styles/registry'
+import { MenuTop } from '~/app/_components/menu-top'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -29,7 +30,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
 				<TRPCReactProvider>
-					<StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+					<StyledComponentsRegistry>
+						<MenuTop />
+						{children}
+					</StyledComponentsRegistry>
 				</TRPCReactProvider>
 			</body>
 		</html>

@@ -4,10 +4,10 @@ import { headers } from 'next/headers'
 import { TRPCReactProvider } from '~/trpc/react'
 import '~/styles/globals.css'
 import { ClientProviders } from '~/app/_components/client-providers'
-import { Menu } from '~/app/_components/menu'
 import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
+import { MenuApp } from '~/app/_components/menu-app'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
 						<ClientProviders initialState={initialState}>
-							<Menu />
+							<MenuApp />
 							<DeclarationWatcher>{children}</DeclarationWatcher>
 						</ClientProviders>
 					</StyledComponentsRegistry>
