@@ -17,7 +17,7 @@ export const MenuTop = () => {
 				<NavigationMenuList>
 					<NavigationMenuItem>
 						<Prose>
-							<h1 tw='mb-0 font-normal'>Arga</h1>
+							<h1 tw='mb-2 -mt-4 mr-4 font-normal text-6xl'>Arga</h1>
 						</Prose>
 					</NavigationMenuItem>
 				</NavigationMenuList>
@@ -46,7 +46,7 @@ export const MenuTop = () => {
 }
 
 const Root = styled.div`
-	${tw`container py-4 border-b`}
+	${tw`container py-4 mt-20`}
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
