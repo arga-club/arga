@@ -17,7 +17,7 @@ export const MenuTop = () => {
 				<NavigationMenuList>
 					<NavigationMenuItem>
 						<Prose>
-							<h1 tw='mb-2 -mt-4 mr-4 font-normal text-6xl'>Arga</h1>
+							<h1 tw='mb-2 -mt-4 mr-4 text-6xl'>Arga</h1>
 						</Prose>
 					</NavigationMenuItem>
 				</NavigationMenuList>
