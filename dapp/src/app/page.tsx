@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
-import { PieArcSeries, PieChart } from 'reaviz'
+import dynamic from 'next/dynamic'
 import { Button } from '~/app/_components/ui/button'
 import { Prose } from '~/app/_components/ui/prose'
 import heroImage from '~/images/hero.webp'
@@ -255,6 +255,15 @@ export default function Home() {
 		</Root>
 	)
 }
+
+const PieChart = dynamic(() => import('reaviz').then(reaviz => reaviz.PieChart), {
+	ssr: false,
+	loading: () => <p>loading..</p>,
+})
+const PieArcSeries = dynamic(() => import('reaviz').then(reaviz => reaviz.PieArcSeries), {
+	ssr: false,
+	loading: () => <p>loading..</p>,
+})
 
 const StyledPieChart = styled(PieChart)`
 	position: relative;
