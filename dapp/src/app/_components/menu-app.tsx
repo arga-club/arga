@@ -8,10 +8,22 @@ import {
 	NavigationMenuList,
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
+import { Prose } from '~/app/_components/ui/prose'
 
 export const MenuApp = () => {
 	return (
 		<Root>
+			<NavigationMenu>
+				<NavigationMenuList>
+					<NavigationMenuItem>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/'>
+							<Prose>
+								<h1 tw='mb-2 md:-mt-4 -mt-2 mr-4 text-6xl'>Arga</h1>
+							</Prose>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+				</NavigationMenuList>
+			</NavigationMenu>
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
@@ -25,8 +37,6 @@ export const MenuApp = () => {
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>
-			</NavigationMenu>
-			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
 						<w3m-button />
@@ -38,8 +48,8 @@ export const MenuApp = () => {
 }
 
 const Root = styled.div`
-	${tw`container py-4 border-b`}
-	display: flex;
+	${tw`container py-4`}
+	${tw`md:flex md:mt-20 max-md:mt-8 max-md:space-y-6`}
 	justify-content: space-between;
 	align-items: center;
 `

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
 import { z } from 'zod'
 import { format } from 'date-fns'
@@ -29,6 +30,8 @@ import { Calendar } from '~/app/_components/ui/calendar'
 import { useWriteArgaDeclareWithEther } from '~/lib/generated'
 import { bigIntDateSchema, ethAddressSchema, ethValueSchema } from '~/lib/validation-utils'
 import { chainId } from '~/lib/wagmi-config'
+import borderImage from '~/images/border-horz-01.svg'
+import { Prose } from '~/app/_components/ui/prose'
 
 const formSchema = z.object({
 	summary: z.string().min(2).max(50),
@@ -81,9 +84,13 @@ export default function DeclarationNew() {
 	})
 
 	return (
+		<>
+			<Border $flip tw='-mt-2' />
 		<div tw='container'>
 			<div tw='px-3 pt-16 pb-20'>
-				<PageHeading>New Declaration</PageHeading>
+			<Prose>
+				<h1>My declarations</h1>
+			</Prose>
 				<Card className='mx-auto max-w-screen-sm'>
 					{isLoading ? (
 						<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
@@ -99,7 +106,7 @@ export default function DeclarationNew() {
 												<FormLabel>Summary</FormLabel>
 												<FormDescription>Brief summary of your declaration</FormDescription>
 												<FormControl>
-													<Input placeholder='lose some fukin weight' {...field} />
+													<Input placeholder='lose 5kg' {...field} />
 												</FormControl>
 												<FormMessage />
 											</FormItem>
@@ -116,7 +123,7 @@ export default function DeclarationNew() {
 													success looks like
 												</FormDescription>
 												<FormControl>
-													<Textarea placeholder='at least 20 kgs' {...field} />
+													<Textarea placeholder='go to the gym, do cardio on a regular basis, change eating habits' {...field} />
 												</FormControl>
 												<FormMessage />
 											</FormItem>
@@ -180,7 +187,7 @@ export default function DeclarationNew() {
 												<FormLabel>Witness criteria</FormLabel>
 												<FormDescription>How will the witness judge success?</FormDescription>
 												<FormControl>
-													<Input placeholder='photo evidence of me on a scale' {...field} />
+													<Input placeholder='photo evidence of me on a scale before and after' {...field} />
 												</FormControl>
 												<FormMessage />
 											</FormItem>
@@ -318,6 +325,7 @@ export default function DeclarationNew() {
 				</Card>
 			</div>
 		</div>
+				</>
 	)
 }
 
@@ -331,6 +339,14 @@ const InputWithButtonWrapper = styled.div`
 	}
 `
 
-const PageHeading = styled.h1`
-	${tw`text-3xl pb-10`}
+
+const Border = styled.div<{ $flip?: boolean }>`
+	background: url(${borderImage.src});
+	background-size: ${borderImage.width / 3}px ${borderImage.height / 3}px;
+	height: ${borderImage.height / 3}px;
+	${({ $flip }) =>
+		$flip &&
+		css`
+			transform: scaleY(-1);
+		`}
 `

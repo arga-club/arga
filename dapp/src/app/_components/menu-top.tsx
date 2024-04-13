@@ -16,9 +16,11 @@ export const MenuTop = () => {
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
-						<Prose>
-							<h1 tw='mb-2 -mt-4 mr-4 text-6xl'>Arga</h1>
-						</Prose>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/'>
+							<Prose>
+								<h1 tw='mb-2 md:-mt-4 -mt-2 mr-4 text-6xl'>Arga</h1>
+							</Prose>
+						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
@@ -29,16 +31,6 @@ export const MenuTop = () => {
 							Enter App
 						</NavigationMenuLink>
 					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declarations'>
-							Discover
-						</NavigationMenuLink>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declarations'>
-							Buy Token
-						</NavigationMenuLink>
-					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
 		</Root>
@@ -46,8 +38,8 @@ export const MenuTop = () => {
 }
 
 const Root = styled.div`
-	${tw`container py-4 mt-20`}
-	display: flex;
+	${tw`container py-4`}
+	${tw`flex md:mt-20 max-md:mt-8`}
 	justify-content: space-between;
 	align-items: center;
 `

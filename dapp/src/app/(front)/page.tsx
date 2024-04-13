@@ -16,13 +16,15 @@ import titleDecoration01 from '~/images/title-decoration-01.svg'
 import { Card, CardContent, CardHeader } from '~/app/_components/ui/card'
 import wreath from '~/images/wreath-01.svg'
 import flowchart from '~/images/flowchart.png'
+import flowchartVertical from '~/images/flowchart-vertical.png'
 
 export default function Home() {
 	return (
 		<Root>
 			<Border $flip tw='-mt-2' />
 			<div tw='container'>
-				<div tw='px-3 py-10 space-x-20 flex justify-between items-center'>
+				<div tw='py-10 md:flex md:flex-row-reverse justify-between items-center'>
+					<KeyImage src={heroImage} alt='cool image showing the vibe of this product' $large tw="md:ml-10" />
 					<Prose $large>
 						<blockquote>
 							&quot;First say to yourself what you would be;
@@ -39,7 +41,6 @@ export default function Home() {
 							<Button>Make your declaration →</Button>
 						</Link>
 					</Prose>
-					<KeyImage src={heroImage} alt='cool image showing the vibe of this product' $large />
 				</div>
 			</div>
 			<Border />
@@ -55,8 +56,7 @@ export default function Home() {
 							</p>
 							<p>
 								Set your goal, achieve success, and show off your glorious victory with your unique Legacy that
-								will forever live on the blockchain. We now have a way to prove our humanity through our
-								achievements in this fast evolving world.
+								will forever live on the blockchain.
 							</p>
 						</Prose>
 					</div>
@@ -74,19 +74,20 @@ export default function Home() {
 							scoring a new job.
 						</p>
 					</Prose>
-					<div tw='space-x-20 flex justify-between items-center mb-20'>
-						<KeyImage src={step1Image} alt='step 1' />
+					<div tw='md:flex justify-between items-center mb-20'>
+						<KeyImage src={step1Image} alt='step 1' tw="md:mr-10" />
 						<Prose tw='ml-auto'>
 							<h2 tw='mb-5'>1. Make your declaration</h2>
 							<TitleUnderline $scale={0.5} tw='w-96' />
 							<ul>
 								<li>What will you achieve? By when will you achieve it?</li>
-								<li>Allocate some of your collateral depending on how much motivation you need</li>
+								<li>Allocate some of your assets depending on how much motivation you need</li>
 								<li>Nominate a witness who will verify your success on chain</li>
 							</ul>
 						</Prose>
 					</div>
-					<div tw='space-x-20 flex justify-between items-center mb-20'>
+					<div tw='md:flex md:flex-row-reverse justify-between items-center mb-20'>
+						<KeyImage src={step2Image} alt='step 2' tw="md:ml-10" />
 						<Prose>
 							<h2 tw='mb-5'>2. Do the work and submit evidence</h2>
 							<TitleUnderline $scale={0.5} tw='w-96' />
@@ -96,10 +97,9 @@ export default function Home() {
 								<li>Witness approves based on the information</li>
 							</ul>
 						</Prose>
-						<KeyImage src={step2Image} alt='step 2' />
 					</div>
-					<div tw='space-x-20 flex justify-between items-center'>
-						<KeyImage src={step3Image} alt='step 3' />
+					<div tw='md:flex justify-between items-center'>
+						<KeyImage src={step3Image} alt='step 3' tw="md:mr-10"/>
 						<Prose tw='ml-auto'>
 							<h2 tw='mb-5'>3. Achievement unlocked</h2>
 							<TitleUnderline $scale={0.5} tw='w-96' />
@@ -127,7 +127,7 @@ export default function Home() {
 										<CardHeader tw='pl-0'>
 											<h2 tw='m-0'>Success in Failure</h2>
 										</CardHeader>
-										If you fail to honor your declaration your funds will be lost, this is a key feature of
+										If you fail to honor your declaration your funds will be lost. This is a key feature of
 										Arga and what will motivate you to be successful! Use this opportunity to reflect and come
 										back stronger.
 									</Prose>
@@ -140,7 +140,7 @@ export default function Home() {
 											<h2 tw='m-0'>Arga Lottery</h2>
 										</CardHeader>
 										Lost funds are added to a pool that anyone has a chance to win when making a declaration.
-										If you fail then declare again for a chance at success and regaining your funds.
+										If you fail then declare again for a chance at success.
 									</Prose>
 								</CardContent>
 							</StyledCard>
@@ -172,7 +172,12 @@ export default function Home() {
 						<KeyImage
 							src={flowchart}
 							alt='flowchart showing process in detail'
-							tw='max-w-screen-lg mx-auto mt-20 shadow-none'
+							tw='max-md:hidden max-w-screen-lg mx-auto mt-20 shadow-none'
+						/>
+						<KeyImage
+							src={flowchartVertical}
+							alt='flowchart showing process in detail'
+							tw='md:hidden max-w-screen-lg mx-auto mt-20 shadow-none'
 						/>
 					</div>
 				</div>
@@ -180,7 +185,7 @@ export default function Home() {
 			<Border $flip />
 			<div tw='container'>
 				<div tw='px-3 pt-16 pb-20'>
-					<div tw='space-x-20 flex justify-between items-center mb-20'>
+					<div tw='md:space-x-20 md:flex justify-between items-center mb-20'>
 						<Prose tw='pb-20'>
 							<h1 tw='mb-5'>How are funds handled?</h1>
 							<TitleUnderline $scale={0.5} tw='w-96' />
@@ -188,10 +193,10 @@ export default function Home() {
 								Arga is totally decentralized, which means that funds are handled automatically by smart
 								contracts on the blockchain, not by people. Almost all funds are returned to the actor upon a
 								witness&#039; approval. 2% goes to the designated witness, and another 2% goes to the protocol
-								as a duty, to fund the development of the platform.
+								as a duty, to fund the development of the platform and to keep actors honest.
 							</p>
 							<p>
-								The duty may not seem necessary, but it acts as a disincentive for actors to designate
+								The duty acts as a disincentive for actors to designate
 								themselves as a witness and fraudulently approve their own declaration to fool others. When a
 								duty is applied, it&#039;s still possible to be fraudulent, but not for free. For honest actors,
 								the value of achieving a stated goal should be larger than the value of the duty.
@@ -222,8 +227,7 @@ export default function Home() {
 							<TitleUnderline $scale={0.5} tw='w-96' />
 							<p>
 								Arga is currently deployed to Ethereum&#039;s Sepolia testnet in an early alpha stage. Follow us
-								on our socials to stay up to date and DM us if you&#039;d like to invest. We have big things
-								planned!
+								on our socials to stay up to date. We have big things planned!
 							</p>
 							<ul>
 								<li>
@@ -244,9 +248,9 @@ export default function Home() {
 								</li>
 							</ul>
 							<p>
-								Twitter/X:
+								Twitter/X: <a href="https://twitter.com/ArgaDeclare">@ArgaDeclare</a>
 								<br />
-								Telegram:
+								Telegram: coming soon
 							</p>
 						</Prose>
 					</div>
@@ -268,6 +272,7 @@ const PieArcSeries = dynamic(() => import('reaviz').then(reaviz => reaviz.PieArc
 const StyledPieChart = styled(PieChart)`
 	position: relative;
 	z-index: 2;
+	${tw`max-md:-ml-20`}
 `
 
 const WreathBackground = styled.div<{ $scale?: number }>`
@@ -299,10 +304,7 @@ const Root = styled.div`
 `
 
 const FlexWrap = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	margin-left: -2rem;
-	margin-top: -2rem;
+	${tw`md:flex md:flex-wrap md:-mt-8 md:-ml-8`}
 `
 
 const StyledCard = styled(Card)`
@@ -311,16 +313,16 @@ const StyledCard = styled(Card)`
 	// 	rgba(0, 0, 0, 0.15) 0px 15px 25px,
 	// 	rgba(0, 0, 0, 0.05) 0px 5px 10px;
 	flex: 0 0 calc(50% - 2rem);
-	margin-left: 2rem;
-	margin-top: 2rem;
+	${tw`mt-8 md:ml-8`}
 	${tw`rounded-lg shadow-lg`}
 `
 
 const KeyImage = styled(Image)<{ $large?: boolean }>`
-	${tw`mt-0 rounded`}
+	${tw`mt-0 rounded w-full`}
 	${({ $large }) => ($large ? tw`max-w-xl` : tw`max-w-md`)}
 	// https://getcssscan.com/css-box-shadow-examples #81
-	box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+	${tw`shadow-xl`}
+	${tw`md:shadow-[rgba(0, 0, 0, 0.4) 0px 30px 90px]`}
 	position: relative;
 	z-index: 20;
 `
