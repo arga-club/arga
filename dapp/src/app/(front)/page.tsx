@@ -114,7 +114,7 @@ export default function Home() {
 				</div>
 			</div>
 			<Border />
-			<div tw='bg-warmGray-100'>
+			<div tw='bg-stone-100'>
 				<div tw='container'>
 					<div tw='px-3 pt-16 pb-20'>
 						<Prose tw='mx-auto text-center'>
