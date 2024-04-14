@@ -24,7 +24,7 @@ export default function Home() {
 			<Border $flip tw='-mt-2' />
 			<div tw='container'>
 				<div tw='py-10 md:flex md:flex-row-reverse justify-between items-center'>
-					<KeyImage src={heroImage} alt='cool image showing the vibe of this product' $large tw="md:ml-10" />
+					<KeyImage src={heroImage} alt='cool image showing the vibe of this product' $large tw='md:ml-10' />
 					<Prose $large>
 						<blockquote>
 							&quot;First say to yourself what you would be;
@@ -75,7 +75,7 @@ export default function Home() {
 						</p>
 					</Prose>
 					<div tw='md:flex justify-between items-center mb-20'>
-						<KeyImage src={step1Image} alt='step 1' tw="md:mr-10" />
+						<KeyImage src={step1Image} alt='step 1' tw='md:mr-10' />
 						<Prose tw='ml-auto'>
 							<h2 tw='mb-5'>1. Make your declaration</h2>
 							<TitleUnderline $scale={0.5} tw='w-96' />
@@ -87,7 +87,7 @@ export default function Home() {
 						</Prose>
 					</div>
 					<div tw='md:flex md:flex-row-reverse justify-between items-center mb-20'>
-						<KeyImage src={step2Image} alt='step 2' tw="md:ml-10" />
+						<KeyImage src={step2Image} alt='step 2' tw='md:ml-10' />
 						<Prose>
 							<h2 tw='mb-5'>2. Do the work and submit evidence</h2>
 							<TitleUnderline $scale={0.5} tw='w-96' />
@@ -99,7 +99,7 @@ export default function Home() {
 						</Prose>
 					</div>
 					<div tw='md:flex justify-between items-center'>
-						<KeyImage src={step3Image} alt='step 3' tw="md:mr-10"/>
+						<KeyImage src={step3Image} alt='step 3' tw='md:mr-10' />
 						<Prose tw='ml-auto'>
 							<h2 tw='mb-5'>3. Achievement unlocked</h2>
 							<TitleUnderline $scale={0.5} tw='w-96' />
@@ -196,33 +196,33 @@ export default function Home() {
 								as a duty, to fund the development of the platform and to keep actors honest.
 							</p>
 							<p>
-								The duty acts as a disincentive for actors to designate
-								themselves as a witness and fraudulently approve their own declaration to fool others. When a
-								duty is applied, it&#039;s still possible to be fraudulent, but not for free. For honest actors,
-								the value of achieving a stated goal should be larger than the value of the duty.
+								The duty acts as a disincentive for actors to designate themselves as a witness and fraudulently
+								approve their own declaration to fool others. When a duty is applied, it&#039;s still possible
+								to be fraudulent, but not for free. For honest actors, the value of achieving a stated goal
+								should be larger than the value of the duty.
 							</p>
 						</Prose>
-						<StyledPieChart
-							width={650}
-							height={450}
-							data={[
-								{ key: 'Actor (96%)', data: 96 },
-								{ key: 'Witness (2%)', data: 2 },
-								{ key: 'Duty (2%)', data: 2 },
-							]}
-							series={
-								<PieArcSeries
-									cornerRadius={1}
-									padAngle={0.02}
-									padRadius={200}
-									doughnut={true}
-									colorScheme='cybertron'
-								/>
-							}
-						/>
+						<AspectRatioWrapper>
+							<PieChart
+								data={[
+									{ key: 'Actor (96%)', data: 96 },
+									{ key: 'Witness (2%)', data: 2 },
+									{ key: 'Duty (2%)', data: 2 },
+								]}
+								series={
+									<PieArcSeries
+										cornerRadius={1}
+										padAngle={0.02}
+										padRadius={200}
+										doughnut={true}
+										colorScheme='cybertron'
+									/>
+								}
+							/>
+						</AspectRatioWrapper>
 					</div>
 					<div tw='space-x-20 flex justify-between items-center mb-20'>
-						<Prose tw='pb-20'>
+						<Prose tw='pb-20 max-w-full'>
 							<h1 tw='mb-5'>Project status</h1>
 							<TitleUnderline $scale={0.5} tw='w-96' />
 							<p>
@@ -248,7 +248,7 @@ export default function Home() {
 								</li>
 							</ul>
 							<p>
-								Twitter/X: <a href="https://twitter.com/ArgaDeclare">@ArgaDeclare</a>
+								Twitter/X: <a href='https://twitter.com/0xArga'>@0xArga</a>
 								<br />
 								Telegram: coming soon
 							</p>
@@ -260,6 +260,11 @@ export default function Home() {
 	)
 }
 
+const AspectRatioWrapper = styled.div`
+	${tw`relative w-[50rem] h-[25rem] max-w-full max-md:h-[15rem]`}
+	z-index: 2;
+`
+
 const PieChart = dynamic(() => import('reaviz').then(reaviz => reaviz.PieChart), {
 	ssr: false,
 	loading: () => <p>loading..</p>,
@@ -268,12 +273,6 @@ const PieArcSeries = dynamic(() => import('reaviz').then(reaviz => reaviz.PieArc
 	ssr: false,
 	loading: () => <p>loading..</p>,
 })
-
-const StyledPieChart = styled(PieChart)`
-	position: relative;
-	z-index: 2;
-	${tw`max-md:-ml-20`}
-`
 
 const WreathBackground = styled.div<{ $scale?: number }>`
 	${tw`bg-warmGray-100`}

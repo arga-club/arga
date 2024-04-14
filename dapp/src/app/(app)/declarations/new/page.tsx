@@ -86,246 +86,252 @@ export default function DeclarationNew() {
 	return (
 		<>
 			<Border $flip tw='-mt-2' />
-		<div tw='container'>
-			<div tw='px-3 pt-16 pb-20'>
-			<Prose>
-				<h1>My declarations</h1>
-			</Prose>
-				<Card className='mx-auto max-w-screen-sm'>
-					{isLoading ? (
-						<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
-					) : (
-						<Form {...form}>
-							<form onSubmit={submit}>
-								<CardContent className='space-y-6 pt-8'>
-									<FormField
-										control={form.control}
-										name='summary'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Summary</FormLabel>
-												<FormDescription>Brief summary of your declaration</FormDescription>
-												<FormControl>
-													<Input placeholder='lose 5kg' {...field} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='description'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Description</FormLabel>
-												<FormDescription>
-													Additional details about what you intend to do, how you&apos;ll do it, and what
-													success looks like
-												</FormDescription>
-												<FormControl>
-													<Textarea placeholder='go to the gym, do cardio on a regular basis, change eating habits' {...field} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='actorAddress'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Actor address</FormLabel>
-												<FormDescription>Address of person carrying out declaration</FormDescription>
-												<FormControl>
-													<InputWithButtonWrapper>
-														<Input placeholder='0xA1B2C3..' {...field} />
-														<Button
-															variant='secondary'
-															onClick={async () => {
-																if (!address) return
-																form.setValue(field.name, address)
-															}}
-														>
-															use my address
-														</Button>
-													</InputWithButtonWrapper>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='witnessAddress'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Witness address</FormLabel>
-												<FormDescription>Address of person witnessing declaration</FormDescription>
-												<FormControl>
-													<InputWithButtonWrapper>
-														<Input placeholder='0xA1B2C3..' {...field} />
-														<Button
-															variant='secondary'
-															onClick={async () => {
-																if (!address) return
-																form.setValue(field.name, address)
-															}}
-														>
-															use my address
-														</Button>
-													</InputWithButtonWrapper>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='witnessCriteria'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Witness criteria</FormLabel>
-												<FormDescription>How will the witness judge success?</FormDescription>
-												<FormControl>
-													<Input placeholder='photo evidence of me on a scale before and after' {...field} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='startDate'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Start date</FormLabel>
-												<FormDescription>When will declaration be started?</FormDescription>
-												<Popover>
-													<PopoverTrigger asChild>
-														<FormControl>
-															<Button
-																variant={'outline'}
-																className={cn(
-																	'w-[240px] pl-3 text-left font-normal',
-																	!field.value && 'text-muted-foreground',
-																)}
-															>
-																{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-																<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-															</Button>
-														</FormControl>
-													</PopoverTrigger>
-													<PopoverContent className='w-auto p-0' align='start'>
-														<Calendar
-															mode='single'
-															selected={field.value}
-															onSelect={field.onChange}
-															disabled={date => date < new Date() || date < new Date('1900-01-01')}
-															initialFocus
+			<div tw='container'>
+				<div tw='px-3 pt-16 pb-20'>
+					<Prose>
+						<h1>My declarations</h1>
+					</Prose>
+					<Card className='mx-auto max-w-screen-sm'>
+						{isLoading ? (
+							<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
+						) : (
+							<Form {...form}>
+								<form onSubmit={submit}>
+									<CardContent className='space-y-6 pt-8'>
+										<FormField
+											control={form.control}
+											name='summary'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Summary</FormLabel>
+													<FormDescription>Brief summary of your declaration</FormDescription>
+													<FormControl>
+														<Input placeholder='lose 5kg' {...field} />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='description'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Description</FormLabel>
+													<FormDescription>
+														Additional details about what you intend to do, how you&apos;ll do it, and
+														what success looks like
+													</FormDescription>
+													<FormControl>
+														<Textarea
+															placeholder='go to the gym, do cardio on a regular basis, change eating habits'
+															{...field}
 														/>
-													</PopoverContent>
-												</Popover>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='endDate'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>End date</FormLabel>
-												<FormDescription>When will declaration be finished?</FormDescription>
-												<Popover>
-													<PopoverTrigger asChild>
-														<FormControl>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='actorAddress'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Actor address</FormLabel>
+													<FormDescription>Address of person carrying out declaration</FormDescription>
+													<FormControl>
+														<InputWithButtonWrapper>
+															<Input placeholder='0xA1B2C3..' {...field} />
 															<Button
-																variant={'outline'}
-																className={cn(
-																	'w-[240px] pl-3 text-left font-normal',
-																	!field.value && 'text-muted-foreground',
-																)}
+																variant='secondary'
+																onClick={async () => {
+																	if (!address) return
+																	form.setValue(field.name, address)
+																}}
 															>
-																{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-																<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+																use my address
 															</Button>
-														</FormControl>
-													</PopoverTrigger>
-													<PopoverContent className='w-auto p-0' align='start'>
-														<Calendar
-															mode='single'
-															selected={field.value}
-															onSelect={field.onChange}
-															disabled={date => date < new Date() || date < new Date('1900-01-01')}
-															initialFocus
-														/>
-													</PopoverContent>
-												</Popover>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='witnessByDate'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Witness by date</FormLabel>
-												<FormDescription>When will declaration be witnessed by?</FormDescription>
-												<Popover>
-													<PopoverTrigger asChild>
-														<FormControl>
+														</InputWithButtonWrapper>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='witnessAddress'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Witness address</FormLabel>
+													<FormDescription>Address of person witnessing declaration</FormDescription>
+													<FormControl>
+														<InputWithButtonWrapper>
+															<Input placeholder='0xA1B2C3..' {...field} />
 															<Button
-																variant={'outline'}
-																className={cn(
-																	'w-[240px] pl-3 text-left font-normal',
-																	!field.value && 'text-muted-foreground',
-																)}
+																variant='secondary'
+																onClick={async () => {
+																	if (!address) return
+																	form.setValue(field.name, address)
+																}}
 															>
-																{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-																<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+																use my address
 															</Button>
-														</FormControl>
-													</PopoverTrigger>
-													<PopoverContent className='w-auto p-0' align='start'>
-														<Calendar
-															mode='single'
-															selected={field.value}
-															onSelect={field.onChange}
-															disabled={date => date < new Date() || date < new Date('1900-01-01')}
-															initialFocus
+														</InputWithButtonWrapper>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='witnessCriteria'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Witness criteria</FormLabel>
+													<FormDescription>How will the witness judge success?</FormDescription>
+													<FormControl>
+														<Input
+															placeholder='photo evidence of me on a scale before and after'
+															{...field}
 														/>
-													</PopoverContent>
-												</Popover>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='collateralValue'
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Collateral value</FormLabel>
-												<FormDescription>Amount in ETH</FormDescription>
-												<FormControl>
-													<Input placeholder='12 ETH' {...field} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</CardContent>
-								<CardFooter>
-									<Button type='submit'>Declare</Button>
-								</CardFooter>
-							</form>
-						</Form>
-					)}
-				</Card>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='startDate'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Start date</FormLabel>
+													<FormDescription>When will declaration be started?</FormDescription>
+													<Popover>
+														<PopoverTrigger asChild>
+															<FormControl>
+																<Button
+																	variant={'outline'}
+																	className={cn(
+																		'w-[240px] pl-3 text-left font-normal',
+																		!field.value && 'text-muted-foreground',
+																	)}
+																>
+																	{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+																	<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+																</Button>
+															</FormControl>
+														</PopoverTrigger>
+														<PopoverContent className='w-auto p-0' align='start'>
+															<Calendar
+																mode='single'
+																selected={field.value}
+																onSelect={field.onChange}
+																disabled={date => date < new Date() || date < new Date('1900-01-01')}
+																initialFocus
+															/>
+														</PopoverContent>
+													</Popover>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='endDate'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>End date</FormLabel>
+													<FormDescription>When will declaration be finished?</FormDescription>
+													<Popover>
+														<PopoverTrigger asChild>
+															<FormControl>
+																<Button
+																	variant={'outline'}
+																	className={cn(
+																		'w-[240px] pl-3 text-left font-normal',
+																		!field.value && 'text-muted-foreground',
+																	)}
+																>
+																	{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+																	<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+																</Button>
+															</FormControl>
+														</PopoverTrigger>
+														<PopoverContent className='w-auto p-0' align='start'>
+															<Calendar
+																mode='single'
+																selected={field.value}
+																onSelect={field.onChange}
+																disabled={date => date < new Date() || date < new Date('1900-01-01')}
+																initialFocus
+															/>
+														</PopoverContent>
+													</Popover>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='witnessByDate'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Witness by date</FormLabel>
+													<FormDescription>When will declaration be witnessed by?</FormDescription>
+													<Popover>
+														<PopoverTrigger asChild>
+															<FormControl>
+																<Button
+																	variant={'outline'}
+																	className={cn(
+																		'w-[240px] pl-3 text-left font-normal',
+																		!field.value && 'text-muted-foreground',
+																	)}
+																>
+																	{field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+																	<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+																</Button>
+															</FormControl>
+														</PopoverTrigger>
+														<PopoverContent className='w-auto p-0' align='start'>
+															<Calendar
+																mode='single'
+																selected={field.value}
+																onSelect={field.onChange}
+																disabled={date => date < new Date() || date < new Date('1900-01-01')}
+																initialFocus
+															/>
+														</PopoverContent>
+													</Popover>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name='collateralValue'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Collateral value</FormLabel>
+													<FormDescription>Amount in ETH</FormDescription>
+													<FormControl>
+														<Input placeholder='12 ETH' {...field} />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</CardContent>
+									<CardFooter>
+										<Button type='submit'>Declare</Button>
+									</CardFooter>
+								</form>
+							</Form>
+						)}
+					</Card>
+				</div>
 			</div>
-		</div>
-				</>
+		</>
 	)
 }
 
@@ -338,7 +344,6 @@ const InputWithButtonWrapper = styled.div`
 		flex: 0 0 auto;
 	}
 `
-
 
 const Border = styled.div<{ $flip?: boolean }>`
 	background: url(${borderImage.src});
