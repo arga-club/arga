@@ -2,7 +2,6 @@
 
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
 import 'hardhat/console.sol';
-// https://hardhat.org/hardhat-network/docs/reference#console.log
 
 pragma solidity ^0.8.22;
 
