@@ -1,6 +1,7 @@
 import { defineConfig } from '@wagmi/cli'
 import { hardhat as hardhatPlugin, react, actions } from '@wagmi/cli/plugins'
 import { hardhat, sepolia } from 'viem/chains'
+import { argaAddress } from '~/lib/generated'
 
 export default defineConfig({
 	out: 'src/lib/generated.ts',
@@ -14,8 +15,8 @@ export default defineConfig({
 			},
 			deployments: {
 				Arga: {
-					[hardhat.id]: '0x5fbdb2315678afecb367f032d93f642f64180aa3',
-					[sepolia.id]: '0x0325c0e405793BF97583F00e42fb7230fD74845B',
+					[hardhat.id]: argaAddress[hardhat.id],
+					[sepolia.id]: argaAddress[sepolia.id],
 				},
 			},
 		}),
