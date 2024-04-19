@@ -18,7 +18,6 @@ export default function CommunityDeclarations() {
 		args: address ? [address, 4n] : undefined,
 		chainId,
 	})
-	console.log({ communityDeclarations })
 
 	return (
 		<div tw='space-y-4'>
