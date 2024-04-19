@@ -37,9 +37,6 @@ export default function Declaration({ params }: { params: { id: string } }) {
 
 	const proofForm = useForm<z.infer<typeof proofFormSchema>>({
 		resolver: zodResolver(proofFormSchema),
-		defaultValues: {
-			proof: 'sample proof',
-		},
 	})
 
 	const submitProof = proofForm.handleSubmit(async declaration => {
@@ -50,7 +47,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 			functionName: 'submitDeclarationProof',
 			args: [BigInt(params.id), declaration.proof],
 		})
-		router.push('/')
+		router.push('/declarations')
 	})
 
 	const witnessApprove = async () => {
@@ -61,7 +58,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 			functionName: 'concludeDeclarationWithApproval',
 			args: [BigInt(params.id)],
 		})
-		router.push('/')
+		router.push('/declarations')
 	}
 	const witnessReject = async () => {
 		isDisconnected && (await open())
@@ -71,7 +68,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 			functionName: 'concludeDeclarationWithApproval',
 			args: [BigInt(params.id)],
 		})
-		router.push('/')
+		router.push('/declarations')
 	}
 
 	return (
@@ -108,7 +105,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 															<FormItem>
 																<FormLabel>Proof</FormLabel>
 																<FormControl>
-																	<Textarea placeholder='link to photo' {...field} />
+																	<Textarea placeholder='description of or link to proof' {...field} />
 																</FormControl>
 																<FormMessage />
 															</FormItem>
