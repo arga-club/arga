@@ -4,6 +4,7 @@
 import Link from 'next/link'
 import styled, { css } from 'styled-components'
 import ActorDeclarations from '~/app/_components/data/actor-declarations'
+import CommunityDeclarations from '~/app/_components/data/community-declarations'
 import { Button } from '~/app/_components/ui/button'
 import { Prose } from '~/app/_components/ui/prose'
 import borderImage from '~/images/border-horz-01.svg'
@@ -14,6 +15,14 @@ export default function Home() {
 			<Border $flip tw='-mt-2' />
 			<div tw='container'>
 				<div tw='pt-16 pb-20 space-y-10'>
+					<Prose>
+						<h1>Community declarations</h1>
+					</Prose>
+					<CommunityDeclarations />
+				</div>
+			</div>
+			<div tw='container'>
+				<div tw='pb-20 space-y-10'>
 					<Prose>
 						<h1>My declarations</h1>
 					</Prose>

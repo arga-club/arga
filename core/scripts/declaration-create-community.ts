@@ -1,25 +1,36 @@
 import hre from 'hardhat'
-import { vars } from 'hardhat/config'
 import { declaration, value } from '../test/utils'
 import deployments from '../ignition/deployments/chain-31337/deployed_addresses.json'
 
-async function main() {
-	const address = vars.get('TEST_ACCOUNT_ADDRESS')
-	const signer = await hre.ethers.getImpersonatedSigner(address)
+const createCommunityDeclaration = async () => {
+	const [, , , other] = await hre.ethers.getSigners()
 	const arga = await hre.ethers.getContractAt('Arga', deployments['Arga#Arga'])
 	const { hash } = await arga
-		.connect(signer)
+		.connect(other)
 		.declareWithEther(
-			'declaration from script',
+			'declaration from script (community)',
 			'description from script',
-			address,
-			address,
+			other,
+			other,
 			declaration.startDate,
 			declaration.endDate,
 			declaration.witnessByDate,
 			{ value },
 		)
 	console.log(hash)
+}
+
+async function main() {
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
+	await createCommunityDeclaration()
 }
 
 // We recommend this pattern to be able to use async/await everywhere

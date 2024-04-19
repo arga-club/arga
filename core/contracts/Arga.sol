@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/utils/math/Math.sol';
 import 'hardhat/console.sol';
 
 pragma solidity ^0.8.22;
@@ -116,6 +117,32 @@ contract Arga is Ownable {
 	}
 	// TODO: lastWitnessDeclaration
 
+	function communityDeclarations(address actor, uint amount) public view returns (Declaration[] memory) {
+		uint[] storage indices = _actorDeclarations[actor];
+		uint resultLength = Math.max(Math.min(amount, _declarations.length - indices.length), 0);
+		Declaration[] memory result = new Declaration[](resultLength);
+		uint resultIndex = 0;
+		uint declarationIndex = _declarations.length - 1;
+		while (resultIndex < resultLength) {
+			Declaration memory foundDeclaration = _declarations[declarationIndex];
+			if (foundDeclaration.actor == actor || foundDeclaration.actor == address(0)) {
+				if (declarationIndex == 0) {
+					break;
+				}
+				declarationIndex--;
+				resultIndex++;
+				continue;
+			}
+			result[resultIndex] = foundDeclaration;
+			if (declarationIndex == 0) {
+				break;
+			}
+			declarationIndex--;
+			resultIndex++;
+		}
+		return result;
+	}
+
 	function declareWithEther(
 		string memory summary,
 		string memory description,
@@ -172,7 +199,7 @@ contract Arga is Ownable {
 	}
 
 	mapping(address => Collateral[]) public _redemptions;
-	Collateral[] public _pool;
+	Collateral[] private _pool;
 
 	function redemptionsForParty(address party) public view returns (Collateral[] memory) {
 		return _redemptions[party];
@@ -287,9 +314,11 @@ contract Arga is Ownable {
 				if (collateral.erc20Address != erc20Address) continue;
 				if (erc20Address == address(0)) {
 					// ether
+					require(collateral.value > 0, 'No ETH available to redeem');
 					(bool sent, ) = destination.call{value: collateral.value, gas: 5000}('');
 					require(sent, 'Failed to send Ether');
 					success = true;
+					delete collaterals[ii];
 				} else {
 					// token
 				}

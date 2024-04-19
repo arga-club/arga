@@ -93,6 +93,10 @@ describe('Conclusion', function () {
 				const gasUsed = await gasUsedForTransaction(transaction)
 				const balanceAfter = await actor.provider.getBalance(actor.address)
 				expect(balanceAfter).to.equal(balanceBefore - gasUsed + actorRedemption)
+				expect(await arga.redemptionsForParty(actor)).to.deep.equal([[0n, hre.ethers.ZeroAddress]])
+				await expect(arga.connect(actor).redeem(actor.address, [hre.ethers.ZeroAddress])).to.be.revertedWith(
+					'No ETH available to redeem',
+				)
 			}
 			{
 				const balanceBefore = await witness.provider.getBalance(witness.address)
@@ -100,6 +104,10 @@ describe('Conclusion', function () {
 				const gasUsed = await gasUsedForTransaction(transaction)
 				const balanceAfter = await witness.provider.getBalance(witness.address)
 				expect(balanceAfter).to.equal(balanceBefore - gasUsed + witnessRedemption)
+				expect(await arga.redemptionsForParty(witness)).to.deep.equal([[0n, hre.ethers.ZeroAddress]])
+				await expect(arga.connect(witness).redeem(witness.address, [hre.ethers.ZeroAddress])).to.be.revertedWith(
+					'No ETH available to redeem',
+				)
 			}
 			{
 				const balanceBefore = await owner.provider.getBalance(owner.address)
@@ -107,6 +115,10 @@ describe('Conclusion', function () {
 				const gasUsed = await gasUsedForTransaction(transaction)
 				const balanceAfter = await owner.provider.getBalance(owner.address)
 				expect(balanceAfter).to.equal(balanceBefore - gasUsed + ownerRedemption)
+				expect(await arga.redemptionsForParty(owner)).to.deep.equal([[0n, hre.ethers.ZeroAddress]])
+				await expect(arga.connect(owner).redeem(owner.address, [hre.ethers.ZeroAddress])).to.be.revertedWith(
+					'No ETH available to redeem',
+				)
 			}
 		})
 		it('groups together collaterals of same address', async () => {

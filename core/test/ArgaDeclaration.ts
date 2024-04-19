@@ -59,6 +59,12 @@ describe('Declaration', function () {
 		it('all active declarations', () => {})
 		it('user declarations', () => {})
 		it('user active declarations', () => {})
+		it('community declarations', async () => {
+			const { arga, actor } = await loadFixture(fixture)
+			const [, , , other] = await hre.ethers.getSigners()
+			const { expectedDeclaration } = await makeDeclaration({ arga, actor: other, witness: other })
+			expect(await arga.communityDeclarations(actor.address, 1)).to.deep.equal([expectedDeclaration])
+		})
 		it('witness compensation', () => {})
 	})
 })

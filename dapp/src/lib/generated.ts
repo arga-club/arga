@@ -4,6 +4,7 @@ import {
 	createUseSimulateContract,
 	createUseWatchContractEvent,
 } from 'wagmi/codegen'
+
 import {
 	createReadContract,
 	createWriteContract,
@@ -233,6 +234,48 @@ export const argaAbi = [
 		anonymous: false,
 		inputs: [
 			{
+				name: 'declaration',
+				internalType: 'struct Arga.Declaration',
+				type: 'tuple',
+				components: [
+					{ name: 'id', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'status',
+						internalType: 'enum Arga.DeclarationStatus',
+						type: 'uint8',
+					},
+					{ name: 'summary', internalType: 'string', type: 'string' },
+					{ name: 'description', internalType: 'string', type: 'string' },
+					{ name: 'actor', internalType: 'address', type: 'address' },
+					{ name: 'witness', internalType: 'address', type: 'address' },
+					{ name: 'startDate', internalType: 'uint256', type: 'uint256' },
+					{ name: 'endDate', internalType: 'uint256', type: 'uint256' },
+					{ name: 'witnessByDate', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'collateral',
+						internalType: 'struct Arga.Collateral',
+						type: 'tuple',
+						components: [
+							{ name: 'value', internalType: 'uint256', type: 'uint256' },
+							{
+								name: 'erc20Address',
+								internalType: 'address',
+								type: 'address',
+							},
+						],
+					},
+					{ name: 'proof', internalType: 'string', type: 'string' },
+				],
+				indexed: false,
+			},
+		],
+		name: 'PoolWon',
+	},
+	{
+		type: 'event',
+		anonymous: false,
+		inputs: [
+			{
 				name: 'treasurer',
 				internalType: 'address',
 				type: 'address',
@@ -242,6 +285,19 @@ export const argaAbi = [
 		name: 'TreasurerChanged',
 	},
 	{ type: 'fallback', stateMutability: 'payable' },
+	{
+		type: 'function',
+		inputs: [
+			{ name: '', internalType: 'address', type: 'address' },
+			{ name: '', internalType: 'uint256', type: 'uint256' },
+		],
+		name: '_redemptions',
+		outputs: [
+			{ name: 'value', internalType: 'uint256', type: 'uint256' },
+			{ name: 'erc20Address', internalType: 'address', type: 'address' },
+		],
+		stateMutability: 'view',
+	},
 	{
 		type: 'function',
 		inputs: [{ name: 'actor', internalType: 'address', type: 'address' }],
@@ -290,6 +346,58 @@ export const argaAbi = [
 		name: 'changeTreasurer',
 		outputs: [],
 		stateMutability: 'nonpayable',
+	},
+	{
+		type: 'function',
+		inputs: [{ name: 'newMultiplier', internalType: 'uint256', type: 'uint256' }],
+		name: 'changeWinMultiplier',
+		outputs: [],
+		stateMutability: 'nonpayable',
+	},
+	{
+		type: 'function',
+		inputs: [
+			{ name: 'actor', internalType: 'address', type: 'address' },
+			{ name: 'amount', internalType: 'uint256', type: 'uint256' },
+		],
+		name: 'communityDeclarations',
+		outputs: [
+			{
+				name: '',
+				internalType: 'struct Arga.Declaration[]',
+				type: 'tuple[]',
+				components: [
+					{ name: 'id', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'status',
+						internalType: 'enum Arga.DeclarationStatus',
+						type: 'uint8',
+					},
+					{ name: 'summary', internalType: 'string', type: 'string' },
+					{ name: 'description', internalType: 'string', type: 'string' },
+					{ name: 'actor', internalType: 'address', type: 'address' },
+					{ name: 'witness', internalType: 'address', type: 'address' },
+					{ name: 'startDate', internalType: 'uint256', type: 'uint256' },
+					{ name: 'endDate', internalType: 'uint256', type: 'uint256' },
+					{ name: 'witnessByDate', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'collateral',
+						internalType: 'struct Arga.Collateral',
+						type: 'tuple',
+						components: [
+							{ name: 'value', internalType: 'uint256', type: 'uint256' },
+							{
+								name: 'erc20Address',
+								internalType: 'address',
+								type: 'address',
+							},
+						],
+					},
+					{ name: 'proof', internalType: 'string', type: 'string' },
+				],
+			},
+		],
+		stateMutability: 'view',
 	},
 	{
 		type: 'function',
@@ -435,7 +543,7 @@ export const argaAbi = [
 	{
 		type: 'function',
 		inputs: [],
-		name: 'poolCollateral',
+		name: 'pool',
 		outputs: [
 			{
 				name: '',
@@ -448,6 +556,16 @@ export const argaAbi = [
 			},
 		],
 		stateMutability: 'view',
+	},
+	{
+		type: 'function',
+		inputs: [
+			{ name: 'destination', internalType: 'address payable', type: 'address' },
+			{ name: 'erc20Addresses', internalType: 'address[]', type: 'address[]' },
+		],
+		name: 'redeem',
+		outputs: [],
+		stateMutability: 'nonpayable',
 	},
 	{
 		type: 'function',
@@ -501,6 +619,13 @@ export const argaAbi = [
 		type: 'function',
 		inputs: [],
 		name: 'treasurerRedemptionPercentage',
+		outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+		stateMutability: 'view',
+	},
+	{
+		type: 'function',
+		inputs: [],
+		name: 'winMultiplier',
 		outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
 		stateMutability: 'view',
 	},
@@ -617,6 +742,12 @@ export const lockAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Math
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const mathAbi = [{ type: 'error', inputs: [], name: 'MathOverflowedMulDiv' }] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Ownable
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -689,6 +820,18 @@ export const useReadArga = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"_redemptions"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useReadArgaRedemptions = /*#__PURE__*/ createUseReadContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: '_redemptions',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"actorDeclarations"`
  *
  * -
@@ -698,6 +841,18 @@ export const useReadArgaActorDeclarations = /*#__PURE__*/ createUseReadContract(
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'actorDeclarations',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"communityDeclarations"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useReadArgaCommunityDeclarations = /*#__PURE__*/ createUseReadContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'communityDeclarations',
 })
 
 /**
@@ -737,15 +892,15 @@ export const useReadArgaOwner = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"poolCollateral"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"pool"`
  *
  * -
  * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
  */
-export const useReadArgaPoolCollateral = /*#__PURE__*/ createUseReadContract({
+export const useReadArgaPool = /*#__PURE__*/ createUseReadContract({
 	abi: argaAbi,
 	address: argaAddress,
-	functionName: 'poolCollateral',
+	functionName: 'pool',
 })
 
 /**
@@ -785,6 +940,18 @@ export const useReadArgaTreasurerRedemptionPercentage = /*#__PURE__*/ createUseR
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"winMultiplier"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useReadArgaWinMultiplier = /*#__PURE__*/ createUseReadContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'winMultiplier',
+})
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"witnessDeclarations"`
  *
  * -
@@ -817,6 +984,18 @@ export const useWriteArgaChangeTreasurer = /*#__PURE__*/ createUseWriteContract(
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'changeTreasurer',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"changeWinMultiplier"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useWriteArgaChangeWinMultiplier = /*#__PURE__*/ createUseWriteContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'changeWinMultiplier',
 })
 
 /**
@@ -865,6 +1044,18 @@ export const useWriteArgaDeclareWithToken = /*#__PURE__*/ createUseWriteContract
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'declareWithToken',
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"redeem"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useWriteArgaRedeem = /*#__PURE__*/ createUseWriteContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'redeem',
 })
 
 /**
@@ -927,6 +1118,18 @@ export const useSimulateArgaChangeTreasurer = /*#__PURE__*/ createUseSimulateCon
 })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"changeWinMultiplier"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useSimulateArgaChangeWinMultiplier = /*#__PURE__*/ createUseSimulateContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'changeWinMultiplier',
+})
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"concludeDeclarationWithApproval"`
  *
  * -
@@ -972,6 +1175,18 @@ export const useSimulateArgaDeclareWithToken = /*#__PURE__*/ createUseSimulateCo
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'declareWithToken',
+})
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"redeem"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useSimulateArgaRedeem = /*#__PURE__*/ createUseSimulateContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'redeem',
 })
 
 /**
@@ -1079,6 +1294,18 @@ export const useWatchArgaOwnershipTransferredEvent = /*#__PURE__*/ createUseWatc
 	abi: argaAbi,
 	address: argaAddress,
 	eventName: 'OwnershipTransferred',
+})
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaAbi}__ and `eventName` set to `"PoolWon"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const useWatchArgaPoolWonEvent = /*#__PURE__*/ createUseWatchContractEvent({
+	abi: argaAbi,
+	address: argaAddress,
+	eventName: 'PoolWon',
 })
 
 /**
@@ -1251,6 +1478,18 @@ export const readArga = /*#__PURE__*/ createReadContract({
 })
 
 /**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"_redemptions"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const readArgaRedemptions = /*#__PURE__*/ createReadContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: '_redemptions',
+})
+
+/**
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"actorDeclarations"`
  *
  * -
@@ -1260,6 +1499,18 @@ export const readArgaActorDeclarations = /*#__PURE__*/ createReadContract({
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'actorDeclarations',
+})
+
+/**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"communityDeclarations"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const readArgaCommunityDeclarations = /*#__PURE__*/ createReadContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'communityDeclarations',
 })
 
 /**
@@ -1299,15 +1550,15 @@ export const readArgaOwner = /*#__PURE__*/ createReadContract({
 })
 
 /**
- * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"poolCollateral"`
+ * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"pool"`
  *
  * -
  * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
  */
-export const readArgaPoolCollateral = /*#__PURE__*/ createReadContract({
+export const readArgaPool = /*#__PURE__*/ createReadContract({
 	abi: argaAbi,
 	address: argaAddress,
-	functionName: 'poolCollateral',
+	functionName: 'pool',
 })
 
 /**
@@ -1347,6 +1598,18 @@ export const readArgaTreasurerRedemptionPercentage = /*#__PURE__*/ createReadCon
 })
 
 /**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"winMultiplier"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const readArgaWinMultiplier = /*#__PURE__*/ createReadContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'winMultiplier',
+})
+
+/**
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"witnessDeclarations"`
  *
  * -
@@ -1379,6 +1642,18 @@ export const writeArgaChangeTreasurer = /*#__PURE__*/ createWriteContract({
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'changeTreasurer',
+})
+
+/**
+ * Wraps __{@link writeContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"changeWinMultiplier"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const writeArgaChangeWinMultiplier = /*#__PURE__*/ createWriteContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'changeWinMultiplier',
 })
 
 /**
@@ -1427,6 +1702,18 @@ export const writeArgaDeclareWithToken = /*#__PURE__*/ createWriteContract({
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'declareWithToken',
+})
+
+/**
+ * Wraps __{@link writeContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"redeem"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const writeArgaRedeem = /*#__PURE__*/ createWriteContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'redeem',
 })
 
 /**
@@ -1489,6 +1776,18 @@ export const simulateArgaChangeTreasurer = /*#__PURE__*/ createSimulateContract(
 })
 
 /**
+ * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"changeWinMultiplier"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const simulateArgaChangeWinMultiplier = /*#__PURE__*/ createSimulateContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'changeWinMultiplier',
+})
+
+/**
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"concludeDeclarationWithApproval"`
  *
  * -
@@ -1534,6 +1833,18 @@ export const simulateArgaDeclareWithToken = /*#__PURE__*/ createSimulateContract
 	abi: argaAbi,
 	address: argaAddress,
 	functionName: 'declareWithToken',
+})
+
+/**
+ * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaAbi}__ and `functionName` set to `"redeem"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const simulateArgaRedeem = /*#__PURE__*/ createSimulateContract({
+	abi: argaAbi,
+	address: argaAddress,
+	functionName: 'redeem',
 })
 
 /**
@@ -1641,6 +1952,18 @@ export const watchArgaOwnershipTransferredEvent = /*#__PURE__*/ createWatchContr
 	abi: argaAbi,
 	address: argaAddress,
 	eventName: 'OwnershipTransferred',
+})
+
+/**
+ * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaAbi}__ and `eventName` set to `"PoolWon"`
+ *
+ * -
+ * - [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0x0325c0e405793BF97583F00e42fb7230fD74845B)
+ */
+export const watchArgaPoolWonEvent = /*#__PURE__*/ createWatchContractEvent({
+	abi: argaAbi,
+	address: argaAddress,
+	eventName: 'PoolWon',
 })
 
 /**

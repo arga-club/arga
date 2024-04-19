@@ -9,7 +9,7 @@
 		"_dev:clean": "rimraf ignition/deployments/chain-31337",
 		"_dev:hardhat-run": "cross-env DEV_NODE=true hardhat run --network localhost",
 		"dev:deploy": "nr _dev:hardhat-run scripts/deploy.ts",
-		"dev:init": "nr _dev:clean && nr deploy:hardhat && nr transfer-to-tester && nr declaration-create",
+		"dev:init": "nr _dev:clean && nr deploy:hardhat && nr transfer-to-tester && nr declaration-create && nr declaration-create-community",
 		"vars:set": "hardhat vars set",
 		"vars:get": "hardhat vars get",
 		"vars:list": "hardhat vars list",
@@ -17,6 +17,7 @@
 		"deploy:hardhat": "hardhat ignition deploy ignition/modules/Arga.ts --network localhost",
 		"deploy:sepolia": "hardhat ignition deploy ignition/modules/Arga.ts --network sepolia --verify",
 		"declaration-create": "nr _dev:hardhat-run scripts/declaration-create.ts",
+		"declaration-create-community": "nr _dev:hardhat-run scripts/declaration-create-community.ts",
 		"transfer-to-tester": "nr _dev:hardhat-run scripts/transfer-to-tester.ts",
 		"prettier": "prettier .",
 		"prettier:fix": "prettier --write --plugin=prettier-plugin-solidity ."
