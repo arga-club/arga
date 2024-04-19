@@ -30,26 +30,32 @@ export default function ActorDeclarations() {
 				'No declarations..'
 			) : (
 				<>
-					{pendingTransactions?.map(pendingTransaction => (
-						<PendingDeclaration
-							key={pendingTransaction}
-							hash={pendingTransaction}
-							actorDeclarations={actorDeclarations}
-						/>
-					))}
-					{actorDeclarations?.map(declaration => (
-						<Card key={declaration.id}>
-							<CardHeader>{declaration.summary}</CardHeader>
-							<CardContent>
-								<LazyReactJSON src={normalizeBigJSON(declaration)} collapsed name='declaration' />
-							</CardContent>
-							<CardFooter>
-								<Link href={`/declarations/${declaration.id}`}>
-									<Button>View</Button>
-								</Link>
-							</CardFooter>
-						</Card>
-					))}
+					{pendingTransactions
+						?.slice()
+						.reverse()
+						.map(pendingTransaction => (
+							<PendingDeclaration
+								key={pendingTransaction}
+								hash={pendingTransaction}
+								actorDeclarations={actorDeclarations}
+							/>
+						))}
+					{actorDeclarations
+						?.slice()
+						.reverse()
+						.map(declaration => (
+							<Card key={declaration.id}>
+								<CardHeader>{declaration.summary}</CardHeader>
+								<CardContent>
+									<LazyReactJSON src={normalizeBigJSON(declaration)} collapsed name='declaration' />
+								</CardContent>
+								<CardFooter>
+									<Link href={`/declarations/${declaration.id}`}>
+										<Button>View</Button>
+									</Link>
+								</CardFooter>
+							</Card>
+						))}
 				</>
 			)}
 		</div>
