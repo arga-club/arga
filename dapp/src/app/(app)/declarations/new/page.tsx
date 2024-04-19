@@ -80,7 +80,7 @@ export default function DeclarationNew() {
 			],
 			value: ethValueSchema.parse(declaration.collateralValue),
 		})
-		router.push('/')
+		router.push('/declarations')
 	})
 
 	return (
