@@ -7,8 +7,8 @@ import 'hardhat/console.sol';
 pragma solidity ^0.8.22;
 
 contract Arga is Ownable {
-	string public name = 'Arga';
-
+	string public constant name = 'Arga';
+	string public constant version = '0.3.0';
 	address public treasurer;
 	uint256 public treasurerRedemptionPercentage = 2;
 
