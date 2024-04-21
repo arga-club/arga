@@ -5,7 +5,9 @@ import { Arga } from '../typechain-types/contracts/Arga'
 import {
 	declaration,
 	declarationStatus,
+	deploy,
 	gasUsedForTransaction,
+	getSigners,
 	makeDeclaration,
 	proof,
 	submitDeclarationProof,
@@ -13,10 +15,9 @@ import {
 } from './utils'
 
 const fixture = async () => {
-	const [owner, actor, witness] = await hre.ethers.getSigners()
-	const argaContract = await hre.ethers.getContractFactory('Arga')
-	const arga = await argaContract.connect(owner).deploy()
-	return { arga, actor, witness, owner }
+	const signers = await getSigners()
+	const { arga } = await deploy()
+	return { arga, ...signers }
 }
 
 describe('Conclusion', function () {

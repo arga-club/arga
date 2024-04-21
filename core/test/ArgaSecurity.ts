@@ -1,14 +1,12 @@
-import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { Arga } from '../typechain-types/contracts/Arga'
-import { declaration, makeDeclaration } from './utils'
+import { declaration, deploy, getSigners, makeDeclaration } from './utils'
 
 const fixture = async () => {
-	const [owner, actor, witness] = await hre.ethers.getSigners()
-	const argaContract = await hre.ethers.getContractFactory('Arga')
-	const arga = await argaContract.connect(owner).deploy()
-	return { arga, actor, witness, owner }
+	const signers = await getSigners()
+	const { arga } = await deploy()
+	return { arga, ...signers }
 }
 
 describe('Security', function () {

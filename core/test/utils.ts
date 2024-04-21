@@ -1,14 +1,19 @@
-import hre from 'hardhat'
+import hre, { upgrades } from 'hardhat'
 import ms from 'ms'
 import { Arga } from '../typechain-types'
 import assert from 'assert'
 import { ContractTransactionResponse } from 'ethers'
+import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers'
 
-const fixture = async () => {
-	const [owner, actor, witness] = await hre.ethers.getSigners()
+export const getSigners = async () => {
+	const [owner, actor, witness, other] = await hre.ethers.getSigners()
+	return { owner, actor, witness, other }
+}
+export const deploy = async () => {
+	const { owner } = await getSigners()
 	const argaContract = await hre.ethers.getContractFactory('Arga')
-	const arga = await argaContract.connect(owner).deploy()
-	return { arga, actor, witness, owner }
+	const arga = (await upgrades.deployProxy(argaContract, [owner.address], { kind: 'uups' })) as unknown as Arga
+	return { arga }
 }
 
 export const declarationStatus = {
@@ -43,7 +48,11 @@ export const makeDeclaration = async ({
 	arga,
 	actor,
 	witness,
-}: Pick<Awaited<ReturnType<typeof fixture>>, 'arga' | 'actor' | 'witness'>) => {
+}: {
+	arga: Arga
+	actor: HardhatEthersSigner
+	witness: HardhatEthersSigner
+}) => {
 	await arga
 		.connect(actor)
 		.declareWithEther(
@@ -76,7 +85,11 @@ export const submitDeclarationProof = async ({
 	arga,
 	actor,
 	witness,
-}: Pick<Awaited<ReturnType<typeof fixture>>, 'arga' | 'actor' | 'witness'>) => {
+}: {
+	arga: Arga
+	actor: HardhatEthersSigner
+	witness: HardhatEthersSigner
+}) => {
 	await arga.connect(actor).submitDeclarationProof(declaration.id, proof)
 	const expectedDeclaration = [
 		declaration.id,
