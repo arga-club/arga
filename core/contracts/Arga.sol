@@ -1,18 +1,22 @@
 // SPDX-License-Identifier: UNLICENSED
 
-import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
+import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
-import '@openzeppelin/contracts/proxy/utils/Initializable.sol';
 import 'hardhat/console.sol';
 
 pragma solidity ^0.8.22;
 
-contract Arga is Ownable, Initializable {
+contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	string public constant name = 'Arga';
 	string public constant version = '0.3.0';
-	address public treasurer;
-	uint256 public treasurerRedemptionPercentage = 2;
 	mapping(bytes4 => string) private sigNames;
+	address public treasurer;
+	uint256 public treasurerRedemptionPercentage;
+	uint256 witnessRedemptionPercentage;
+	uint public winMultiplier;
+	uint randomNonce;
 
 	event TreasurerChanged(address treasurer);
 
@@ -21,15 +25,24 @@ contract Arga is Ownable, Initializable {
 		_;
 	}
 
-	function initialize() public initializer Ownable(msg.sender) {
-		console.log('initialize');
+	function initialize(address initialOwner) public initializer {
+		__Ownable_init(initialOwner);
+		changeTreasurer(initialOwner);
+		__UUPSUpgradeable_init();
+		treasurerRedemptionPercentage = 2;
+		witnessRedemptionPercentage = 2;
+		winMultiplier = 1;
+		randomNonce = 0;
+
 		sigNames[bytes4(0x313ce567)] = 'decimals';
 		sigNames[bytes4(0x95d89b41)] = 'symbol';
 		sigNames[bytes4(0x06fdde03)] = 'name';
 		sigNames[bytes4(0x18160ddd)] = 'totalSupply';
 		sigNames[bytes4(0x01ffc9a7)] = 'supportsInterface';
 	}
+	/// @custom:oz-upgrades-unsafe-allow constructor
 	constructor() initializer {}
+	function _authorizeUpgrade(address) internal override onlyOwner {}
 	function logFallback() internal view {
 		console.log('msg.value: ', msg.value);
 		console.log('not implemented selector: ', sigNames[msg.sig]);
@@ -49,7 +62,6 @@ contract Arga is Ownable, Initializable {
 		emit TreasurerChanged(newTreasurer);
 	}
 
-	uint256 witnessRedemptionPercentage = 2;
 	struct Collateral {
 		uint value;
 		address erc20Address;
@@ -282,11 +294,9 @@ contract Arga is Ownable, Initializable {
 	}
 
 	event PoolWon(Declaration declaration);
-	uint public winMultiplier = 1;
 	function changeWinMultiplier(uint newMultiplier) public onlyOwner {
 		winMultiplier = newMultiplier;
 	}
-	uint randomNonce = 0;
 	function maybeWinPool(Declaration storage _declaration) private {
 		if (_pool.length == 0) return;
 		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
