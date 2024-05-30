@@ -34,6 +34,18 @@ const config: HardhatUserConfig = {
 			url: `https://sepolia.infura.io/v3/${vars.get('INFURA_API_KEY')}`,
 			accounts: [vars.get('SEPOLIA_PRIVATE_KEY')],
 		},
+		rskMainnet: {
+			url: 'https://public-node.rsk.co',
+			chainId: 30,
+			gasPrice: 60000000,
+			accounts: [vars.get('SEPOLIA_PRIVATE_KEY')],
+		},
+		rskTestnet: {
+			url: 'https://public-node.testnet.rsk.co',
+			chainId: 31,
+			gasPrice: 60000000,
+			accounts: [vars.get('SEPOLIA_PRIVATE_KEY')],
+		},
 	},
 	etherscan: {
 		apiKey: vars.get('ETHERSCAN_API_KEY'),

@@ -16,6 +16,8 @@
 		"test": "hardhat test",
 		"deploy:hardhat": "hardhat ignition deploy ignition/modules/Arga.ts --network localhost",
 		"deploy:sepolia": "hardhat ignition deploy ignition/modules/Arga.ts --network sepolia --verify",
+		"deploy:rsk-testnet": "hardhat ignition deploy ignition/modules/Arga.ts --network rskTestnet --verify",
+		"flatten": "hardhat flatten",
 		"declaration-create": "nr _dev:hardhat-run scripts/declaration-create.ts",
 		"declaration-create-community": "nr _dev:hardhat-run scripts/declaration-create-community.ts",
 		"transfer-to-tester": "nr _dev:hardhat-run scripts/transfer-to-tester.ts",
