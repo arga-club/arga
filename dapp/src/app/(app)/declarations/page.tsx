@@ -8,8 +8,23 @@ import CommunityDeclarations from '~/app/_components/data/community-declarations
 import { Button } from '~/app/_components/ui/button'
 import { Prose } from '~/app/_components/ui/prose'
 import borderImage from '~/images/border-horz-01.svg'
+import { useCurrentAccount, ConnectButton } from '@mysten/dapp-kit';
+import { getBalance, formatSuiBalance, shortenAddress } from '~/lib/sui-config'
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+	const suiAccount = useCurrentAccount();
+	const [balance, setBalance] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (suiAccount) {
+			(async () => {
+				const balanceData = await getBalance(suiAccount.address);
+				setBalance(formatSuiBalance(balanceData.totalBalance));
+			})();
+		}
+	}, [suiAccount]);
+
 	return (
 		<>
 			<Border $flip tw='-mt-2' />
@@ -26,10 +41,17 @@ export default function Home() {
 					<Prose>
 						<h1>My declarations</h1>
 					</Prose>
-					<ActorDeclarations />
-					<Link tw='block' href='/declarations/new'>
-						<Button>New Declaration</Button>
-					</Link>
+					{!suiAccount ? (
+						<ConnectButton />
+					) : (
+						<div>
+							<div>Connected to {shortenAddress(suiAccount.address)} with {balance !== null ? balance : '0'} SUI</div>
+							<ActorDeclarations />
+							<Link tw='block' href='/declarations/new'>
+								<Button>New Declaration</Button>
+							</Link>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

@@ -10,7 +10,7 @@ export const walletConnectProjectId = '94c503a4bc0400523c25e21e615cad4d'
 const metadata = {
 	name: 'Arga',
 	description: 'DeMo',
-	url: 'https://web3modal.com', // TODO: set to domain
+	url: 'https://arga.club/', // TODO: set to domain
 	icons: ['https://avatars.githubusercontent.com/u/37784886'], // TODO: set to logo
 }
 
