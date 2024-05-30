@@ -43,7 +43,7 @@ dependencies = [
 
 [[package]]
 name = "arga"
-version = "0.3.0"
+version = "0.0.0"
 dependencies = [
  "soroban-sdk",
 ]
@@ -485,13 +485,6 @@ name = "hashbrown"
 version = "0.14.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "290f1a1d9242c78d09ce40a5e87e7554ee637af1351968159f4952f028f75604"
-
-[[package]]
-name = "hello-world"
-version = "0.0.0"
-dependencies = [
- "soroban-sdk",
-]
 
 [[package]]
 name = "hex"
@@ -1030,13 +1023,6 @@ dependencies = [
  "serde_json",
  "stellar-xdr",
  "syn",
-]
-
-[[package]]
-name = "soroban-increment-contract"
-version = "0.0.0"
-dependencies = [
- "soroban-sdk",
 ]
 
 [[package]]
