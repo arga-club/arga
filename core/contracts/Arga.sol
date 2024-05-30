@@ -2,17 +2,15 @@
 
 import {Ownable} from '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
-import '@openzeppelin/contracts/proxy/utils/Initializable.sol';
 import 'hardhat/console.sol';
 
 pragma solidity ^0.8.22;
 
-contract Arga is Ownable, Initializable {
+contract Arga is Ownable {
 	string public constant name = 'Arga';
 	string public constant version = '0.3.0';
 	address public treasurer;
 	uint256 public treasurerRedemptionPercentage = 2;
-	mapping(bytes4 => string) private sigNames;
 
 	event TreasurerChanged(address treasurer);
 
@@ -21,32 +19,36 @@ contract Arga is Ownable, Initializable {
 		_;
 	}
 
-	function initialize() public initializer Ownable(msg.sender) {
-		console.log('initialize');
+	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
+		treasurer = newTreasurer;
+		emit TreasurerChanged(newTreasurer);
+	}
+
+	mapping(bytes4 => string) private sigNames;
+
+	constructor() Ownable(msg.sender) {
+		changeTreasurer(msg.sender);
 		sigNames[bytes4(0x313ce567)] = 'decimals';
 		sigNames[bytes4(0x95d89b41)] = 'symbol';
 		sigNames[bytes4(0x06fdde03)] = 'name';
 		sigNames[bytes4(0x18160ddd)] = 'totalSupply';
 		sigNames[bytes4(0x01ffc9a7)] = 'supportsInterface';
 	}
-	constructor() initializer {}
+
 	function logFallback() internal view {
 		console.log('msg.value: ', msg.value);
 		console.log('not implemented selector: ', sigNames[msg.sig]);
 		console.logBytes4(msg.sig);
 	}
+
 	fallback() external payable {
 		console.log('----- fallback');
 		logFallback();
 	}
+
 	receive() external payable {
 		console.log('----- receive');
 		logFallback();
-	}
-
-	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
-		treasurer = newTreasurer;
-		emit TreasurerChanged(newTreasurer);
 	}
 
 	uint256 witnessRedemptionPercentage = 2;
