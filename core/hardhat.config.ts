@@ -41,6 +41,7 @@ const config: HardhatUserConfig = {
 		},
 		rskTestnet: {
 			url: 'https://public-node.testnet.rsk.co',
+			// url: 'https://rpc.testnet.rootstock.io/Q9VA8c9yD3JbdYZSh6WfFh5KT6t1k5-T',
 			chainId: 31,
 			gasPrice: 60000000,
 			accounts: [vars.get('SEPOLIA_PRIVATE_KEY')],
