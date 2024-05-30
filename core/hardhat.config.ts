@@ -2,7 +2,6 @@ import { HardhatUserConfig, vars } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import '@nomicfoundation/hardhat-toolbox-viem'
 import '@nomicfoundation/hardhat-ignition-viem'
-import '@openzeppelin/hardhat-upgrades'
 
 const runningDevNode = process.env.DEV_NODE
 runningDevNode && import('hardhat-ethernal')
