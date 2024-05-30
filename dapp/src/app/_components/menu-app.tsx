@@ -11,8 +11,43 @@ import {
 import { Prose } from '~/app/_components/ui/prose'
 
 export const MenuApp = () => {
+	// create/display wallet functionality uncomment if needed
+	// const [loading, setLoading] = useState(false);
+	// const [wallet, setWallet] = useState({
+	// 	publicKey: "",
+	// 	secretKey: "",
+	// });
 	return (
 		<Root>
+			{/*  create/display wallet functionality uncomment if needed*/}
+			{/*{!wallet.publicKey ? (*/}
+			{/*	<>*/}
+			{/*		/!* new user *!/*/}
+			{/*		<button*/}
+			{/*			onClick={async () => {*/}
+			{/*				const data = await createWallet();*/}
+			{/*				setLoading(true);*/}
+			{/*				if (data?.source_account) {*/}
+			{/*					setWallet({*/}
+			{/*						...wallet,*/}
+			{/*						publicKey: data.source_account,*/}
+			{/*						secretKey: data.secretKey,*/}
+			{/*					});*/}
+			{/*				}*/}
+			{/*				setLoading(false);*/}
+			{/*			}}*/}
+			{/*			disabled={loading}*/}
+			{/*		>*/}
+			{/*			Create wallet*/}
+			{/*		</button>*/}
+			{/*	</>*/}
+			{/*) : (*/}
+			{/*	<>*/}
+			{/*		<div>{wallet.publicKey}</div>*/}
+			{/*		<Account wallet={wallet}/>*/}
+			{/*	</>*/}
+			{/*)}*/}
+
 			<NavigationMenu>
 				<NavigationMenuList>
 					<NavigationMenuItem>
