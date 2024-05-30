@@ -14,13 +14,6 @@ module arga::arga {
 
     public struct Declaration has key, store {
         id: UID,
-        // balance: Balance<SUI>,
-        // house: address,
-        // public_key: vector<u8>,
-        // max_stake: u64,
-        // min_stake: u64,
-        // fees: ,
-        // base_fee_in_bp: u16
         status: u8,
         summary: String,
         description: String,
@@ -29,7 +22,7 @@ module arga::arga {
         startDate: u64,
         endDate: u64,
         witnessByDate: u64,
-        value: Coin<SUI>,
+        value: Balance<SUI>,
         proof: String
     }
 
@@ -42,7 +35,6 @@ module arga::arga {
     public fun declareWithToken(
         summary: String,
         description: String,
-        actor: address,
         witness: address,
         startDate: u64,
         endDate: u64,
@@ -50,16 +42,17 @@ module arga::arga {
         value: Coin<SUI>,
         ctx: &mut TxContext): Declaration {
     // create declaration
+        let uid = object::new(ctx);
         Declaration {
-            id: object::new(ctx),
+            id: uid,
             summary: summary,
             description: description,
-            actor: actor,
+            actor: tx_context::sender(ctx),
             witness: witness,
             startDate: startDate,
             endDate: endDate,
             witnessByDate: witnessByDate,
-            value: value,
+            value: coin::into_balance(value),
             status: ACTIVE,
             proof: string::utf8(b""),
         }
