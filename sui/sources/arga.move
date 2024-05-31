@@ -5,7 +5,6 @@ module arga::arga {
     use sui::sui::SUI;
     use sui::coin::{Self, Coin};
 
-
     // DeclarationStatus
 	const ACTIVE: u8 = 0;
 	const PROOF_SUBMITTED: u8 = 0;
@@ -26,6 +25,11 @@ module arga::arga {
         proof: String
     }
 
+    public struct WitnessCap has key {
+        id: UID, 
+        declaration: ID
+    }
+
     // mutations
     public fun declareWithToken(
         summary: String,
@@ -38,6 +42,7 @@ module arga::arga {
         ctx: &mut TxContext) {
     // create declaration
         let uid = object::new(ctx);
+        let id = object::uid_to_inner(&uid);
         let declaration = Declaration {
             id: uid,
             summary: summary,
@@ -51,7 +56,13 @@ module arga::arga {
             status: ACTIVE,
             proof: string::utf8(b""),
         };
-        transfer::transfer(declaration, ctx.sender())
+        transfer::transfer(declaration, ctx.sender());
+
+        let witness_cap = WitnessCap {
+            id: object::new(ctx), 
+            declaration: id
+        };
+        transfer::transfer(witness_cap, witness);
     }
     
 
