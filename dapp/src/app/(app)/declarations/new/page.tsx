@@ -23,6 +23,7 @@ import {
 	FormMessage,
 } from '~/app/_components/ui/form'
 import { Input } from '~/app/_components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/app/_components/ui/select'
 import { Textarea } from '~/app/_components/ui/textarea'
 import { Popover, PopoverContent, PopoverTrigger } from '~/app/_components/ui/popover'
 import { cn } from '~/lib/shadcn-utils'
@@ -39,6 +40,7 @@ const formSchema = z.object({
 	actorAddress: ethAddressSchema,
 	witnessAddress: ethAddressSchema,
 	witnessCriteria: z.string().min(2).max(100),
+	currency: z.string(),
 	startDate: z.date(),
 	endDate: z.date(),
 	witnessByDate: z.date(),
@@ -61,8 +63,11 @@ export default function DeclarationNew() {
 			actorAddress: '0x',
 			witnessAddress: '0x',
 			witnessCriteria: '',
+			currency: 'Bitcoin',
 		},
 	})
+
+	const currency = form.watch('currency')
 
 	const submit = form.handleSubmit(async declaration => {
 		isDisconnected && (await open())
@@ -307,15 +312,41 @@ export default function DeclarationNew() {
 												</FormItem>
 											)}
 										/>
+
+										<FormField
+											control={form.control}
+											name='currency'
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Currency value</FormLabel>
+													<FormDescription>Choose your currency</FormDescription>
+													<FormControl>
+														<Select defaultValue={currency} onValueChange={field.onChange}>
+															<SelectTrigger className="w-[180px]">
+																<SelectValue placeholder={currency} />
+															</SelectTrigger>
+															<SelectContent>
+																<SelectItem value="Bitcoin">Bitcoin</SelectItem>
+																<SelectItem value="ETH">ETH</SelectItem>
+																<SelectItem value="Stellar">Stellar</SelectItem>
+																<SelectItem value="SUI">SUI</SelectItem>
+															</SelectContent>
+														</Select>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+
 										<FormField
 											control={form.control}
 											name='collateralValue'
 											render={({ field }) => (
 												<FormItem>
 													<FormLabel>Collateral value</FormLabel>
-													<FormDescription>Amount in ETH</FormDescription>
+													<FormDescription>Amount in {currency}</FormDescription>
 													<FormControl>
-														<Input placeholder='12 ETH' {...field} />
+														<Input placeholder={`12 ${currency}`} {...field} />
 													</FormControl>
 													<FormMessage />
 												</FormItem>
