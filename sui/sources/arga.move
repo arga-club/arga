@@ -12,7 +12,7 @@ module arga::arga {
 	const APRROVED: u8 = 0;
 	const REJECTED: u8 = 0;
 
-    public struct Declaration has key, store {
+    public struct Declaration has key {
         id: UID,
         status: u8,
         summary: String,
@@ -26,11 +26,6 @@ module arga::arga {
         proof: String
     }
 
-    // TODO: initにadminができることを書く
-    // ここでAdminが何を持つべきかよーわからんので後回し
-    // fun init(otw: HOUSE_DATA, ctx: &mut TxContext) {
-    // }
-
     // mutations
     public fun declareWithToken(
         summary: String,
@@ -40,10 +35,10 @@ module arga::arga {
         endDate: u64,
         witnessByDate: u64,
         value: Coin<SUI>,
-        ctx: &mut TxContext): Declaration {
+        ctx: &mut TxContext) {
     // create declaration
         let uid = object::new(ctx);
-        Declaration {
+        let declaration = Declaration {
             id: uid,
             summary: summary,
             description: description,
@@ -55,7 +50,8 @@ module arga::arga {
             value: coin::into_balance(value),
             status: ACTIVE,
             proof: string::utf8(b""),
-        }
+        };
+        transfer::transfer(declaration, ctx.sender())
     }
     
 
