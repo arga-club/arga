@@ -132,7 +132,6 @@ impl StakingContract {
         end_date: u64,
         witness: Address,
         witness_deadline: u64,
-        witness_by_date: u64,
     ) {
         contributor.require_auth();
         // import Status enum from staking module
