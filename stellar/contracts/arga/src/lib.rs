@@ -18,6 +18,21 @@ pub enum DataKey {
     Initialized,
 }
 
+#[derive(Clone)]
+#[contracttype]
+pub struct Contribution {
+    pub contributor: Address,
+    pub token: Address,
+    pub amount: i128,
+    pub summary: String,
+    pub description: String,
+    pub start_date: u64,
+    pub end_date: u64,
+    pub witness: Address,
+    pub witness_deadline: u64,
+    pub is_successful: bool,
+}
+
 // The `#[contract]` attribute marks a type as being the type that contract functions are attached for.
 #[contract]
 pub struct StakingContract;
@@ -113,10 +128,11 @@ impl StakingContract {
         amount: i128,
         summary: String,
         description: String,
-        startDate: u128,
-        endDate: u128,
+        start_date: u64,
+        end_date: u64,
         witness: Address,
-        witnessByDate: u128,
+        witness_deadline: u64,
+        witness_by_date: u64,
     ) {
         contributor.require_auth();
         // import Status enum from staking module
@@ -133,6 +149,22 @@ impl StakingContract {
             &env.current_contract_address(),
             &amount,
         );
+
+        let contribution = Contribution {
+            contributor: contributor.clone(),
+            token: token.clone(),
+            amount,
+            summary,
+            description,
+            start_date,
+            end_date,
+            witness,
+            witness_deadline,
+            is_successful: false,
+        };
+
+        env.storage().instance().set(&DataKey::Contributions(contributor.clone()), &contribution);
+
         // Mint the share token to the contributor
         let share_token = Self::get_share_token(env.clone());
         token::Client::new(&env, &share_token).mint(&contributor, &amount);
