@@ -1,6 +1,8 @@
 // The standard library is disabled to optimize the contract for low-resource environments like blockchain.
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, vec, Address, BytesN, Env, IntoVal, Vec};
+use soroban_sdk::{
+    contract, contractimpl, contracttype, vec, Address, BytesN, Env, IntoVal, String, Vec,
+};
 
 // The DataKey enum is used to represent state variables stored in the contract's storage.
 // This allows for structured access to data within the contract's storage.
@@ -104,7 +106,18 @@ impl StakingContract {
     /// - `contributor` - The address of the contributor making the contribution.
     /// - `token` - The address of the token to deposit.
     /// - `amount` - The amount of contribution in tokens.
-    pub fn deposit(env: Env, contributor: Address, token: Address, amount: i128) {
+    pub fn declare(
+        env: Env,
+        contributor: Address,
+        token: Address,
+        amount: i128,
+        summary: String,
+        description: String,
+        startDate: u128,
+        endDate: u128,
+        witness: Address,
+        witnessByDate: u128,
+    ) {
         contributor.require_auth();
         // import Status enum from staking module
         let is_active: bool = Self::check_campaign_status(env.clone());
@@ -135,7 +148,7 @@ impl StakingContract {
     /// - `amount` - The amount of contribution in tokens.
     /// - `token` - The address of the token to withdraw.
     /// - `recipient` - The address of the recipient of the contribution.
-    pub fn withdraw(env: Env, contributor: Address, recipient: Address, token: Address) {
+    pub fn redeem(env: Env, contributor: Address, recipient: Address, token: Address) {
         contributor.require_auth();
         // import Status enum from staking module
         let is_active = Self::check_campaign_status(env.clone());
@@ -149,7 +162,7 @@ impl StakingContract {
         // Transfer the contribution to the recipient
         token::Client::new(&env, &token).transfer(
             &env.current_contract_address(),
-            &recipient,
+            &contributor, //recipient,
             &contribution,
         );
         // // Burn the share token
