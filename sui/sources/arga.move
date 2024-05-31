@@ -78,7 +78,7 @@ module arga::arga {
 
     public fun submitDeclarationProof(witness_cap: &mut WitnessCap, status: u8) {
         // TODO: assert status is in a valid range
-        witness_cap.status = APPROVED;
+        witness_cap.status = status;
     }
 
 }

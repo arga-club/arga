@@ -6,7 +6,7 @@ sui client split-coin --coin-id 0x377fe2ff00e6ead0bca3e372ab6a86d7540824c07b2b27
 
 # make declaration sampl
 sui client ptb \
-    --assign coin_id @0x77ee93b5f361b67a04c951cb89c549660688f3eca6caec2ec5636bd8076f96e1 \
+    --assign coin_id @0x8801549a67d3e30661ff11c2de1ce71afbfb9eebec680028976372dc344d60e9 \
 	--assign witness_address @0xd6ba13bf7da051f63dff1ba741c2d7aac1245011c2a8fef9a3a3e300a46370c4 \
 	--move-call 0x95f4638eed86ae22fcdd126261d989071701e8c4d2df3625997de33d448d76bc::arga::declareWithToken '"summary"' '"description"' witness_address 1717093129 1717093129 1717093129 coin_id \
 	--gas-budget 20000000
@@ -16,6 +16,6 @@ sui client switch --address 0xd6ba13bf7da051f63dff1ba741c2d7aac1245011c2a8fef9a3
 
 # proof
 sui client ptb \
-    --assign witness_cap @0xaae3fca888a61ff73da7125f8f36ccd37a98ee60a5b1b41cc8c9748015f505c7 \
-	--move-call 0x95f4638eed86ae22fcdd126261d989071701e8c4d2df3625997de33d448d76bc::arga::submitDeclarationProof witness_cap 1 \
+    --assign witness_cap @0x13b5c53334a7889041b93474824c99a6cb3c6bc573a4e7b5ec96f763f8e3e9cb \
+	--move-call 0x95f4638eed86ae22fcdd126261d989071701e8c4d2df3625997de33d448d76bc::arga::submitDeclarationProof witness_cap 11u8 \
 	--gas-budget 20000000
