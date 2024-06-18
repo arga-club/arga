@@ -17,9 +17,9 @@ export default {
 	},
 	ethernal: {
 		disableSync: false,
-		disableTrace: false,
+		disableTrace: true,
 		disabled: false,
-		uploadAst: true,
+		uploadAst: false,
 		resetOnStart: 'hardhat',
 		apiToken: vars.get('ETHERNAL_API_TOKEN'),
 	},

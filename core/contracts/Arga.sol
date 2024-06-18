@@ -10,7 +10,7 @@ pragma solidity ^0.8.22;
 
 contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	string public constant name = 'Arga';
-	string public constant version = '0.3.0';
+	string public version;
 	mapping(bytes4 => string) private sigNames;
 	address public treasurer;
 	uint256 public treasurerRedemptionPercentage;
@@ -27,12 +27,14 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 	function initialize(address initialOwner) public initializer {
 		__Ownable_init(initialOwner);
-		changeTreasurer(initialOwner);
 		__UUPSUpgradeable_init();
+		version = '0.3.0';
 		treasurerRedemptionPercentage = 2;
 		witnessRedemptionPercentage = 2;
 		winMultiplier = 1;
 		randomNonce = 0;
+		treasurer = initialOwner;
+		emit TreasurerChanged(initialOwner);
 
 		sigNames[bytes4(0x313ce567)] = 'decimals';
 		sigNames[bytes4(0x95d89b41)] = 'symbol';
@@ -41,7 +43,9 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		sigNames[bytes4(0x01ffc9a7)] = 'supportsInterface';
 	}
 	/// @custom:oz-upgrades-unsafe-allow constructor
-	constructor() initializer {}
+	constructor() {
+		_disableInitializers();
+	}
 	function _authorizeUpgrade(address) internal override onlyOwner {}
 	function logFallback() internal view {
 		console.log('msg.value: ', msg.value);
