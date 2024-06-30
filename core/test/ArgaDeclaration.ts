@@ -2,7 +2,7 @@ import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { Arga } from '../typechain-types/contracts/Arga'
-import { declaration, deploy, getSigners, makeDeclaration } from './utils'
+import { declaration, deploy, getSigners, makeDeclaration, value } from './utils'
 
 const fixture = async () => {
 	const signers = await getSigners()
@@ -51,6 +51,36 @@ describe('Declaration', function () {
 			expect(await arga.declaration(0)).to.deep.equal(expectedDeclaration)
 			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
 			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
+		})
+		it('will not work when endDate is before startDate', async () => {
+			const { arga, actor, witness } = await loadFixture(fixture)
+			await expect(
+				arga.connect(actor).declareWithEther(
+					declaration.summary,
+					declaration.description,
+					actor.address,
+					witness.address,
+					declaration.endDate, // swapped
+					declaration.startDate, // swapped
+					declaration.witnessByDate,
+					{ value },
+				),
+			).to.be.revertedWith('endDate must be before startDate')
+		})
+		it('will not work when witnessByDate is before endDate', async () => {
+			const { arga, actor, witness } = await loadFixture(fixture)
+			await expect(
+				arga.connect(actor).declareWithEther(
+					declaration.summary,
+					declaration.description,
+					actor.address,
+					witness.address,
+					declaration.startDate,
+					declaration.witnessByDate, // swapped
+					declaration.endDate, // swapped
+					{ value },
+				),
+			).to.be.revertedWith('witnessByDate must be before endDate')
 		})
 	})
 	describe('view', () => {

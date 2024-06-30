@@ -167,6 +167,8 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint witnessByDate
 	) public payable returns (Declaration memory) {
 		uint declarationIndex = _declarations.length;
+		require(endDate > startDate, 'endDate must be before startDate');
+		require(witnessByDate > endDate, 'witnessByDate must be before endDate');
 		Declaration memory _declaration = Declaration(
 			declarationIndex,
 			DeclarationStatus.Active,
