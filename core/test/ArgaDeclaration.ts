@@ -1,19 +1,19 @@
 import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { Arga } from '../typechain-types/contracts/Arga'
+import { DeclarationStruct } from '../typechain-types/contracts/Arga'
 import { declaration, deploy, getSigners, makeDeclaration, value } from './utils'
 
 const fixture = async () => {
 	const signers = await getSigners()
-	const { arga } = await deploy()
-	return { arga, ...signers }
+	const { arga, argaDeclaration } = await deploy()
+	return { arga, argaDeclaration, ...signers }
 }
 
 describe('Declaration', function () {
 	describe('declare', () => {
 		it('declareWithEther emits declaration event', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
+			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
 			const value = hre.ethers.parseEther('1')
 			await expect(
 				arga
@@ -29,9 +29,9 @@ describe('Declaration', function () {
 						{ value },
 					),
 			)
-				.to.emit(arga, 'DeclarationMade')
+				.to.emit(argaDeclaration, 'DeclarationMade')
 				.withArgs(
-					(declarationArg: Arga.DeclarationStruct) =>
+					(declarationArg: DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declaration.status &&
 						declarationArg.summary === declaration.summary &&
@@ -46,11 +46,11 @@ describe('Declaration', function () {
 				)
 		})
 		it('declareWithEther adds declaration to list', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
+			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
-			expect(await arga.declaration(0)).to.deep.equal(expectedDeclaration)
-			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
-			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
+			expect(await argaDeclaration.getDeclaration(0)).to.deep.equal(expectedDeclaration)
+			expect(await argaDeclaration.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
+			expect(await argaDeclaration.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
 		})
 		it('will not work when endDate is before startDate', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
@@ -82,6 +82,40 @@ describe('Declaration', function () {
 				),
 			).to.be.revertedWith('witnessByDate must be before endDate')
 		})
+		it('will not work when actor address is 0x0', async () => {
+			const { arga, actor, witness } = await loadFixture(fixture)
+			await expect(
+				arga
+					.connect(actor)
+					.declareWithEther(
+						declaration.summary,
+						declaration.description,
+						hre.ethers.ZeroAddress,
+						witness.address,
+						declaration.startDate,
+						declaration.endDate,
+						declaration.witnessByDate,
+						{ value },
+					),
+			).to.be.revertedWith('Invalid address')
+		})
+		it('will not work when witness address is 0x0', async () => {
+			const { arga, actor } = await loadFixture(fixture)
+			await expect(
+				arga
+					.connect(actor)
+					.declareWithEther(
+						declaration.summary,
+						declaration.description,
+						actor.address,
+						hre.ethers.ZeroAddress,
+						declaration.startDate,
+						declaration.endDate,
+						declaration.witnessByDate,
+						{ value },
+					),
+			).to.be.revertedWith('Invalid address')
+		})
 	})
 	describe('view', () => {
 		it('all declarations', () => {})
@@ -89,9 +123,9 @@ describe('Declaration', function () {
 		it('user declarations', () => {})
 		it('user active declarations', () => {})
 		it('community declarations', async () => {
-			const { arga, actor, other } = await loadFixture(fixture)
+			const { arga, argaDeclaration, actor, other } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor: other, witness: other })
-			expect(await arga.communityDeclarations(actor.address, 1)).to.deep.equal([expectedDeclaration])
+			expect(await argaDeclaration.communityDeclarations(actor.address, 1)).to.deep.equal([expectedDeclaration])
 		})
 		it('witness compensation', () => {})
 	})

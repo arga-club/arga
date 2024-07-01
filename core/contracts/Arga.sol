@@ -5,30 +5,32 @@ import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
 import 'hardhat/console.sol';
+import './ArgaDeclaration.sol';
 
 pragma solidity ^0.8.22;
 
 contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+	// variables
+
 	string public constant name = 'Arga';
 	string public version;
 	mapping(bytes4 => string) private sigNames;
+	ArgaDeclaration declarationContract;
 	address public treasurer;
 	uint256 public treasurerRedemptionPercentage;
 	uint256 witnessRedemptionPercentage;
 	uint public winMultiplier;
 	uint randomNonce;
 
-	event TreasurerChanged(address treasurer);
+	// upgradeability boilerplate
 
-	modifier validAddress(address _addr) {
-		require(_addr != address(0), 'Invalid address');
-		_;
-	}
-
-	function initialize(address initialOwner) public initializer {
+	function initialize(address initialOwner, ArgaDeclaration _declarationContract) public initializer {
 		__Ownable_init(initialOwner);
 		__UUPSUpgradeable_init();
 		version = '0.3.0';
+
+		declarationContract = _declarationContract;
+
 		treasurerRedemptionPercentage = 2;
 		witnessRedemptionPercentage = 2;
 		winMultiplier = 1;
@@ -47,6 +49,9 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		_disableInitializers();
 	}
 	function _authorizeUpgrade(address) internal override onlyOwner {}
+
+	// logging fallbacks
+
 	function logFallback() internal view {
 		console.log('msg.value: ', msg.value);
 		console.log('not implemented selector: ', sigNames[msg.sig]);
@@ -61,101 +66,9 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		logFallback();
 	}
 
-	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
-		treasurer = newTreasurer;
-		emit TreasurerChanged(newTreasurer);
-	}
+	// implementation
 
-	struct Collateral {
-		uint value;
-		address erc20Address;
-	}
-	enum DeclarationStatus {
-		Active,
-		ProofSubmitted,
-		Approved,
-		Rejected
-	}
-	struct Declaration {
-		uint id;
-		DeclarationStatus status;
-		string summary;
-		string description;
-		// address sender;
-		// uint group id;
-		address actor;
-		address witness;
-		// uint witnessRedemptionValue;
-		uint startDate;
-		uint endDate;
-		uint witnessByDate;
-		Collateral collateral;
-		string proof;
-		// bool hasWon;
-	}
-
-	// all declarations go here
-	Declaration[] private _declarations;
-
-	// events
-	event DeclarationMade(Declaration declaration);
-	event DeclarationProofSubmitted(Declaration declaration);
-	event DeclarationConcludedWithApproval(Declaration declaration);
-	event DeclarationConcludedWithRejection(Declaration declaration);
-
-	function declaration(uint index) public view returns (Declaration memory) {
-		return _declarations[index];
-	}
-
-	// we store indices of declarations per actor address
-	mapping(address => uint[]) _actorDeclarations;
-	function actorDeclarations(address actor) public view returns (Declaration[] memory) {
-		uint[] storage indices = _actorDeclarations[actor];
-		Declaration[] memory result = new Declaration[](indices.length);
-		for (uint index; index < indices.length; index++) {
-			result[index] = _declarations[indices[index]];
-		}
-		return result;
-	}
-	// TODO: lastActorDeclaration
-
-	// we store indices of declarations per witness address
-	mapping(address => uint[]) _witnessDeclarations;
-	function witnessDeclarations(address witness) public view returns (Declaration[] memory) {
-		uint[] storage indices = _witnessDeclarations[witness];
-		Declaration[] memory result = new Declaration[](indices.length);
-		for (uint index; index < indices.length; index++) {
-			result[index] = _declarations[indices[index]];
-		}
-		return result;
-	}
-	// TODO: lastWitnessDeclaration
-
-	function communityDeclarations(address actor, uint amount) public view returns (Declaration[] memory) {
-		uint[] storage indices = _actorDeclarations[actor];
-		uint resultLength = Math.max(Math.min(amount, _declarations.length - indices.length), 0);
-		Declaration[] memory result = new Declaration[](resultLength);
-		uint resultIndex = 0;
-		uint declarationIndex = _declarations.length - 1;
-		while (resultIndex < resultLength) {
-			Declaration memory foundDeclaration = _declarations[declarationIndex];
-			if (foundDeclaration.actor == actor || foundDeclaration.actor == address(0)) {
-				if (declarationIndex == 0) {
-					break;
-				}
-				declarationIndex--;
-				resultIndex++;
-				continue;
-			}
-			result[resultIndex] = foundDeclaration;
-			if (declarationIndex == 0) {
-				break;
-			}
-			declarationIndex--;
-			resultIndex++;
-		}
-		return result;
-	}
+	// ArgaDeclaration proxy methods
 
 	function declareWithEther(
 		string memory summary,
@@ -165,13 +78,8 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint startDate,
 		uint endDate,
 		uint witnessByDate
-	) public payable returns (Declaration memory) {
-		uint declarationIndex = _declarations.length;
-		require(endDate > startDate, 'endDate must be before startDate');
-		require(witnessByDate > endDate, 'witnessByDate must be before endDate');
-		Declaration memory _declaration = Declaration(
-			declarationIndex,
-			DeclarationStatus.Active,
+	) public payable validAddress(actor) validAddress(witness) {
+		declarationContract.declareWithEther(
 			summary,
 			description,
 			actor,
@@ -179,39 +87,20 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 			startDate,
 			endDate,
 			witnessByDate,
-			Collateral(msg.value, address(0)),
-			''
+			msg.value
 		);
-		emit DeclarationMade(_declaration);
-		_declarations.push(_declaration);
-		_actorDeclarations[actor].push(declarationIndex);
-		_witnessDeclarations[witness].push(declarationIndex);
-		return _declaration;
 	}
-	function declareWithToken(
-		string memory summary,
-		string memory description,
-		address actor,
-		address witness,
-		uint startDate,
-		uint endDate,
-		uint witnessByDate,
-		uint collateralValue,
-		address collateralErc20Address
-	) public {
-		// Declaration memory declaration = Declaration(
-		// 	summary,
-		// 	description,
-		// 	actor,
-		// 	witness,
-		// 	startDate,
-		// 	endDate,
-		// 	witnessByDate,
-		// 	collateralValue,
-		// 	collateralErc20Address
-		// );
-		// emit DeclarationMade(declaration);
-		// not implemented yet
+
+	// treasury
+
+	event TreasurerChanged(address treasurer);
+	modifier validAddress(address _addr) {
+		require(_addr != address(0), 'Invalid address');
+		_;
+	}
+	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
+		treasurer = newTreasurer;
+		emit TreasurerChanged(newTreasurer);
 	}
 
 	mapping(address => Collateral[]) public _redemptions;
@@ -226,7 +115,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 	error InvalidWitness(address sender);
 	modifier onlyWitness(uint id) {
-		address witness = _declarations[id].witness;
+		address witness = declarationContract.getDeclaration(id).witness;
 		if (msg.sender != witness) {
 			revert InvalidWitness(msg.sender);
 		}
@@ -235,7 +124,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 	error InvalidActor(address sender);
 	modifier onlyActor(uint id) {
-		address actor = _declarations[id].actor;
+		address actor = declarationContract.getDeclaration(id).actor;
 		if (msg.sender != actor) {
 			revert InvalidActor(msg.sender);
 		}
@@ -243,12 +132,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	}
 
 	function submitDeclarationProof(uint id, string memory proof) public onlyActor(id) {
-		Declaration storage _declaration = _declarations[id];
-		// add proof
-		_declaration.proof = proof;
-		// change status
-		_declaration.status = DeclarationStatus.ProofSubmitted;
-		emit DeclarationProofSubmitted(_declaration);
+		declarationContract.submitDeclarationProof(id, proof);
 	}
 
 	function addToCollaterals(Collateral[] storage collaterals, Collateral memory collateral) private {
@@ -264,46 +148,40 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	}
 
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
-		Declaration storage _declaration = _declarations[id];
-		// change status
-		_declaration.status = DeclarationStatus.Approved;
+		Declaration memory declaration = declarationContract.setStatus(id, DeclarationStatus.Approved);
 		// distribute collateral to relevant parties
-		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
-		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		uint actorValue = _declaration.collateral.value - treasurerValue - witnessValue;
-		maybeWinPool(_declaration);
-		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
+		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
+		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
+		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
+		maybeWinPool(declaration);
+		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
 		addToCollaterals(
-			_redemptions[_declaration.witness],
-			Collateral(treasurerValue, _declaration.collateral.erc20Address)
+			_redemptions[declaration.witness],
+			Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
-		addToCollaterals(_redemptions[_declaration.actor], Collateral(actorValue, _declaration.collateral.erc20Address));
-		emit DeclarationConcludedWithApproval(_declaration);
+		addToCollaterals(_redemptions[declaration.actor], Collateral(actorValue, declaration.collateral.erc20Address));
 	}
 
 	function concludeDeclarationWithRejection(uint id) public onlyWitness(id) {
-		Declaration storage _declaration = _declarations[id];
-		// change status
-		_declaration.status = DeclarationStatus.Rejected;
+		Declaration memory declaration = declarationContract.setStatus(id, DeclarationStatus.Rejected);
 		// distribute collateral to relevant parties
-		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
-		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		uint poolValue = _declaration.collateral.value - treasurerValue - witnessValue;
-		maybeWinPool(_declaration);
-		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
+		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
+		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
+		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
+		maybeWinPool(declaration);
+		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
 		addToCollaterals(
-			_redemptions[_declaration.witness],
-			Collateral(treasurerValue, _declaration.collateral.erc20Address)
+			_redemptions[declaration.witness],
+			Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
-		addToCollaterals(_pool, Collateral(poolValue, _declaration.collateral.erc20Address));
-		emit DeclarationConcludedWithRejection(_declaration);
+		addToCollaterals(_pool, Collateral(poolValue, declaration.collateral.erc20Address));
 	}
 
 	event PoolWon(Declaration declaration);
 	function changeWinMultiplier(uint newMultiplier) public onlyOwner {
 		winMultiplier = newMultiplier;
 	}
-	function maybeWinPool(Declaration storage _declaration) private {
+	function maybeWinPool(Declaration memory _declaration) private {
 		if (_pool.length == 0) return;
 		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
 		randomNonce++;

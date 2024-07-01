@@ -1,9 +1,10 @@
 import hre, { upgrades } from 'hardhat'
 import ms from 'ms'
-import { Arga } from '../typechain-types'
+import { Arga, ArgaDeclaration } from '../typechain-types'
 import assert from 'assert'
 import { ContractTransactionResponse } from 'ethers'
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers'
+import { DeclarationStruct } from '../typechain-types/contracts/Arga'
 
 export const getSigners = async () => {
 	const [owner, actor, witness, other] = await hre.ethers.getSigners()
@@ -11,9 +12,18 @@ export const getSigners = async () => {
 }
 export const deploy = async () => {
 	const { owner } = await getSigners()
+	const argaDeclarationContract = await hre.ethers.getContractFactory('ArgaDeclaration')
+	const argaDeclaration = (await upgrades.deployProxy(argaDeclarationContract, [owner.address], {
+		kind: 'uups',
+	})) as unknown as ArgaDeclaration
+	await argaDeclaration.waitForDeployment()
 	const argaContract = await hre.ethers.getContractFactory('Arga')
-	const arga = (await upgrades.deployProxy(argaContract, [owner.address], { kind: 'uups' })) as unknown as Arga
-	return { arga }
+	const arga = (await upgrades.deployProxy(argaContract, [owner.address, await argaDeclaration.getAddress()], {
+		kind: 'uups',
+	})) as unknown as Arga
+	await arga.waitForDeployment()
+	await argaDeclaration.setParentContract(await arga.getAddress())
+	return { arga, argaDeclaration }
 }
 
 export const declarationStatus = {
@@ -23,7 +33,7 @@ export const declarationStatus = {
 	rejected: 3n,
 }
 
-export const declaration: Arga.DeclarationStruct = {
+export const declaration: DeclarationStruct = {
 	id: 0n,
 	status: declarationStatus.active,
 	summary: 'successfully test Arga contract',

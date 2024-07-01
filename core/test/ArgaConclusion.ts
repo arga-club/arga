@@ -1,7 +1,6 @@
 import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { Arga } from '../typechain-types/contracts/Arga'
 import {
 	declaration,
 	declarationStatus,
@@ -13,23 +12,24 @@ import {
 	submitDeclarationProof,
 	value,
 } from './utils'
+import { DeclarationStruct } from '../typechain-types/contracts/Arga'
 
 const fixture = async () => {
 	const signers = await getSigners()
-	const { arga } = await deploy()
-	return { arga, ...signers }
+	const { arga, argaDeclaration } = await deploy()
+	return { arga, argaDeclaration, ...signers }
 }
 
 describe('Conclusion', function () {
 	describe('Proof', () => {
 		it('can submit proof', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
+			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await expect(arga.connect(actor).submitDeclarationProof(id, proof))
-				.to.emit(arga, 'DeclarationProofSubmitted')
+				.to.emit(argaDeclaration, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: Arga.DeclarationStruct) =>
+					(declarationArg: DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declarationStatus.proofSubmitted &&
 						declarationArg.summary === declaration.summary &&
@@ -53,14 +53,14 @@ describe('Conclusion', function () {
 	})
 	describe('Approval', () => {
 		it('emits conclusion event', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
+			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await submitDeclarationProof({ arga, actor, witness })
 			await expect(arga.connect(witness).concludeDeclarationWithApproval(id))
-				.to.emit(arga, 'DeclarationConcludedWithApproval')
+				.to.emit(argaDeclaration, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: Arga.DeclarationStruct) =>
+					(declarationArg: DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declarationStatus.approved &&
 						declarationArg.summary === declaration.summary &&
@@ -178,7 +178,7 @@ describe('Conclusion', function () {
 			await expect(await arga.connect(witness).concludeDeclarationWithApproval(1n))
 				.to.emit(arga, 'PoolWon')
 				.withArgs(
-					(declarationArg: Arga.DeclarationStruct) =>
+					(declarationArg: DeclarationStruct) =>
 						declarationArg.id === 1n &&
 						declarationArg.status === declarationStatus.approved &&
 						declarationArg.summary === declaration.summary &&
@@ -222,14 +222,14 @@ describe('Conclusion', function () {
 	})
 	describe('Rejection', () => {
 		it('emits conclusion event', async () => {
-			const { arga, actor, witness } = await loadFixture(fixture)
+			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await submitDeclarationProof({ arga, actor, witness })
 			await expect(arga.connect(witness).concludeDeclarationWithRejection(id))
-				.to.emit(arga, 'DeclarationConcludedWithRejection')
+				.to.emit(argaDeclaration, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: Arga.DeclarationStruct) =>
+					(declarationArg: DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declarationStatus.rejected &&
 						declarationArg.summary === declaration.summary &&
