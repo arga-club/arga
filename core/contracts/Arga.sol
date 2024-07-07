@@ -171,6 +171,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
+		poolContract.addToPool(Collateral(poolValue, declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[declaration.actor],
 			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
@@ -180,7 +181,6 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 			_redemptions[declaration.witness],
 			Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
-		poolContract.addToPool(Collateral(poolValue, declaration.collateral.erc20Address));
 	}
 
 	function changeWinMultiplier(uint newMultiplier) public onlyOwner {
