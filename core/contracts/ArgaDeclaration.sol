@@ -13,7 +13,6 @@ contract ArgaDeclaration is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 	mapping(bytes4 => string) private sigNames;
 	address parentContract;
-	Declaration[] private _declarations;
 
 	// upgradeability boilerplate
 
@@ -61,6 +60,8 @@ contract ArgaDeclaration is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	}
 
 	// implementation
+
+	Declaration[] private _declarations;
 
 	modifier validAddress(address _addr) {
 		require(_addr != address(0), 'Invalid address');

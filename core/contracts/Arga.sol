@@ -16,11 +16,6 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	string public constant name = 'Arga';
 	string public version;
 	mapping(bytes4 => string) private sigNames;
-	ArgaDeclaration declarationContract;
-	ArgaPool poolContract;
-	address public treasurer;
-	uint256 public treasurerRedemptionPercentage;
-	uint256 witnessRedemptionPercentage;
 
 	// upgradeability boilerplate
 
@@ -70,6 +65,12 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	}
 
 	// implementation
+
+	ArgaDeclaration declarationContract;
+	ArgaPool poolContract;
+	address public treasurer;
+	uint256 public treasurerRedemptionPercentage;
+	uint256 witnessRedemptionPercentage;
 
 	// ArgaDeclaration proxy methods
 
