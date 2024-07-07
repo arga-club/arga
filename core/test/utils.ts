@@ -1,29 +1,44 @@
 import hre, { upgrades } from 'hardhat'
 import ms from 'ms'
-import { Arga, ArgaDeclaration } from '../typechain-types'
+import { Arga, ArgaDeclaration, ArgaPool } from '../typechain-types'
 import assert from 'assert'
 import { ContractTransactionResponse } from 'ethers'
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers'
-import { DeclarationStruct } from '../typechain-types/contracts/Arga'
+import { DeclarationStruct } from '../typechain-types/contracts/ArgaDeclarations'
 
 export const getSigners = async () => {
 	const [owner, actor, witness, other] = await hre.ethers.getSigners()
 	return { owner, actor, witness, other }
 }
+
+type ContractName = 'Arga' | 'ArgaDeclaration' | 'ArgaPool'
+
+export const deployUUPSContract = async <T extends Arga | ArgaDeclaration | ArgaPool>(
+	name: ContractName,
+	ownerAddress: string,
+) => {
+	const contractFactory = await hre.ethers.getContractFactory(name)
+	const contractDeployed = (await upgrades.deployProxy(contractFactory, [ownerAddress], {
+		kind: 'uups',
+	})) as unknown as T
+	await contractDeployed.waitForDeployment()
+	return [contractDeployed, await contractDeployed.getAddress()] as const
+}
 export const deploy = async () => {
 	const { owner } = await getSigners()
-	const argaDeclarationContract = await hre.ethers.getContractFactory('ArgaDeclaration')
-	const argaDeclaration = (await upgrades.deployProxy(argaDeclarationContract, [owner.address], {
-		kind: 'uups',
-	})) as unknown as ArgaDeclaration
-	await argaDeclaration.waitForDeployment()
+	const [argaDeclaration, argaDeclarationAddress] = await deployUUPSContract<ArgaDeclaration>(
+		'ArgaDeclaration',
+		owner.address,
+	)
+	const [argaPool, argaPoolAddress] = await deployUUPSContract<ArgaPool>('ArgaPool', owner.address)
 	const argaContract = await hre.ethers.getContractFactory('Arga')
-	const arga = (await upgrades.deployProxy(argaContract, [owner.address, await argaDeclaration.getAddress()], {
+	const arga = (await upgrades.deployProxy(argaContract, [owner.address, argaDeclarationAddress, argaPoolAddress], {
 		kind: 'uups',
 	})) as unknown as Arga
 	await arga.waitForDeployment()
 	await argaDeclaration.setParentContract(await arga.getAddress())
-	return { arga, argaDeclaration }
+	await argaPool.setParentContract(await arga.getAddress())
+	return { arga, argaDeclaration, argaPool }
 }
 
 export const declarationStatus = {

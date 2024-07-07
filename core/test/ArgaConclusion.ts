@@ -12,12 +12,12 @@ import {
 	submitDeclarationProof,
 	value,
 } from './utils'
-import { DeclarationStruct } from '../typechain-types/contracts/Arga'
+import { DeclarationStruct } from '../typechain-types/contracts/ArgaDeclarations'
 
 const fixture = async () => {
 	const signers = await getSigners()
-	const { arga, argaDeclaration } = await deploy()
-	return { arga, argaDeclaration, ...signers }
+	const { arga, argaDeclaration, argaPool } = await deploy()
+	return { arga, argaDeclaration, argaPool, ...signers }
 }
 
 describe('Conclusion', function () {
@@ -76,7 +76,7 @@ describe('Conclusion', function () {
 				)
 		})
 		it('allows actor, witness, treasurer to collect compensation', async () => {
-			const { arga, actor, witness, owner } = await loadFixture(fixture)
+			const { arga, argaPool, actor, witness, owner } = await loadFixture(fixture)
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
@@ -87,7 +87,7 @@ describe('Conclusion', function () {
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([[actorRedemption, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[witnessRedemption, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[ownerRedemption, hre.ethers.ZeroAddress]])
-			expect(await arga.pool()).to.deep.equal([])
+			expect(await argaPool.pool()).to.deep.equal([])
 			{
 				const balanceBefore = await actor.provider.getBalance(actor.address)
 				const transaction = await arga.connect(actor).redeem(actor.address, [hre.ethers.ZeroAddress])
@@ -163,20 +163,20 @@ describe('Conclusion', function () {
 			expect(contractBalance).to.equal(0n)
 		})
 		it('wins pool when multiplier is high enough', async () => {
-			const { arga, actor, witness, owner } = await loadFixture(fixture)
+			const { arga, argaPool, actor, witness, owner } = await loadFixture(fixture)
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
 			await submitDeclarationProof({ arga, actor, witness })
 			await arga.connect(witness).concludeDeclarationWithRejection(id)
 			const poolAmount = (value * 96n) / 100n
-			expect(await arga.pool()).to.deep.equal([[poolAmount, hre.ethers.ZeroAddress]])
+			expect(await argaPool.pool()).to.deep.equal([[poolAmount, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			await makeDeclaration({ arga, actor, witness })
 			await arga.connect(actor).submitDeclarationProof(1n, proof)
-			await arga.connect(owner).changeWinMultiplier(25)
+			await arga.connect(owner).changeWinMultiplier(50)
 			await expect(await arga.connect(witness).concludeDeclarationWithApproval(1n))
-				.to.emit(arga, 'PoolWon')
+				.to.emit(argaPool, 'PoolWon')
 				.withArgs(
 					(declarationArg: DeclarationStruct) =>
 						declarationArg.id === 1n &&
@@ -245,7 +245,7 @@ describe('Conclusion', function () {
 				)
 		})
 		it('allows actor, witness, treasurer to collect compensation', async () => {
-			const { arga, actor, witness, owner } = await loadFixture(fixture)
+			const { arga, argaPool, actor, witness, owner } = await loadFixture(fixture)
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
@@ -253,7 +253,7 @@ describe('Conclusion', function () {
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.pool()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
+			expect(await argaPool.pool()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
 		})
 		it('only witness can reject', async () => {
 			// test

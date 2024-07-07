@@ -1,8 +1,8 @@
 import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { DeclarationStruct } from '../typechain-types/contracts/Arga'
 import { declaration, deploy, getSigners, makeDeclaration, value } from './utils'
+import { DeclarationStruct } from '../typechain-types/contracts/ArgaDeclarations'
 
 const fixture = async () => {
 	const signers = await getSigners()
