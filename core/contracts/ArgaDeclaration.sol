@@ -4,11 +4,12 @@ import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
+import './ArgaLibrary.sol';
 import 'hardhat/console.sol';
 
 pragma solidity ^0.8.22;
 
-contract ArgaDeclaration is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract ArgaDeclaration is Initializable, UUPSUpgradeable, OwnableUpgradeable, ArgaDefinitions {
 	// variables
 
 	mapping(bytes4 => string) private sigNames;
@@ -164,36 +165,4 @@ contract ArgaDeclaration is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		_declarations[id].proof = proof;
 		return setStatus(id, DeclarationStatus.ProofSubmitted);
 	}
-}
-
-event ParentContractChanged(address parentContract);
-event DeclarationMade(Declaration declaration);
-event DeclarationStatusChange(Declaration declaration);
-
-struct Collateral {
-	uint value;
-	address erc20Address;
-}
-enum DeclarationStatus {
-	Active,
-	ProofSubmitted,
-	Approved,
-	Rejected
-}
-struct Declaration {
-	uint id;
-	DeclarationStatus status;
-	string summary;
-	string description;
-	// address sender;
-	// uint group id;
-	address actor;
-	address witness;
-	// uint witnessRedemptionValue;
-	uint startDate;
-	uint endDate;
-	uint witnessByDate;
-	Collateral collateral;
-	string proof;
-	// bool hasWon;
 }

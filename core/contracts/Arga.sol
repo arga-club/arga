@@ -5,12 +5,13 @@ import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
 import 'hardhat/console.sol';
+import './ArgaLibrary.sol';
 import './ArgaDeclaration.sol';
 import './ArgaPool.sol';
 
 pragma solidity ^0.8.22;
 
-contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable, ArgaDefinitions {
 	// variables
 
 	string public constant name = 'Arga';
@@ -97,7 +98,6 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 	// treasury
 
-	event TreasurerChanged(address treasurer);
 	modifier validAddress(address _addr) {
 		require(_addr != address(0), 'Invalid address');
 		_;
@@ -113,7 +113,6 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		return _redemptions[party];
 	}
 
-	error InvalidWitness(address sender);
 	modifier onlyWitness(uint id) {
 		address witness = declarationContract.getDeclaration(id).witness;
 		if (msg.sender != witness) {
@@ -122,7 +121,6 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		_;
 	}
 
-	error InvalidActor(address sender);
 	modifier onlyActor(uint id) {
 		address actor = declarationContract.getDeclaration(id).actor;
 		if (msg.sender != actor) {
@@ -135,34 +133,28 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		declarationContract.submitDeclarationProof(id, proof);
 	}
 
-	function addToCollaterals(Collateral[] storage collaterals, Collateral memory collateral) private {
-		// try to add to existing collateral if exists
-		for (uint i = 0; i < collaterals.length; i++) {
-			Collateral storage existingCollateral = collaterals[i];
-			if (existingCollateral.erc20Address != collateral.erc20Address) continue;
-			existingCollateral.value = existingCollateral.value + collateral.value;
-			return;
-		}
-		// otherwise add new collateral
-		collaterals.push(collateral);
-	}
-
 	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
 		Declaration memory declaration = declarationContract.setStatus(id, DeclarationStatus.Approved);
 		// distribute collateral to relevant parties
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
-		addToCollaterals(
+		ArgaLibrary.addToCollateralsMultiple(
 			_redemptions[declaration.actor],
 			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
 		);
-		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
-		addToCollaterals(
+		ArgaLibrary.addToCollateralsSingle(
+			_redemptions[treasurer],
+			Collateral(treasurerValue, declaration.collateral.erc20Address)
+		);
+		ArgaLibrary.addToCollateralsSingle(
 			_redemptions[declaration.witness],
 			Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
-		addToCollaterals(_redemptions[declaration.actor], Collateral(actorValue, declaration.collateral.erc20Address));
+		ArgaLibrary.addToCollateralsSingle(
+			_redemptions[declaration.actor],
+			Collateral(actorValue, declaration.collateral.erc20Address)
+		);
 	}
 
 	function concludeDeclarationWithRejection(uint id) public onlyWitness(id) {
@@ -172,12 +164,15 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
 		poolContract.addToPool(Collateral(poolValue, declaration.collateral.erc20Address));
-		addToCollaterals(
+		ArgaLibrary.addToCollateralsMultiple(
 			_redemptions[declaration.actor],
 			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
 		);
-		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
-		addToCollaterals(
+		ArgaLibrary.addToCollateralsSingle(
+			_redemptions[treasurer],
+			Collateral(treasurerValue, declaration.collateral.erc20Address)
+		);
+		ArgaLibrary.addToCollateralsSingle(
 			_redemptions[declaration.witness],
 			Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);

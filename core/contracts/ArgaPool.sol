@@ -4,11 +4,12 @@ import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
+import './ArgaLibrary.sol';
 import 'hardhat/console.sol';
 
 pragma solidity ^0.8.22;
 
-contract ArgaPool is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract ArgaPool is Initializable, UUPSUpgradeable, OwnableUpgradeable, ArgaDefinitions {
 	// variables
 
 	mapping(bytes4 => string) private sigNames;
@@ -76,20 +77,8 @@ contract ArgaPool is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		winMultiplier = newMultiplier;
 	}
 
-	function addToCollaterals(Collateral[] storage collaterals, Collateral memory collateral) private {
-		// try to add to existing collateral if exists
-		for (uint i = 0; i < collaterals.length; i++) {
-			Collateral storage existingCollateral = collaterals[i];
-			if (existingCollateral.erc20Address != collateral.erc20Address) continue;
-			existingCollateral.value = existingCollateral.value + collateral.value;
-			return;
-		}
-		// otherwise add new collateral
-		collaterals.push(collateral);
-	}
-
 	function addToPool(Collateral memory collateral) public onlyParent {
-		addToCollaterals(_pool, collateral);
+		ArgaLibrary.addToCollateralsSingle(_pool, collateral);
 	}
 
 	function maybeWinPool(
@@ -112,5 +101,3 @@ contract ArgaPool is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		return winnings;
 	}
 }
-
-event PoolWon(Declaration declaration);
