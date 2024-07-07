@@ -16,25 +16,27 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	string public version;
 	mapping(bytes4 => string) private sigNames;
 	ArgaDeclaration declarationContract;
+	ArgaPool poolContract;
 	address public treasurer;
 	uint256 public treasurerRedemptionPercentage;
 	uint256 witnessRedemptionPercentage;
-	uint public winMultiplier;
-	uint randomNonce;
 
 	// upgradeability boilerplate
 
-	function initialize(address initialOwner, ArgaDeclaration _declarationContract) public initializer {
+	function initialize(
+		address initialOwner,
+		ArgaDeclaration _declarationContract,
+		ArgaPool _poolContract
+	) public initializer {
 		__Ownable_init(initialOwner);
 		__UUPSUpgradeable_init();
 		version = '0.3.0';
 
 		declarationContract = _declarationContract;
+		poolContract = _poolContract;
 
 		treasurerRedemptionPercentage = 2;
 		witnessRedemptionPercentage = 2;
-		winMultiplier = 1;
-		randomNonce = 0;
 		treasurer = initialOwner;
 		emit TreasurerChanged(initialOwner);
 
@@ -104,13 +106,9 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	}
 
 	mapping(address => Collateral[]) public _redemptions;
-	Collateral[] private _pool;
 
 	function redemptionsForParty(address party) public view returns (Collateral[] memory) {
 		return _redemptions[party];
-	}
-	function pool() public view returns (Collateral[] memory) {
-		return _pool;
 	}
 
 	error InvalidWitness(address sender);
@@ -153,7 +151,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
-		maybeWinPool(declaration);
+		addToCollaterals(_redemptions[declaration.actor], poolContract.maybeWinPool(declaration));
 		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[declaration.witness],
@@ -168,31 +166,17 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
-		maybeWinPool(declaration);
+		addToCollaterals(_redemptions[declaration.actor], poolContract.maybeWinPool(declaration));
 		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[declaration.witness],
 			Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
-		addToCollaterals(_pool, Collateral(poolValue, declaration.collateral.erc20Address));
+		poolContract.addToPool(Collateral(poolValue, declaration.collateral.erc20Address));
 	}
 
-	event PoolWon(Declaration declaration);
 	function changeWinMultiplier(uint newMultiplier) public onlyOwner {
-		winMultiplier = newMultiplier;
-	}
-	function maybeWinPool(Declaration memory _declaration) private {
-		if (_pool.length == 0) return;
-		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
-		randomNonce++;
-		uint feesTotalPercent = treasurerRedemptionPercentage + witnessRedemptionPercentage;
-		uint chanceToWin = (_declaration.collateral.value / _pool[0].value) * feesTotalPercent * winMultiplier;
-		if (random > chanceToWin) return;
-		while (_pool.length > 0) {
-			addToCollaterals(_redemptions[_declaration.actor], _pool[_pool.length - 1]);
-			_pool.pop();
-		}
-		emit PoolWon(_declaration);
+		poolContract.changeWinMultiplier(newMultiplier);
 	}
 
 	function redeem(address payable destination, address[] calldata erc20Addresses) public {
