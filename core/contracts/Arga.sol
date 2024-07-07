@@ -6,6 +6,7 @@ import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
 import '@openzeppelin/contracts/utils/math/Math.sol';
 import 'hardhat/console.sol';
 import './ArgaDeclaration.sol';
+import './ArgaPool.sol';
 
 pragma solidity ^0.8.22;
 
@@ -151,7 +152,10 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
-		addToCollaterals(_redemptions[declaration.actor], poolContract.maybeWinPool(declaration));
+		addToCollaterals(
+			_redemptions[declaration.actor],
+			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
+		);
 		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[declaration.witness],
@@ -166,7 +170,10 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
-		addToCollaterals(_redemptions[declaration.actor], poolContract.maybeWinPool(declaration));
+		addToCollaterals(
+			_redemptions[declaration.actor],
+			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
+		);
 		addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, declaration.collateral.erc20Address));
 		addToCollaterals(
 			_redemptions[declaration.witness],

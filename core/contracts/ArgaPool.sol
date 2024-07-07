@@ -96,15 +96,17 @@ contract ArgaPool is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		Declaration memory _declaration,
 		uint feesTotalPercent
 	) public onlyParent returns (Collateral[] memory) {
-		Collateral[] memory winnings;
-		if (_pool.length == 0) return winnings;
+		Collateral[] memory noWinnings;
+		if (_pool.length == 0) return noWinnings;
 		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
 		randomNonce++;
-		uint feesTotalPercent = treasurerRedemptionPercentage + witnessRedemptionPercentage;
 		uint chanceToWin = (_declaration.collateral.value / _pool[0].value) * feesTotalPercent * winMultiplier;
-		if (random > chanceToWin) return winnings;
+		if (random > chanceToWin) return noWinnings;
+		// won
+		Collateral[] memory winnings = new Collateral[](_pool.length);
 		while (_pool.length > 0) {
-			winnings.push(_pool.pop());
+			winnings[_pool.length - 1] = _pool[_pool.length - 1];
+			_pool.pop();
 		}
 		emit PoolWon(_declaration);
 		return winnings;
