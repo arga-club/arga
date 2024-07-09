@@ -141,7 +141,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable, ArgaDefinit
 		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
 		ArgaLibrary.addToCollateralsMultiple(
 			_redemptions[declaration.actor],
-			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
+			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage)
 		);
 		ArgaLibrary.addToCollateralsSingle(
 			_redemptions[treasurer],
@@ -166,7 +166,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable, ArgaDefinit
 		poolContract.addToPool(Collateral(poolValue, declaration.collateral.erc20Address));
 		ArgaLibrary.addToCollateralsMultiple(
 			_redemptions[declaration.actor],
-			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage + witnessRedemptionPercentage)
+			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage)
 		);
 		ArgaLibrary.addToCollateralsSingle(
 			_redemptions[treasurer],
