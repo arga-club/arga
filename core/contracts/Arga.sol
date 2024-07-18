@@ -148,7 +148,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint actorValue = _declaration.collateral.value - treasurerValue - witnessValue;
-		maybeWinPool(_declaration);
+		_maybeWinPool(_declaration);
 		_addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
 		_addToCollaterals(
 			_redemptions[_declaration.witness],
@@ -166,7 +166,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		uint treasurerValue = (_declaration.collateral.value * treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (_declaration.collateral.value * witnessRedemptionPercentage) / 100;
 		uint poolValue = _declaration.collateral.value - treasurerValue - witnessValue;
-		maybeWinPool(_declaration);
+		_maybeWinPool(_declaration);
 		_addToCollaterals(_redemptions[treasurer], Collateral(treasurerValue, _declaration.collateral.erc20Address));
 		_addToCollaterals(
 			_redemptions[_declaration.witness],
@@ -296,20 +296,6 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		// not implemented yet
 	}
 
-	function maybeWinPool(Declaration storage _declaration) private {
-		if (_pool.length == 0) return;
-		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
-		randomNonce++;
-		uint feesTotalPercent = treasurerRedemptionPercentage + witnessRedemptionPercentage;
-		uint chanceToWin = (_declaration.collateral.value / _pool[0].value) * feesTotalPercent * winMultiplier;
-		if (random > chanceToWin) return;
-		while (_pool.length > 0) {
-			_addToCollaterals(_redemptions[_declaration.actor], _pool[_pool.length - 1]);
-			_pool.pop();
-		}
-		emit PoolWon(_declaration);
-	}
-
 	function redeem(address payable destination, address[] calldata erc20Addresses) public {
 		address party = msg.sender;
 		Collateral[] storage collaterals = _redemptions[party];
@@ -345,6 +331,20 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 		}
 		// otherwise add new collateral
 		collaterals.push(collateral);
+	}
+
+	function _maybeWinPool(Declaration storage _declaration) internal {
+		if (_pool.length == 0) return;
+		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomNonce))) % 100;
+		randomNonce++;
+		uint feesTotalPercent = treasurerRedemptionPercentage + witnessRedemptionPercentage;
+		uint chanceToWin = (_declaration.collateral.value / _pool[0].value) * feesTotalPercent * winMultiplier;
+		if (random > chanceToWin) return;
+		while (_pool.length > 0) {
+			_addToCollaterals(_redemptions[_declaration.actor], _pool[_pool.length - 1]);
+			_pool.pop();
+		}
+		emit PoolWon(_declaration);
 	}
 
 	function _authorizeUpgrade(address) internal override onlyOwner {}
