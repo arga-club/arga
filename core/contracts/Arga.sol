@@ -11,7 +11,6 @@ pragma solidity ^0.8.22;
 contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	string public constant name = 'Arga';
 	string public version;
-	mapping(bytes4 => string) private sigNames;
 	address public treasurer;
 	uint256 public treasurerRedemptionPercentage;
 	uint256 witnessRedemptionPercentage;
@@ -21,6 +20,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	mapping(address => uint[]) private  _actorDeclarations;
 	mapping(address => uint[]) private _witnessDeclarations;
 	mapping(address => Collateral[]) public _redemptions;
+	mapping(bytes4 => string) private sigNames;
 
 	struct Collateral {
 		uint value;
