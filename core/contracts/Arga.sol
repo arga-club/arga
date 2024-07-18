@@ -335,7 +335,7 @@ contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 	}
 
 	/// --- Internal functions --- ///
-	function _addToCollaterals(Collateral[] storage collaterals, Collateral memory collateral) private {
+	function _addToCollaterals(Collateral[] storage collaterals, Collateral memory collateral) internal {
 		// try to add to existing collateral if exists
 		for (uint i = 0; i < collaterals.length; i++) {
 			Collateral storage existingCollateral = collaterals[i];
