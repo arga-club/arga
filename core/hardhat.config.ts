@@ -3,6 +3,7 @@ import '@nomicfoundation/hardhat-toolbox'
 import '@nomicfoundation/hardhat-toolbox-viem'
 import '@nomicfoundation/hardhat-ignition-viem'
 import '@openzeppelin/hardhat-upgrades'
+import 'hardhat-contract-sizer'
 
 export default {
 	solidity: '0.8.22',
