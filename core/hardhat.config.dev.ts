@@ -7,7 +7,19 @@ import 'hardhat-ethernal'
 import 'hardhat-contract-sizer'
 
 export default {
-	solidity: '0.8.22',
+	solidity: {
+		compilers: [
+			{
+				version: '0.8.22',
+				settings: {
+					optimizer: {
+						enabled: true,
+						runs: 1,
+					},
+				},
+			},
+		],
+	},
 	networks: {
 		hardhat: {
 			mining: {

@@ -6,7 +6,19 @@ import '@openzeppelin/hardhat-upgrades'
 import 'hardhat-contract-sizer'
 
 export default {
-	solidity: '0.8.22',
+	solidity: {
+		compilers: [
+			{
+				version: '0.8.22',
+				settings: {
+					optimizer: {
+						enabled: true,
+						runs: 1,
+					},
+				},
+			},
+		],
+	},
 	networks: {
 		sepolia: {
 			url: `https://sepolia.infura.io/v3/${vars.get('INFURA_API_KEY')}`,
