@@ -10,13 +10,6 @@ const fixture = async () => {
 }
 
 describe('Ownable', function () {
-	it('emits ownership transfer events during construction', async function () {
-		const { owner, arga } = await loadFixture(fixture)
-		await expect(arga.deploymentTransaction())
-			.to.emit(arga, 'OwnershipTransferred')
-			.withArgs(hre.ethers.ZeroAddress, owner)
-	})
-
 	it('has an owner', async function () {
 		const { owner, arga } = await loadFixture(fixture)
 		expect(await arga.owner()).to.equal(owner)

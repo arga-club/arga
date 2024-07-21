@@ -1,0 +1,55 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index ee1d7f0b72a380f1da27fd49d2c398558dd45dd4..0000000000000000000000000000000000000000
+diff --git a/dist/index.js b/dist/index.js
+index 1274b092d850b6a28e9b4f668bad6e238b7938c4..3d37413aace81348c8230f3e9297e5d27de81844 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -151,6 +151,7 @@ async function generateDiamondAbi(args, hre, runSuper) {
+     }
+     const compilationJob = new DiamondAbiCompilationJob();
+     const contracts = await hre.artifacts.getAllFullyQualifiedNames();
++    const foundAbis = []
+     for (const config of hre.config.diamondAbi) {
+         const mergedAbis = [];
+         for (const contractName of contracts) {
+@@ -182,6 +183,13 @@ async function generateDiamondAbi(args, hre, runSuper) {
+                 if (abiElement.type === "receive") {
+                     return false;
+                 }
++                const objectsEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
++                const existing = foundAbis.find(({name, type}) => name === abiElement.name && type === abiElement.type)
++                if (objectsEqual(existing, abiElement)) {
++                    log(`found duplicate: ${contractName} => ${abiElement.name}`)
++                    return false
++                }
++                foundAbis.push(abiElement)
+                 if (typeof config.filter === "function") {
+                     return config.filter(abiElement, index, abi, contractName);
+                 }
+diff --git a/src/index.ts b/src/index.ts
+index 341c9074c85d52be00b86e602f21b7e24265f675..5dfc1a25bea05c3fb4892758f77e5cc3d4f8cd61 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -197,6 +197,7 @@ export async function generateDiamondAbi(
+ 
+   const contracts = await hre.artifacts.getAllFullyQualifiedNames();
+ 
++  const foundAbis = []
+   for (const config of hre.config.diamondAbi) {
+     const mergedAbis = [];
+ 
+@@ -234,6 +235,13 @@ export async function generateDiamondAbi(
+           if (abiElement.type === "receive") {
+             return false;
+           }
++          const objectsEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
++          const existing = foundAbis.find(({name, type}) => name === abiElement.name && type === abiElement.type)
++          if (objectsEqual(existing, abiElement)) {
++              log(`found duplicate: ${contractName} => ${abiElement.name}`)
++              return false
++          }
++          foundAbis.push(abiElement)
+           if (typeof config.filter === "function") {
+             return config.filter(abiElement, index, abi, contractName);
+           }

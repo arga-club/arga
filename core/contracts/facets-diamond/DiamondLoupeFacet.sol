@@ -9,18 +9,7 @@ import {LibDiamond} from '../libraries/LibDiamond.sol';
 import {IDiamondLoupe} from '../interfaces/IDiamondLoupe.sol';
 import {IERC165} from '../interfaces/IERC165.sol';
 
-// The functions in DiamondLoupeFacet MUST be added to a diamond.
-// The EIP-2535 Diamond standard requires these functions
-
 contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
-	// Diamond Loupe Functions
-	////////////////////////////////////////////////////////////////////
-	/// These functions are expected to be called frequently by tools.
-	//
-	// struct Facet {
-	//     address facetAddress;
-	//     bytes4[] functionSelectors;
-	// }
 	/// @notice Gets all facets and their selectors.
 	/// @return facets_ Facet
 	function facets() external view override returns (Facet[] memory facets_) {

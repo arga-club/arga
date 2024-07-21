@@ -4,7 +4,7 @@ import deployments from '../ignition/deployments/chain-31337/deployed_addresses.
 
 const createCommunityDeclaration = async () => {
 	const [, , , other] = await hre.ethers.getSigners()
-	const arga = await hre.ethers.getContractAt('Arga', deployments['Arga#Arga'])
+	const arga = await hre.ethers.getContractAt('ArgaDiamond', deployments['Arga#Arga'])
 	const { hash } = await arga
 		.connect(other)
 		.declareWithEther(

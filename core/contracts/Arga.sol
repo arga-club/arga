@@ -1,208 +1,62 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
-import '@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol';
-import '@openzeppelin/contracts/utils/math/Math.sol';
-import 'hardhat/console.sol';
-import './ArgaLibrary.sol';
-import './ArgaDeclaration.sol';
-import './ArgaPool.sol';
+/******************************************************************************\
+* Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
+* EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535
+*
+* Implementation of a diamond.
+/******************************************************************************/
 
-pragma solidity ^0.8.22;
+import {LibDiamond} from './libraries/LibDiamond.sol';
+import {IDiamondCut} from './interfaces/IDiamondCut.sol';
 
-contract Arga is Initializable, UUPSUpgradeable, OwnableUpgradeable, ArgaDefinitions {
-	// variables
+contract Arga {
+	constructor(address _contractOwner, address _diamondCutFacet) payable {
+		LibDiamond.setContractOwner(_contractOwner);
 
-	string public constant name = 'Arga';
-	string public version;
-	mapping(bytes4 => string) private sigNames;
-
-	// upgradeability boilerplate
-
-	function initialize(
-		address initialOwner,
-		ArgaDeclaration _declarationContract,
-		ArgaPool _poolContract
-	) public initializer {
-		__Ownable_init(initialOwner);
-		__UUPSUpgradeable_init();
-		version = '0.3.0';
-
-		declarationContract = _declarationContract;
-		poolContract = _poolContract;
-
-		treasurerRedemptionPercentage = 2;
-		witnessRedemptionPercentage = 2;
-		treasurer = initialOwner;
-		emit TreasurerChanged(initialOwner);
-
-		sigNames[bytes4(0x313ce567)] = 'decimals';
-		sigNames[bytes4(0x95d89b41)] = 'symbol';
-		sigNames[bytes4(0x06fdde03)] = 'name';
-		sigNames[bytes4(0x18160ddd)] = 'totalSupply';
-		sigNames[bytes4(0x01ffc9a7)] = 'supportsInterface';
+		// Add the diamondCut external function from the diamondCutFacet
+		IDiamondCut.FacetCut[] memory cut = new IDiamondCut.FacetCut[](1);
+		bytes4[] memory functionSelectors = new bytes4[](1);
+		functionSelectors[0] = IDiamondCut.diamondCut.selector;
+		cut[0] = IDiamondCut.FacetCut({
+			facetAddress: _diamondCutFacet,
+			action: IDiamondCut.FacetCutAction.Add,
+			functionSelectors: functionSelectors
+		});
+		LibDiamond.diamondCut(cut, address(0), '');
 	}
-	/// @custom:oz-upgrades-unsafe-allow constructor
-	constructor() {
-		_disableInitializers();
-	}
-	function _authorizeUpgrade(address) internal override onlyOwner {}
 
-	// logging fallbacks
-
-	function logFallback() internal view {
-		console.log('msg.value: ', msg.value);
-		console.log('not implemented selector: ', sigNames[msg.sig]);
-		console.logBytes4(msg.sig);
-	}
+	// Find facet for function that is called and execute the
+	// function if a facet is found and return any value.
 	fallback() external payable {
-		console.log('----- fallback');
-		logFallback();
-	}
-	receive() external payable {
-		console.log('----- receive');
-		logFallback();
-	}
-
-	// implementation
-
-	ArgaDeclaration declarationContract;
-	ArgaPool poolContract;
-	address public treasurer;
-	uint256 public treasurerRedemptionPercentage;
-	uint256 witnessRedemptionPercentage;
-
-	// ArgaDeclaration proxy methods
-
-	function declareWithEther(
-		string memory summary,
-		string memory description,
-		address actor,
-		address witness,
-		uint startDate,
-		uint endDate,
-		uint witnessByDate
-	) public payable validAddress(actor) validAddress(witness) {
-		declarationContract.declareWithEther(
-			summary,
-			description,
-			actor,
-			witness,
-			startDate,
-			endDate,
-			witnessByDate,
-			msg.value
-		);
-	}
-
-	// treasury
-
-	modifier validAddress(address _addr) {
-		require(_addr != address(0), 'Invalid address');
-		_;
-	}
-	function changeTreasurer(address newTreasurer) public onlyOwner validAddress(newTreasurer) {
-		treasurer = newTreasurer;
-		emit TreasurerChanged(newTreasurer);
-	}
-
-	mapping(address => Collateral[]) public _redemptions;
-
-	function redemptionsForParty(address party) public view returns (Collateral[] memory) {
-		return _redemptions[party];
-	}
-
-	modifier onlyWitness(uint id) {
-		address witness = declarationContract.getDeclaration(id).witness;
-		if (msg.sender != witness) {
-			revert InvalidWitness(msg.sender);
+		LibDiamond.DiamondStorage storage ds;
+		bytes32 position = LibDiamond.DIAMOND_STORAGE_POSITION;
+		// get diamond storage
+		assembly {
+			ds.slot := position
 		}
-		_;
-	}
-
-	modifier onlyActor(uint id) {
-		address actor = declarationContract.getDeclaration(id).actor;
-		if (msg.sender != actor) {
-			revert InvalidActor(msg.sender);
-		}
-		_;
-	}
-
-	function submitDeclarationProof(uint id, string memory proof) public onlyActor(id) {
-		declarationContract.submitDeclarationProof(id, proof);
-	}
-
-	function concludeDeclarationWithApproval(uint id) public onlyWitness(id) {
-		Declaration memory declaration = declarationContract.setStatus(id, DeclarationStatus.Approved);
-		// distribute collateral to relevant parties
-		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
-		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
-		ArgaLibrary.addToCollateralsMultiple(
-			_redemptions[declaration.actor],
-			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage)
-		);
-		ArgaLibrary.addToCollateralsSingle(
-			_redemptions[treasurer],
-			Collateral(treasurerValue, declaration.collateral.erc20Address)
-		);
-		ArgaLibrary.addToCollateralsSingle(
-			_redemptions[declaration.witness],
-			Collateral(treasurerValue, declaration.collateral.erc20Address)
-		);
-		ArgaLibrary.addToCollateralsSingle(
-			_redemptions[declaration.actor],
-			Collateral(actorValue, declaration.collateral.erc20Address)
-		);
-	}
-
-	function concludeDeclarationWithRejection(uint id) public onlyWitness(id) {
-		Declaration memory declaration = declarationContract.setStatus(id, DeclarationStatus.Rejected);
-		// distribute collateral to relevant parties
-		uint treasurerValue = (declaration.collateral.value * treasurerRedemptionPercentage) / 100;
-		uint witnessValue = (declaration.collateral.value * witnessRedemptionPercentage) / 100;
-		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
-		poolContract.addToPool(Collateral(poolValue, declaration.collateral.erc20Address));
-		ArgaLibrary.addToCollateralsMultiple(
-			_redemptions[declaration.actor],
-			poolContract.maybeWinPool(declaration, treasurerRedemptionPercentage)
-		);
-		ArgaLibrary.addToCollateralsSingle(
-			_redemptions[treasurer],
-			Collateral(treasurerValue, declaration.collateral.erc20Address)
-		);
-		ArgaLibrary.addToCollateralsSingle(
-			_redemptions[declaration.witness],
-			Collateral(treasurerValue, declaration.collateral.erc20Address)
-		);
-	}
-
-	function changeWinMultiplier(uint newMultiplier) public onlyOwner {
-		poolContract.changeWinMultiplier(newMultiplier);
-	}
-
-	function redeem(address payable destination, address[] calldata erc20Addresses) public {
-		address party = msg.sender;
-		Collateral[] storage collaterals = _redemptions[party];
-		for (uint i = 0; i < erc20Addresses.length; i++) {
-			address erc20Address = erc20Addresses[i];
-			bool success;
-			for (uint ii = 0; ii < collaterals.length; ii++) {
-				Collateral storage collateral = collaterals[ii];
-				if (collateral.erc20Address != erc20Address) continue;
-				if (erc20Address == address(0)) {
-					// ether
-					require(collateral.value > 0, 'No ETH available to redeem');
-					(bool sent, ) = destination.call{value: collateral.value, gas: 5000}('');
-					require(sent, 'Failed to send Ether');
-					success = true;
-					delete collaterals[ii];
-				} else {
-					// token
-				}
+		// get facet from function selector
+		address facet = address(bytes20(ds.facets[msg.sig]));
+		require(facet != address(0), 'Diamond: Function does not exist');
+		// Execute external function from facet using delegatecall and return any value.
+		assembly {
+			// copy function selector and any arguments
+			calldatacopy(0, 0, calldatasize())
+			// execute function call using the facet
+			let result := delegatecall(gas(), facet, 0, calldatasize(), 0, 0)
+			// get any return value
+			returndatacopy(0, 0, returndatasize())
+			// return any return value or error back to the caller
+			switch result
+			case 0 {
+				revert(0, returndatasize())
 			}
-			require(success, 'No redemption found for address');
+			default {
+				return(0, returndatasize())
+			}
 		}
 	}
+
+	receive() external payable {}
 }

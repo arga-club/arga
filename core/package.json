@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"compile": "hardhat compile",
+		"compile:force": "rimraf artifacts cache typechain-types && cross-env DEBUG=hardhat-diamond-abi nr compile",
 		"hardhat:dev": "hardhat --config hardhat.config.dev.ts --network localhost",
 		"dev": "hardhat --config hardhat.config.dev.ts node",
 		"ignition:wipe": "nr hardhat:dev ignition wipe chain-31337 Arga#Arga",
@@ -23,7 +24,8 @@
 		"declaration-create-community": "nr dev:hardhat-run scripts/declaration-create-community.ts",
 		"transfer-to-tester": "nr dev:hardhat-run scripts/transfer-to-tester.ts",
 		"prettier": "prettier .",
-		"prettier:fix": "prettier --write --plugin=prettier-plugin-solidity ."
+		"prettier:fix": "prettier --write --plugin=prettier-plugin-solidity .",
+		"type-check": "tsc --noEmit"
 	},
 	"keywords": [],
 	"author": "",
@@ -53,6 +55,7 @@
 		"fs-extra": "^11.2.0",
 		"hardhat": "2.20.0",
 		"hardhat-contract-sizer": "^2.10.0",
+		"hardhat-diamond-abi": "^3.0.1",
 		"hardhat-ethernal": "^3.2.5",
 		"hardhat-gas-reporter": "1.0.8",
 		"ms": "^2.1.3",
@@ -64,5 +67,10 @@
 		"typescript": "~5.0.4",
 		"viem": "^2.14.2",
 		"zx": "^8.1.2"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"hardhat-diamond-abi@3.0.1": "patches/hardhat-diamond-abi@3.0.1.patch"
+		}
 	}
 }

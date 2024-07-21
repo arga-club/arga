@@ -6,14 +6,15 @@ pragma solidity ^0.8.0;
 * EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535
 /******************************************************************************/
 import {IDiamondCut} from '../interfaces/IDiamondCut.sol';
-
-// Remember to add the loupe functions from DiamondLoupeFacet to the diamond.
-// The loupe functions are required by the EIP2535 Diamonds standard
+import {IERC173} from '../interfaces/IERC173.sol';
 
 error InitializationFunctionReverted(address _initializationContractAddress, bytes _calldata);
 
 library LibDiamond {
 	bytes32 constant DIAMOND_STORAGE_POSITION = keccak256('diamond.standard.diamond.storage');
+
+	error OwnableUnauthorizedAccount(address _invalidAddress);
+	error OwnableInvalidOwner(address _owner);
 
 	struct DiamondStorage {
 		// maps function selectors to the facets that execute the functions.
@@ -39,13 +40,12 @@ library LibDiamond {
 		}
 	}
 
-	event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
+	// move ownership stuff to Ownership facet
 	function setContractOwner(address _newOwner) internal {
 		DiamondStorage storage ds = diamondStorage();
 		address previousOwner = ds.contractOwner;
 		ds.contractOwner = _newOwner;
-		emit OwnershipTransferred(previousOwner, _newOwner);
+		emit IERC173.OwnershipTransferred(previousOwner, _newOwner);
 	}
 
 	function contractOwner() internal view returns (address contractOwner_) {
@@ -53,7 +53,9 @@ library LibDiamond {
 	}
 
 	function enforceIsContractOwner() internal view {
-		require(msg.sender == diamondStorage().contractOwner, 'LibDiamond: Must be contract owner');
+		if (msg.sender != diamondStorage().contractOwner) {
+			revert OwnableUnauthorizedAccount(msg.sender);
+		}
 	}
 
 	event DiamondCut(IDiamondCut.FacetCut[] _diamondCut, address _init, bytes _calldata);

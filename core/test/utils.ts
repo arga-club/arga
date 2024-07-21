@@ -1,44 +1,92 @@
-import hre, { upgrades } from 'hardhat'
+import hre from 'hardhat'
 import ms from 'ms'
-import { Arga, ArgaDeclaration, ArgaPool } from '../typechain-types'
+import { ArgaDiamond, ArgaLibrary } from '../typechain-types'
 import assert from 'assert'
-import { ContractTransactionResponse } from 'ethers'
+import { ContractTransactionResponse, FunctionFragment, BaseContract, BigNumberish } from 'ethers'
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers'
-import { DeclarationStruct } from '../typechain-types/contracts/ArgaDeclarations'
 
 export const getSigners = async () => {
 	const [owner, actor, witness, other] = await hre.ethers.getSigners()
 	return { owner, actor, witness, other }
 }
 
-type ContractName = 'Arga' | 'ArgaDeclaration' | 'ArgaPool'
+const FacetCutAction = { Add: 0, Replace: 1, Remove: 2 }
 
-export const deployUUPSContract = async <T extends Arga | ArgaDeclaration | ArgaPool>(
-	name: ContractName,
-	ownerAddress: string,
-) => {
-	const contractFactory = await hre.ethers.getContractFactory(name)
-	const contractDeployed = (await upgrades.deployProxy(contractFactory, [ownerAddress], {
-		kind: 'uups',
-	})) as unknown as T
-	await contractDeployed.waitForDeployment()
-	return [contractDeployed, await contractDeployed.getAddress()] as const
+function getSelectors(contract: BaseContract) {
+	const selectors = Object.values(contract.interface.fragments)
+		.filter((fragment): fragment is FunctionFragment => fragment.type === 'function')
+		.filter(fragment => fragment.format() !== 'init(bytes)')
+		.map(fragment => fragment.selector)
+	return selectors
 }
-export const deploy = async () => {
-	const { owner } = await getSigners()
-	const [argaDeclaration, argaDeclarationAddress] = await deployUUPSContract<ArgaDeclaration>(
-		'ArgaDeclaration',
-		owner.address,
+
+export type ContractName = 'Arga' | 'ArgaDeclaration' | 'ArgaPool'
+
+export const deployContract = async <C extends BaseContract>({
+	deployTransaction,
+}: {
+	name: string
+	deployTransaction: Promise<C>
+}) => {
+	const deployed = await deployTransaction
+	await deployed.waitForDeployment()
+	return deployed
+}
+
+export const deploy = async ({ owner: ownerArg }: { owner?: string } = {}) => {
+	const owner = ownerArg ?? '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
+
+	const DiamondCutFacet = await deployContract({
+		name: 'DiamondCutFacet',
+		deployTransaction: hre.ethers.deployContract('DiamondCutFacet'),
+	})
+	const Arga = await deployContract({
+		name: 'Arga',
+		deployTransaction: hre.ethers.deployContract('Arga', [owner, await DiamondCutFacet.getAddress()]),
+	})
+	const DiamondInit = await deployContract({
+		name: 'DiamondInit',
+		deployTransaction: hre.ethers.deployContract('DiamondInit'),
+	})
+
+	const facetCuts = await Promise.all(
+		[
+			deployContract({
+				name: 'DiamondLoupeFacet',
+				deployTransaction: hre.ethers.deployContract('DiamondLoupeFacet'),
+			}),
+			deployContract({ name: 'OwnershipFacet', deployTransaction: hre.ethers.deployContract('OwnershipFacet') }),
+			deployContract({ name: 'DeclarationFacet', deployTransaction: hre.ethers.deployContract('DeclarationFacet') }),
+			deployContract({ name: 'PoolFacet', deployTransaction: hre.ethers.deployContract('PoolFacet') }),
+			deployContract({ name: 'RedemptionFacet', deployTransaction: hre.ethers.deployContract('RedemptionFacet') }),
+			deployContract({ name: 'TreasuryFacet', deployTransaction: hre.ethers.deployContract('TreasuryFacet') }),
+		].map(async facetDeploying => {
+			const facet = await facetDeploying
+			return {
+				facetAddress: await facet.getAddress(),
+				action: FacetCutAction.Add,
+				functionSelectors: getSelectors(facet),
+			}
+		}),
 	)
-	const [argaPool, argaPoolAddress] = await deployUUPSContract<ArgaPool>('ArgaPool', owner.address)
-	const argaContract = await hre.ethers.getContractFactory('Arga')
-	const arga = (await upgrades.deployProxy(argaContract, [owner.address, argaDeclarationAddress, argaPoolAddress], {
-		kind: 'uups',
-	})) as unknown as Arga
-	await arga.waitForDeployment()
-	await argaDeclaration.setParentContract(await arga.getAddress())
-	await argaPool.setParentContract(await arga.getAddress())
-	return { arga, argaDeclaration, argaPool }
+
+	const DiamondCut = await hre.ethers.getContractAt('IDiamondCut', await Arga.getAddress())
+	const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner])
+	const diamondCutTransaction = await DiamondCut.diamondCut(
+		facetCuts,
+		await DiamondInit.getAddress(),
+		initFunctionCall,
+	)
+	const diamondCutReceipt = await diamondCutTransaction.wait()
+	if (!diamondCutReceipt?.status) {
+		throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
+	}
+
+	const ArgaDiamond = await hre.ethers.getContractAt('ArgaDiamond', await Arga.getAddress())
+
+	return {
+		arga: ArgaDiamond,
+	}
 }
 
 export const declarationStatus = {
@@ -48,7 +96,7 @@ export const declarationStatus = {
 	rejected: 3n,
 }
 
-export const declaration: DeclarationStruct = {
+export const declaration: ArgaLibrary.DeclarationStruct = {
 	id: 0n,
 	status: declarationStatus.active,
 	summary: 'successfully test Arga contract',
@@ -74,7 +122,7 @@ export const makeDeclaration = async ({
 	actor,
 	witness,
 }: {
-	arga: Arga
+	arga: ArgaDiamond
 	actor: HardhatEthersSigner
 	witness: HardhatEthersSigner
 }) => {
@@ -110,14 +158,16 @@ export const submitDeclarationProof = async ({
 	arga,
 	actor,
 	witness,
+	id,
 }: {
-	arga: Arga
+	arga: ArgaDiamond
 	actor: HardhatEthersSigner
 	witness: HardhatEthersSigner
+	id?: BigNumberish
 }) => {
 	await arga.connect(actor).submitDeclarationProof(declaration.id, proof)
 	const expectedDeclaration = [
-		declaration.id,
+		id ?? declaration.id,
 		declaration.status,
 		declaration.summary,
 		declaration.description,

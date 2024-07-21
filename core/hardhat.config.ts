@@ -1,3 +1,4 @@
+import 'hardhat-diamond-abi'
 import { HardhatUserConfig, vars } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import '@nomicfoundation/hardhat-toolbox-viem'
@@ -18,6 +19,11 @@ export default {
 				},
 			},
 		],
+	},
+	diamondAbi: {
+		name: 'ArgaDiamond',
+		include: ['DeclarationFacet', 'PoolFacet', 'RedemptionFacet', 'TreasuryFacet', 'OwnershipFacet'],
+		filter: abiElement => !['supportsInterface', 'facetFunctionSelectors'].includes(abiElement.name),
 	},
 	networks: {
 		sepolia: {

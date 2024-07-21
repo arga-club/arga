@@ -1,24 +1,25 @@
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { declaration, deploy, getSigners, makeDeclaration } from './utils'
-import { DeclarationStruct } from '../typechain-types/contracts/ArgaDeclarations'
+import { declaration, deploy, getSigners, makeDeclaration, submitDeclarationProof } from './utils'
+import { ArgaLibrary } from '../typechain-types'
 
 const fixture = async () => {
 	const signers = await getSigners()
-	const { arga, argaDeclaration } = await deploy()
-	return { arga, argaDeclaration, ...signers }
+	const { arga } = await deploy()
+	return { arga, ...signers }
 }
 
 describe('Security', function () {
 	describe('witness', () => {
 		it('only witness can conclude declaration', async () => {
-			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
+			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
+			await submitDeclarationProof({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await expect(arga.connect(witness).concludeDeclarationWithApproval(id))
-				.to.emit(argaDeclaration, 'DeclarationStatusChange')
+				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: DeclarationStruct) =>
+					(declarationArg: ArgaLibrary.DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.summary === declaration.summary &&
 						declarationArg.description === declaration.description &&

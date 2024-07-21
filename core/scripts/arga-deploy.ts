@@ -1,33 +1,27 @@
 import hre from 'hardhat'
-import fs from 'fs-extra'
 import 'zx/globals'
+import { deploy } from '../test/utils'
 $.verbose = true
 
 async function main() {
 	if (hre.hardhatArguments.network === 'localhost') {
 		$`rm -rf ignition/deployments/chain-31337`
 	}
-	const Arga = await hre.ethers.getContractFactory('Arga')
+	const owner = '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
+	console.log({ owner })
 
-	console.log('deploying proxy...')
-	const proxy = await hre.upgrades.deployProxy(Arga, ['0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'], {
-		kind: 'uups',
-	})
-	await proxy.waitForDeployment()
-	const proxyAddress = await proxy.getAddress()
-	console.log({ proxyAddress })
-
-	const implementationAddress = await hre.upgrades.erc1967.getImplementationAddress(await proxy.getAddress())
-	console.log({ implementationAddress })
+	console.log('deploying init...')
+	const { arga } = await deploy({ owner })
+	const address = await arga.getAddress()
 
 	console.log('pushing to ethernal...')
 	await hre.ethernal.push({
-		name: 'Arga',
-		address: proxyAddress,
+		name: 'ArgaDiamond',
+		address,
 	})
 
 	console.log('deploying to ignition...')
-	await fs.outputJson('ignition/parameters.json', { Arga: { proxyAddress } })
+	await fs.outputJson('ignition/parameters.json', { Arga: { address } })
 	await $`hardhat \
 	--config ${hre.hardhatArguments.config} \
 	--network ${hre.hardhatArguments.network} \

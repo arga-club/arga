@@ -12,24 +12,24 @@ import {
 	submitDeclarationProof,
 	value,
 } from './utils'
-import { DeclarationStruct } from '../typechain-types/contracts/ArgaDeclarations'
+import { ArgaLibrary } from '../typechain-types'
 
 const fixture = async () => {
 	const signers = await getSigners()
-	const { arga, argaDeclaration, argaPool } = await deploy()
-	return { arga, argaDeclaration, argaPool, ...signers }
+	const { arga } = await deploy()
+	return { arga, ...signers }
 }
 
 describe('Conclusion', function () {
 	describe('Proof', () => {
 		it('can submit proof', async () => {
-			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
+			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await expect(arga.connect(actor).submitDeclarationProof(id, proof))
-				.to.emit(argaDeclaration, 'DeclarationStatusChange')
+				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: DeclarationStruct) =>
+					(declarationArg: ArgaLibrary.DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declarationStatus.proofSubmitted &&
 						declarationArg.summary === declaration.summary &&
@@ -53,14 +53,14 @@ describe('Conclusion', function () {
 	})
 	describe('Approval', () => {
 		it('emits conclusion event', async () => {
-			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
+			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await submitDeclarationProof({ arga, actor, witness })
 			await expect(arga.connect(witness).concludeDeclarationWithApproval(id))
-				.to.emit(argaDeclaration, 'DeclarationStatusChange')
+				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: DeclarationStruct) =>
+					(declarationArg: ArgaLibrary.DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declarationStatus.approved &&
 						declarationArg.summary === declaration.summary &&
@@ -76,10 +76,11 @@ describe('Conclusion', function () {
 				)
 		})
 		it('allows actor, witness, treasurer to collect compensation', async () => {
-			const { arga, argaPool, actor, witness, owner } = await loadFixture(fixture)
+			const { arga, actor, witness, owner } = await loadFixture(fixture)
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
+			await submitDeclarationProof({ arga, actor, witness })
 			await arga.connect(witness).concludeDeclarationWithApproval(id)
 			const actorRedemption = (value * 96n) / 100n
 			const witnessRedemption = (value * 2n) / 100n
@@ -87,7 +88,7 @@ describe('Conclusion', function () {
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([[actorRedemption, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[witnessRedemption, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[ownerRedemption, hre.ethers.ZeroAddress]])
-			expect(await argaPool.pool()).to.deep.equal([])
+			expect(await arga.pool()).to.deep.equal([])
 			{
 				const balanceBefore = await actor.provider.getBalance(actor.address)
 				const transaction = await arga.connect(actor).redeem(actor.address, [hre.ethers.ZeroAddress])
@@ -126,9 +127,11 @@ describe('Conclusion', function () {
 			const { arga, actor, witness, owner } = await loadFixture(fixture)
 			// conclude 2 declarations
 			await makeDeclaration({ arga, actor, witness }).then(async ({ expectedDeclaration: [id] }) => {
+				await submitDeclarationProof({ arga, actor, witness, id })
 				await arga.connect(witness).concludeDeclarationWithApproval(id)
 			})
 			await makeDeclaration({ arga, actor, witness }).then(async ({ expectedDeclaration: [id] }) => {
+				await submitDeclarationProof({ arga, actor, witness, id })
 				await arga.connect(witness).concludeDeclarationWithApproval(id)
 			})
 			// expect double redemptions
@@ -163,22 +166,22 @@ describe('Conclusion', function () {
 			expect(contractBalance).to.equal(0n)
 		})
 		it('wins pool when multiplier is high enough', async () => {
-			const { arga, argaPool, actor, witness, owner } = await loadFixture(fixture)
+			const { arga, actor, witness, owner } = await loadFixture(fixture)
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
 			await submitDeclarationProof({ arga, actor, witness })
 			await arga.connect(witness).concludeDeclarationWithRejection(id)
 			const poolAmount = (value * 96n) / 100n
-			expect(await argaPool.pool()).to.deep.equal([[poolAmount, hre.ethers.ZeroAddress]])
+			expect(await arga.pool()).to.deep.equal([[poolAmount, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			await makeDeclaration({ arga, actor, witness })
 			await arga.connect(actor).submitDeclarationProof(1n, proof)
 			await arga.connect(owner).changeWinMultiplier(50)
 			await expect(await arga.connect(witness).concludeDeclarationWithApproval(1n))
-				.to.emit(argaPool, 'PoolWon')
+				.to.emit(arga, 'PoolWon')
 				.withArgs(
-					(declarationArg: DeclarationStruct) =>
+					(declarationArg: ArgaLibrary.DeclarationStruct) =>
 						declarationArg.id === 1n &&
 						declarationArg.status === declarationStatus.approved &&
 						declarationArg.summary === declaration.summary &&
@@ -222,14 +225,14 @@ describe('Conclusion', function () {
 	})
 	describe('Rejection', () => {
 		it('emits conclusion event', async () => {
-			const { arga, argaDeclaration, actor, witness } = await loadFixture(fixture)
+			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await submitDeclarationProof({ arga, actor, witness })
 			await expect(arga.connect(witness).concludeDeclarationWithRejection(id))
-				.to.emit(argaDeclaration, 'DeclarationStatusChange')
+				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
-					(declarationArg: DeclarationStruct) =>
+					(declarationArg: ArgaLibrary.DeclarationStruct) =>
 						declarationArg.id === declaration.id &&
 						declarationArg.status === declarationStatus.rejected &&
 						declarationArg.summary === declaration.summary &&
@@ -245,7 +248,7 @@ describe('Conclusion', function () {
 				)
 		})
 		it('allows actor, witness, treasurer to collect compensation', async () => {
-			const { arga, argaPool, actor, witness, owner } = await loadFixture(fixture)
+			const { arga, actor, witness, owner } = await loadFixture(fixture)
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
@@ -253,7 +256,7 @@ describe('Conclusion', function () {
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await argaPool.pool()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
+			expect(await arga.pool()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
 		})
 		it('only witness can reject', async () => {
 			// test

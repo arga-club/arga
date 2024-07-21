@@ -14,7 +14,6 @@ describe('Treasury', function () {
 		it('sets treasurer on deploy', async () => {
 			const { arga, owner } = await loadFixture(fixture)
 			expect(await arga.treasurer()).to.equal(owner)
-			await expect(arga.deploymentTransaction()).to.emit(arga, 'TreasurerChanged')
 		})
 		it('owner can change treasurer', async () => {
 			const { arga, owner, other } = await loadFixture(fixture)
@@ -23,7 +22,10 @@ describe('Treasury', function () {
 		})
 		it('rejects zero address for treasurer', async () => {
 			const { arga, owner } = await loadFixture(fixture)
-			await expect(arga.connect(owner).changeTreasurer(hre.ethers.ZeroAddress)).to.be.revertedWith('Invalid address')
+			await expect(arga.connect(owner).changeTreasurer(hre.ethers.ZeroAddress)).to.be.revertedWithCustomError(
+				{ interface: arga.interface },
+				'ZeroAddress',
+			)
 		})
 		it("other user can't change treasurer", async () => {
 			const { arga, other, owner } = await loadFixture(fixture)

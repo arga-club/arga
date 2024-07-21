@@ -6,7 +6,7 @@ import deployments from '../ignition/deployments/chain-31337/deployed_addresses.
 async function main() {
 	const address = vars.get('TEST_ACCOUNT_ADDRESS')
 	const signer = await hre.ethers.getImpersonatedSigner(address)
-	const arga = await hre.ethers.getContractAt('Arga', deployments['Arga#Arga'])
+	const arga = await hre.ethers.getContractAt('ArgaDiamond', deployments['Arga#Arga'])
 	const { hash } = await arga
 		.connect(signer)
 		.declareWithEther(

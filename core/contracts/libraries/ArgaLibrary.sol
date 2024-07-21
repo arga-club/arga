@@ -4,7 +4,7 @@ import 'hardhat/console.sol';
 
 pragma solidity ^0.8.22;
 
-interface ArgaDefinitions {
+library ArgaLibrary {
 	event ParentContractChanged(address parentContract);
 
 	event DeclarationMade(Declaration declaration);
@@ -12,6 +12,10 @@ interface ArgaDefinitions {
 
 	event PoolWon(Declaration declaration);
 	event TreasurerChanged(address treasurer);
+
+	error ZeroAddress();
+	error InvalidWitness(address witness);
+	error InvalidActor(address actor);
 
 	struct Collateral {
 		uint value;
@@ -41,18 +45,10 @@ interface ArgaDefinitions {
 		// bool hasWon;
 	}
 
-	error InvalidWitness(address sender);
-	error InvalidActor(address sender);
-}
-
-library ArgaLibrary {
-	function addToCollateralsSingle(
-		ArgaDefinitions.Collateral[] storage collaterals,
-		ArgaDefinitions.Collateral memory collateral
-	) internal {
+	function addToCollateralsSingle(Collateral[] storage collaterals, Collateral memory collateral) internal {
 		// try to add to existing collateral if exists
 		for (uint i = 0; i < collaterals.length; i++) {
-			ArgaDefinitions.Collateral storage existingCollateral = collaterals[i];
+			Collateral storage existingCollateral = collaterals[i];
 			if (existingCollateral.erc20Address != collateral.erc20Address) continue;
 			existingCollateral.value = existingCollateral.value + collateral.value;
 			return;
@@ -60,14 +56,11 @@ library ArgaLibrary {
 		// otherwise add new collateral
 		collaterals.push(collateral);
 	}
-	function addToCollateralsMultiple(
-		ArgaDefinitions.Collateral[] storage collaterals,
-		ArgaDefinitions.Collateral[] memory newCollaterals
-	) internal {
+	function addToCollateralsMultiple(Collateral[] storage collaterals, Collateral[] memory newCollaterals) internal {
 		// try to add to existing collateral if exists
 		for (uint i = 0; i < newCollaterals.length; i++) {
 			for (uint ii = 0; ii < collaterals.length; ii++) {
-				ArgaDefinitions.Collateral storage existingCollateral = collaterals[ii];
+				Collateral storage existingCollateral = collaterals[ii];
 				if (existingCollateral.erc20Address != newCollaterals[i].erc20Address) continue;
 				existingCollateral.value = existingCollateral.value + newCollaterals[i].value;
 				return;
