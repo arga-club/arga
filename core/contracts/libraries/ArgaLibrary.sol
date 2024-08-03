@@ -10,7 +10,9 @@ library ArgaLibrary {
 	event DeclarationMade(Declaration declaration);
 	event DeclarationStatusChange(Declaration declaration);
 
+	event PoolDrawn(uint drawId);
 	event PoolWon(Declaration declaration);
+	error InvalidEntropyContract(address sender);
 	event TreasurerChanged(address treasurer);
 
 	error ZeroAddress();
@@ -42,7 +44,20 @@ library ArgaLibrary {
 		uint witnessByDate;
 		Collateral collateral;
 		string proof;
-		// bool hasWon;
+		uint64 drawId;
+	}
+
+	enum DrawStatus {
+		Pending,
+		Lost,
+		Won
+	}
+	struct Draw {
+		uint declarationId;
+		Collateral[] pool;
+		uint chanceToWin;
+		DrawStatus status;
+		uint value;
 	}
 
 	function addToCollateralsSingle(Collateral[] storage collaterals, Collateral memory collateral) internal {
@@ -67,6 +82,20 @@ library ArgaLibrary {
 			}
 			// otherwise add new collateral
 			collaterals.push(newCollaterals[i]);
+		}
+	}
+	function removeFromCollateralsMultiple(
+		Collateral[] storage collaterals,
+		Collateral[] memory newCollaterals
+	) internal {
+		// try to add to existing collateral if exists
+		for (uint i = 0; i < newCollaterals.length; i++) {
+			for (uint ii = 0; ii < collaterals.length; ii++) {
+				Collateral storage existingCollateral = collaterals[ii];
+				if (existingCollateral.erc20Address != newCollaterals[i].erc20Address) continue;
+				existingCollateral.value = existingCollateral.value - newCollaterals[i].value;
+				return;
+			}
 		}
 	}
 }

@@ -3,6 +3,11 @@ pragma solidity ^0.8.0;
 
 import {LibDiamond} from '../libraries/LibDiamond.sol';
 import {ArgaLibrary} from '../libraries/ArgaLibrary.sol';
+import {RedemptionLibrary} from './RedemptionFacet.sol';
+import {DeclarationLibrary} from './DeclarationFacet.sol';
+
+import {IEntropyConsumer} from '@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol';
+import {IEntropy} from '@pythnetwork/entropy-sdk-solidity/IEntropy.sol';
 
 library PoolLibrary {
 	bytes32 constant DIAMOND_STORAGE_POSITION = keccak256('diamond.standard.pool.storage');
@@ -11,7 +16,10 @@ library PoolLibrary {
 	struct State {
 		ArgaLibrary.Collateral[] pool;
 		uint winMultiplier;
-		uint randomNonce;
+		address entropyProvider;
+		address entropyContractAddress;
+		IEntropy entropy;
+		mapping(uint64 => ArgaLibrary.Draw) draws;
 	}
 
 	function diamondStorage() internal pure returns (State storage ds) {
@@ -28,25 +36,24 @@ library PoolLibrary {
 		}
 	}
 
+	// rename to draw
 	function maybeWinPool(
 		ArgaLibrary.Declaration memory declaration,
-		uint feesTotalPercent
-	) internal returns (ArgaLibrary.Collateral[] memory) {
+		uint feesTotalPercent,
+		bytes32 randomNumber
+	) internal returns (uint64) {
 		State storage ds = diamondStorage();
-		ArgaLibrary.Collateral[] memory noWinnings;
-		if (ds.pool.length == 0) return noWinnings;
-		uint random = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, ds.randomNonce))) % 100;
-		ds.randomNonce++;
+		if (ds.pool.length == 0) return uint64(0);
+
+		uint fee = ds.entropy.getFee(ds.entropyProvider);
+		uint64 drawId = ds.entropy.requestWithCallback{value: fee}(ds.entropyProvider, randomNumber);
 		uint chanceToWin = (declaration.collateral.value / ds.pool[0].value) * feesTotalPercent * ds.winMultiplier;
-		if (random > chanceToWin) return noWinnings;
-		// won
-		ArgaLibrary.Collateral[] memory winnings = new ArgaLibrary.Collateral[](ds.pool.length);
-		while (ds.pool.length > 0) {
-			winnings[ds.pool.length - 1] = ds.pool[ds.pool.length - 1];
-			ds.pool.pop();
-		}
-		emit ArgaLibrary.PoolWon(declaration);
-		return winnings;
+		ArgaLibrary.Draw storage draw = ds.draws[drawId];
+		draw.declarationId = declaration.id;
+		draw.chanceToWin = chanceToWin;
+		draw.pool = ds.pool;
+		emit ArgaLibrary.PoolDrawn(drawId);
+		return drawId;
 	}
 
 	function addToPool(ArgaLibrary.Collateral memory collateral) internal {
@@ -55,15 +62,48 @@ library PoolLibrary {
 	}
 }
 
-contract PoolFacet {
+contract PoolFacet is IEntropyConsumer {
 	function pool() external view returns (ArgaLibrary.Collateral[] memory) {
 		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
 		return ds.pool;
+	}
+
+	function draw(uint64 drawId) external view returns (ArgaLibrary.Draw memory) {
+		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
+		return ds.draws[drawId];
 	}
 
 	function changeWinMultiplier(uint winMultiplier) external {
 		LibDiamond.enforceIsContractOwner();
 		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
 		ds.winMultiplier = winMultiplier;
+	}
+
+	function getEntropy() internal view override returns (address) {
+		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
+		return address(ds.entropy);
+	}
+
+	function entropyCallback(uint64 drawId, address, bytes32 randomNumber) internal override {
+		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
+		if (msg.sender != getEntropy()) {
+			revert ArgaLibrary.InvalidEntropyContract(msg.sender);
+		}
+		DeclarationLibrary.State storage dds = DeclarationLibrary.diamondStorage();
+		ArgaLibrary.Draw storage _draw = ds.draws[drawId];
+		ArgaLibrary.Declaration storage declaration = dds.declarations[_draw.declarationId];
+		_draw.value = uint256(randomNumber) % 100;
+		if (_draw.value > _draw.chanceToWin) {
+			// lost
+			_draw.status = ArgaLibrary.DrawStatus.Lost;
+			return;
+		}
+		// won
+		// transfer from pool to redemptions
+		RedemptionLibrary.State storage rds = RedemptionLibrary.diamondStorage();
+		ArgaLibrary.addToCollateralsMultiple(rds.redemptions[declaration.actor], _draw.pool);
+		// remove from pool
+		ArgaLibrary.removeFromCollateralsMultiple(ds.pool, _draw.pool);
+		_draw.status = ArgaLibrary.DrawStatus.Won;
 	}
 }

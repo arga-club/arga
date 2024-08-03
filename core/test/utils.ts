@@ -71,7 +71,8 @@ export const deploy = async ({ owner: ownerArg }: { owner?: string } = {}) => {
 	)
 
 	const DiamondCut = await hre.ethers.getContractAt('IDiamondCut', await Arga.getAddress())
-	const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner])
+	const entropyContractAddress = '0x4821932D0CDd71225A6d914706A621e0389D7061'
+	const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner, entropyContractAddress])
 	const diamondCutTransaction = await DiamondCut.diamondCut(
 		facetCuts,
 		await DiamondInit.getAddress(),

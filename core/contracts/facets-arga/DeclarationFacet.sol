@@ -113,7 +113,8 @@ contract DeclarationFacet {
 			endDate,
 			witnessByDate,
 			ArgaLibrary.Collateral(msg.value, address(0)),
-			''
+			'',
+			uint64(0)
 		);
 		emit ArgaLibrary.DeclarationMade(declaration);
 		ds.declarations.push(declaration);
@@ -132,7 +133,7 @@ contract DeclarationFacet {
 		return declaration;
 	}
 
-	function concludeDeclarationWithApproval(uint id) external {
+	function concludeDeclarationWithApproval(uint id, bytes32 randomNumber) external {
 		DeclarationLibrary.State storage ds = DeclarationLibrary.diamondStorage();
 		RedemptionLibrary.State storage rds = RedemptionLibrary.diamondStorage();
 		TreasuryLibrary.State storage tds = TreasuryLibrary.diamondStorage();
@@ -150,10 +151,6 @@ contract DeclarationFacet {
 		uint treasurerValue = (declaration.collateral.value * tds.treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * tds.witnessRedemptionPercentage) / 100;
 		uint actorValue = declaration.collateral.value - treasurerValue - witnessValue;
-		ArgaLibrary.addToCollateralsMultiple(
-			rds.redemptions[declaration.actor],
-			PoolLibrary.maybeWinPool(declaration, tds.treasurerRedemptionPercentage)
-		);
 		ArgaLibrary.addToCollateralsSingle(
 			rds.redemptions[tds.treasurer],
 			ArgaLibrary.Collateral(treasurerValue, declaration.collateral.erc20Address)
@@ -166,9 +163,13 @@ contract DeclarationFacet {
 			rds.redemptions[declaration.actor],
 			ArgaLibrary.Collateral(actorValue, declaration.collateral.erc20Address)
 		);
+
+		// draw and keep drawId
+		uint64 drawId = PoolLibrary.maybeWinPool(declaration, tds.treasurerRedemptionPercentage, randomNumber);
+		declaration.drawId = drawId;
 	}
 
-	function concludeDeclarationWithRejection(uint id) external {
+	function concludeDeclarationWithRejection(uint id, bytes32 randomNumber) external {
 		DeclarationLibrary.State storage ds = DeclarationLibrary.diamondStorage();
 		RedemptionLibrary.State storage rds = RedemptionLibrary.diamondStorage();
 		TreasuryLibrary.State storage tds = TreasuryLibrary.diamondStorage();
@@ -185,10 +186,6 @@ contract DeclarationFacet {
 		uint witnessValue = (declaration.collateral.value * tds.witnessRedemptionPercentage) / 100;
 		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
 		PoolLibrary.addToPool(ArgaLibrary.Collateral(poolValue, declaration.collateral.erc20Address));
-		ArgaLibrary.addToCollateralsMultiple(
-			rds.redemptions[declaration.actor],
-			PoolLibrary.maybeWinPool(declaration, tds.treasurerRedemptionPercentage)
-		);
 		ArgaLibrary.addToCollateralsSingle(
 			rds.redemptions[tds.treasurer],
 			ArgaLibrary.Collateral(treasurerValue, declaration.collateral.erc20Address)
@@ -197,5 +194,9 @@ contract DeclarationFacet {
 			rds.redemptions[declaration.witness],
 			ArgaLibrary.Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
+
+		// draw and keep drawId
+		uint64 drawId = PoolLibrary.maybeWinPool(declaration, tds.treasurerRedemptionPercentage, randomNumber);
+		declaration.drawId = drawId;
 	}
 }

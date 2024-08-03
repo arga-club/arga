@@ -16,9 +16,10 @@ import {IERC165} from '../interfaces/IERC165.sol';
 
 import {TreasuryLibrary} from '../facets-arga/TreasuryFacet.sol';
 import {PoolLibrary} from '../facets-arga/PoolFacet.sol';
+import {IEntropy} from '@pythnetwork/entropy-sdk-solidity/IEntropy.sol';
 
 contract DiamondInit {
-	function init(address treasurer) external {
+	function init(address treasurer, address entropyContractAddress) external {
 		// adding ERC165 data
 		LibDiamond.DiamondStorage storage lds = LibDiamond.diamondStorage();
 		lds.supportedInterfaces[type(IERC165).interfaceId] = true;
@@ -33,6 +34,8 @@ contract DiamondInit {
 
 		PoolLibrary.State storage pds = PoolLibrary.diamondStorage();
 		pds.winMultiplier = 1;
-		pds.randomNonce = 0;
+		pds.entropyContractAddress = entropyContractAddress;
+		pds.entropy = IEntropy(pds.entropyContractAddress);
+		pds.entropyProvider = pds.entropy.getDefaultProvider();
 	}
 }
