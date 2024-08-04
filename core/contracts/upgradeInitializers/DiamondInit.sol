@@ -19,6 +19,16 @@ import {PoolLibrary} from '../facets-arga/PoolFacet.sol';
 import {IEntropy} from '@pythnetwork/entropy-sdk-solidity/IEntropy.sol';
 
 contract DiamondInit {
+	error WrongEntropyContractAddress(address entropyContractAddress);
+
+	function isContract(address _addr) public view returns (bool) {
+		uint32 size;
+		assembly {
+			size := extcodesize(_addr)
+		}
+		return (size > 0);
+	}
+
 	function init(address treasurer, address entropyContractAddress) external {
 		// adding ERC165 data
 		LibDiamond.DiamondStorage storage lds = LibDiamond.diamondStorage();
@@ -35,8 +45,10 @@ contract DiamondInit {
 		PoolLibrary.State storage pds = PoolLibrary.diamondStorage();
 		pds.winMultiplier = 1;
 		pds.entropyContractAddress = entropyContractAddress;
+		if (!isContract(entropyContractAddress)) {
+			revert WrongEntropyContractAddress(entropyContractAddress);
+		}
 		pds.entropy = IEntropy(pds.entropyContractAddress);
-		// pds.entropyProvider = pds.entropy.getDefaultProvider();
-		pds.entropyProvider = address(0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344);
+		pds.entropyProvider = pds.entropy.getDefaultProvider();
 	}
 }
