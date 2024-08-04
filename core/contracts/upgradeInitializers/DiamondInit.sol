@@ -36,6 +36,7 @@ contract DiamondInit {
 		pds.winMultiplier = 1;
 		pds.entropyContractAddress = entropyContractAddress;
 		pds.entropy = IEntropy(pds.entropyContractAddress);
-		pds.entropyProvider = pds.entropy.getDefaultProvider();
+		// pds.entropyProvider = pds.entropy.getDefaultProvider();
+		pds.entropyProvider = address(0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344);
 	}
 }
