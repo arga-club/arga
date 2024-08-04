@@ -113,10 +113,19 @@ export const declaration: ArgaLibrary.DeclarationStruct = {
 		erc20Address: hre.ethers.ZeroAddress,
 	},
 	proof: '',
+	drawId: 0n,
+}
+
+export const randomNumberForDraw = () => {
+	const randomBytes = hre.ethers.randomBytes(32)
+	const randomHex = hre.ethers.hexlify(randomBytes)
+	return randomHex
 }
 
 export const proof = 'test proof value'
 export const value = hre.ethers.parseEther('1')
+
+export const withoutDrawId = (declaration: ArgaLibrary.DeclarationStructOutput) => declaration.slice(0, -1)
 
 export const makeDeclaration = async ({
 	arga,

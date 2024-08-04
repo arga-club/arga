@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { declaration, deploy, getSigners, makeDeclaration, submitDeclarationProof } from './utils'
+import { declaration, deploy, getSigners, makeDeclaration, randomNumberForDraw, submitDeclarationProof } from './utils'
 import { ArgaLibrary } from '../typechain-types'
 
 const fixture = async () => {
@@ -16,7 +16,7 @@ describe('Security', function () {
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			await submitDeclarationProof({ arga, actor, witness })
 			const id = expectedDeclaration[0]
-			await expect(arga.connect(witness).concludeDeclarationWithApproval(id))
+			await expect(arga.connect(witness).concludeDeclarationWithApproval(id, randomNumberForDraw()))
 				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
 					(declarationArg: ArgaLibrary.DeclarationStruct) =>
@@ -31,7 +31,7 @@ describe('Security', function () {
 						declarationArg.collateral.value === declaration.collateral.value &&
 						declarationArg.collateral.erc20Address === declaration.collateral.erc20Address,
 				)
-			await expect(arga.connect(actor).concludeDeclarationWithApproval(id))
+			await expect(arga.connect(actor).concludeDeclarationWithApproval(id, randomNumberForDraw()))
 				.to.be.revertedWithCustomError(arga, 'InvalidWitness')
 				.withArgs(actor)
 		})

@@ -9,6 +9,7 @@ import {
 	getSigners,
 	makeDeclaration,
 	proof,
+	randomNumberForDraw,
 	submitDeclarationProof,
 	value,
 } from './utils'
@@ -57,7 +58,7 @@ describe('Conclusion', function () {
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await submitDeclarationProof({ arga, actor, witness })
-			await expect(arga.connect(witness).concludeDeclarationWithApproval(id))
+			await expect(arga.connect(witness).concludeDeclarationWithApproval(id, randomNumberForDraw()))
 				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
 					(declarationArg: ArgaLibrary.DeclarationStruct) =>
@@ -81,7 +82,7 @@ describe('Conclusion', function () {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
 			await submitDeclarationProof({ arga, actor, witness })
-			await arga.connect(witness).concludeDeclarationWithApproval(id)
+			await arga.connect(witness).concludeDeclarationWithApproval(id, randomNumberForDraw())
 			const actorRedemption = (value * 96n) / 100n
 			const witnessRedemption = (value * 2n) / 100n
 			const ownerRedemption = (value * 2n) / 100n
@@ -128,11 +129,11 @@ describe('Conclusion', function () {
 			// conclude 2 declarations
 			await makeDeclaration({ arga, actor, witness }).then(async ({ expectedDeclaration: [id] }) => {
 				await submitDeclarationProof({ arga, actor, witness, id })
-				await arga.connect(witness).concludeDeclarationWithApproval(id)
+				await arga.connect(witness).concludeDeclarationWithApproval(id, randomNumberForDraw())
 			})
 			await makeDeclaration({ arga, actor, witness }).then(async ({ expectedDeclaration: [id] }) => {
 				await submitDeclarationProof({ arga, actor, witness, id })
-				await arga.connect(witness).concludeDeclarationWithApproval(id)
+				await arga.connect(witness).concludeDeclarationWithApproval(id, randomNumberForDraw())
 			})
 			// expect double redemptions
 			const actorRedemption = ((value * 96n) / 100n) * 2n
@@ -171,14 +172,14 @@ describe('Conclusion', function () {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
 			await submitDeclarationProof({ arga, actor, witness })
-			await arga.connect(witness).concludeDeclarationWithRejection(id)
+			await arga.connect(witness).concludeDeclarationWithRejection(id, randomNumberForDraw())
 			const poolAmount = (value * 96n) / 100n
 			expect(await arga.pool()).to.deep.equal([[poolAmount, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			await makeDeclaration({ arga, actor, witness })
 			await arga.connect(actor).submitDeclarationProof(1n, proof)
 			await arga.connect(owner).changeWinMultiplier(50)
-			await expect(await arga.connect(witness).concludeDeclarationWithApproval(1n))
+			await expect(await arga.connect(witness).concludeDeclarationWithApproval(1n, randomNumberForDraw()))
 				.to.emit(arga, 'PoolWon')
 				.withArgs(
 					(declarationArg: ArgaLibrary.DeclarationStruct) =>
@@ -229,7 +230,7 @@ describe('Conclusion', function () {
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
 			const id = expectedDeclaration[0]
 			await submitDeclarationProof({ arga, actor, witness })
-			await expect(arga.connect(witness).concludeDeclarationWithRejection(id))
+			await expect(arga.connect(witness).concludeDeclarationWithRejection(id, randomNumberForDraw()))
 				.to.emit(arga, 'DeclarationStatusChange')
 				.withArgs(
 					(declarationArg: ArgaLibrary.DeclarationStruct) =>
@@ -252,7 +253,7 @@ describe('Conclusion', function () {
 			const {
 				expectedDeclaration: [id],
 			} = await makeDeclaration({ arga, actor, witness })
-			await arga.connect(witness).concludeDeclarationWithRejection(id)
+			await arga.connect(witness).concludeDeclarationWithRejection(id, randomNumberForDraw())
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
 			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
 			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])

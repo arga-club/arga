@@ -1,7 +1,7 @@
 import hre from 'hardhat'
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { declaration, deploy, getSigners, makeDeclaration, value } from './utils'
+import { declaration, deploy, getSigners, makeDeclaration, value, withoutDrawId } from './utils'
 import { ArgaLibrary } from '../typechain-types'
 
 const fixture = async () => {
@@ -48,9 +48,12 @@ describe('Declaration', function () {
 		it('declareWithEther adds declaration to list', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor, witness })
-			expect(await arga.getDeclaration(0)).to.deep.equal(expectedDeclaration)
-			expect(await arga.actorDeclarations(actor.address)).to.deep.equal([expectedDeclaration])
-			expect(await arga.witnessDeclarations(witness.address)).to.deep.equal([expectedDeclaration])
+			const firstDeclaration = await arga.getDeclaration(0)
+			expect(withoutDrawId(firstDeclaration)).to.deep.equal(expectedDeclaration)
+			const actorDeclarations = await arga.actorDeclarations(actor.address)
+			expect(actorDeclarations.map(withoutDrawId)).to.deep.equal([expectedDeclaration])
+			const witnessDeclarations = await arga.witnessDeclarations(witness.address)
+			expect(witnessDeclarations.map(withoutDrawId)).to.deep.equal([expectedDeclaration])
 		})
 		it('will not work when endDate is before startDate', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
@@ -129,7 +132,8 @@ describe('Declaration', function () {
 		it('community declarations', async () => {
 			const { arga, actor, other } = await loadFixture(fixture)
 			const { expectedDeclaration } = await makeDeclaration({ arga, actor: other, witness: other })
-			expect(await arga.communityDeclarations(actor.address, 1)).to.deep.equal([expectedDeclaration])
+			const communityDeclarations = await arga.communityDeclarations(actor.address, 1)
+			expect(communityDeclarations.map(withoutDrawId)).to.deep.equal([expectedDeclaration])
 		})
 		it('witness compensation', () => {})
 	})
