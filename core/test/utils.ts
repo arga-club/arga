@@ -33,29 +33,7 @@ export const deployContract = async <C extends BaseContract>({
 	return deployed
 }
 
-let snapshotId: any
-let snapshotArgaAddress: string
-// let snapshotId: any = '0x1'
-// let snapshotArgaAddress: string = '0x5416adf327242B7224413Dcd6E454FfcB5C1e73C'
-const takeSnapshot = async () => {
-	console.log('taking snapshot..')
-	snapshotId = await hre.network.provider.send('evm_snapshot')
-	console.log(`snapshot ${snapshotId} taken`)
-}
-const revertSnapshot = async () => {
-	console.log(`reverting snapshot ${snapshotId}..`)
-	await hre.network.provider.send('evm_revert', [snapshotId])
-}
 export const deploy = async ({ owner: ownerArg }: { owner?: string } = {}) => {
-	if (!!snapshotId && !!snapshotArgaAddress) {
-		await revertSnapshot()
-		await takeSnapshot()
-		const ArgaDiamond = await hre.ethers.getContractAt('ArgaDiamond', snapshotArgaAddress)
-		return {
-			arga: ArgaDiamond,
-		}
-	}
-
 	const owner = ownerArg ?? '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
 
 	const DiamondCutFacet = await deployContract({
@@ -106,10 +84,6 @@ export const deploy = async ({ owner: ownerArg }: { owner?: string } = {}) => {
 	}
 
 	const ArgaDiamond = await hre.ethers.getContractAt('ArgaDiamond', await Arga.getAddress())
-
-	snapshotArgaAddress = await Arga.getAddress()
-	console.log({ snapshotArgaAddress })
-	await takeSnapshot()
 
 	return {
 		arga: ArgaDiamond,
