@@ -127,6 +127,11 @@ export const value = hre.ethers.parseEther('1')
 
 export const withoutDrawId = (declaration: ArgaLibrary.DeclarationStructOutput) => declaration.slice(0, -1)
 
+export const waitForTransaction = async (response: ContractTransactionResponse) => {
+	await response.wait()
+	return response
+}
+
 export const makeDeclaration = async ({
 	arga,
 	actor,

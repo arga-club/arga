@@ -10,6 +10,8 @@ import {TreasuryLibrary} from './TreasuryFacet.sol';
 import {IEntropyConsumer} from '@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol';
 import {IEntropy} from '@pythnetwork/entropy-sdk-solidity/IEntropy.sol';
 
+import 'hardhat/console.sol';
+
 library PoolLibrary {
 	bytes32 constant DIAMOND_STORAGE_POSITION = keccak256('diamond.standard.pool.storage');
 	bytes32 constant POOL_STORAGE_POSITION = keccak256('diamond.standard.pool.storage.pool');
@@ -44,8 +46,10 @@ library PoolLibrary {
 		bytes32 randomNumber
 	) internal returns (uint64) {
 		State storage ds = diamondStorage();
+		console.log('ds.pool.length', ds.pool.length);
 		if (ds.pool.length == 0) return uint64(0);
 
+		console.log('drawing');
 		// take entropy fee from treasury
 		uint fee = ds.entropy.getFee(ds.entropyProvider);
 		RedemptionLibrary.State storage rds = RedemptionLibrary.diamondStorage();
@@ -100,6 +104,7 @@ contract PoolFacet is IEntropyConsumer {
 		ArgaLibrary.Draw storage _draw = ds.draws[drawId];
 		ArgaLibrary.Declaration storage declaration = dds.declarations[_draw.declarationId];
 		_draw.value = uint256(randomNumber) % 100;
+		console.log('_draw.value', _draw.value);
 		if (_draw.value > _draw.chanceToWin) {
 			// lost
 			_draw.status = ArgaLibrary.DrawStatus.Lost;
