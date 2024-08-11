@@ -71,6 +71,15 @@ library ArgaLibrary {
 		// otherwise add new collateral
 		collaterals.push(collateral);
 	}
+	function removeFromCollateralsSingle(Collateral[] storage collaterals, Collateral memory collateral) internal {
+		// try to remove from existing collateral if exists
+		for (uint i = 0; i < collaterals.length; i++) {
+			Collateral storage existingCollateral = collaterals[i];
+			if (existingCollateral.erc20Address != collateral.erc20Address) continue;
+			existingCollateral.value = existingCollateral.value - collateral.value;
+			return;
+		}
+	}
 	function addToCollateralsMultiple(Collateral[] storage collaterals, Collateral[] memory newCollaterals) internal {
 		// try to add to existing collateral if exists
 		for (uint i = 0; i < newCollaterals.length; i++) {
@@ -88,7 +97,7 @@ library ArgaLibrary {
 		Collateral[] storage collaterals,
 		Collateral[] memory newCollaterals
 	) internal {
-		// try to add to existing collateral if exists
+		// try to remove from existing collateral if exists
 		for (uint i = 0; i < newCollaterals.length; i++) {
 			for (uint ii = 0; ii < collaterals.length; ii++) {
 				Collateral storage existingCollateral = collaterals[ii];

@@ -5,6 +5,7 @@ import {LibDiamond} from '../libraries/LibDiamond.sol';
 import {ArgaLibrary} from '../libraries/ArgaLibrary.sol';
 import {RedemptionLibrary} from './RedemptionFacet.sol';
 import {DeclarationLibrary} from './DeclarationFacet.sol';
+import {TreasuryLibrary} from './TreasuryFacet.sol';
 
 import {IEntropyConsumer} from '@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol';
 import {IEntropy} from '@pythnetwork/entropy-sdk-solidity/IEntropy.sol';
@@ -45,7 +46,13 @@ library PoolLibrary {
 		State storage ds = diamondStorage();
 		if (ds.pool.length == 0) return uint64(0);
 
+		// take entropy fee from treasury
 		uint fee = ds.entropy.getFee(ds.entropyProvider);
+		RedemptionLibrary.State storage rds = RedemptionLibrary.diamondStorage();
+		TreasuryLibrary.State storage tds = TreasuryLibrary.diamondStorage();
+		ArgaLibrary.Collateral memory feeCollateral = ArgaLibrary.Collateral(fee, address(0));
+		ArgaLibrary.removeFromCollateralsSingle(rds.redemptions[tds.treasurer], feeCollateral);
+
 		uint64 drawId = ds.entropy.requestWithCallback{value: fee}(ds.entropyProvider, randomNumber);
 		uint chanceToWin = (declaration.collateral.value / ds.pool[0].value) * feesTotalPercent * ds.winMultiplier;
 		ArgaLibrary.Draw storage draw = ds.draws[drawId];
