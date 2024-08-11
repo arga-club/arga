@@ -262,9 +262,13 @@ describe('Conclusion', function () {
 			} = await makeDeclaration({ arga, actor, witness })
 			await arga.connect(witness).concludeDeclarationWithRejection(id, randomNumberForDraw())
 			expect(await arga.redemptionsForParty(actor)).to.deep.equal([])
-			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[(value * 2n) / 100n, hre.ethers.ZeroAddress]])
-			expect(await arga.pool()).to.deep.equal([[(value * 96n) / 100n, hre.ethers.ZeroAddress]])
+			const witnessValue = (value * 2n) / 100n
+			expect(await arga.redemptionsForParty(witness)).to.deep.equal([[witnessValue, hre.ethers.ZeroAddress]])
+			const poolValue = (value * 96n) / 100n
+			expect(await arga.pool()).to.deep.equal([[poolValue, hre.ethers.ZeroAddress]])
+			const balance = await hre.ethers.provider.getBalance(arga)
+			const treasurerValueWithFee = balance - witnessValue - poolValue
+			expect(await arga.redemptionsForParty(owner)).to.deep.equal([[treasurerValueWithFee, hre.ethers.ZeroAddress]])
 		})
 		it('only witness can reject', async () => {
 			// test
