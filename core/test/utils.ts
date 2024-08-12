@@ -10,16 +10,6 @@ export const getSigners = async () => {
 	return { owner, actor, witness, other }
 }
 
-const FacetCutAction = { Add: 0, Replace: 1, Remove: 2 }
-
-function getSelectors(contract: BaseContract) {
-	const selectors = Object.values(contract.interface.fragments)
-		.filter((fragment): fragment is FunctionFragment => fragment.type === 'function')
-		.filter(fragment => fragment.format() !== 'init(bytes)')
-		.map(fragment => fragment.selector)
-	return selectors
-}
-
 export type ContractName = 'Arga' | 'ArgaDeclaration' | 'ArgaPool'
 
 export const deployContract = async <C extends BaseContract>({
@@ -31,63 +21,6 @@ export const deployContract = async <C extends BaseContract>({
 	const deployed = await deployTransaction
 	await deployed.waitForDeployment()
 	return deployed
-}
-
-export const deploy = async ({ owner: ownerArg }: { owner?: string } = {}) => {
-	const owner = ownerArg ?? '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
-
-	const DiamondCutFacet = await deployContract({
-		name: 'DiamondCutFacet',
-		deployTransaction: hre.ethers.deployContract('DiamondCutFacet'),
-	})
-	const Arga = await deployContract({
-		name: 'Arga',
-		deployTransaction: hre.ethers.deployContract('Arga', [owner, await DiamondCutFacet.getAddress()]),
-	})
-	const DiamondInit = await deployContract({
-		name: 'DiamondInit',
-		deployTransaction: hre.ethers.deployContract('DiamondInit'),
-	})
-
-	const facetCuts = await Promise.all(
-		[
-			deployContract({
-				name: 'DiamondLoupeFacet',
-				deployTransaction: hre.ethers.deployContract('DiamondLoupeFacet'),
-			}),
-			deployContract({ name: 'OwnershipFacet', deployTransaction: hre.ethers.deployContract('OwnershipFacet') }),
-			deployContract({ name: 'DeclarationFacet', deployTransaction: hre.ethers.deployContract('DeclarationFacet') }),
-			deployContract({ name: 'PoolFacet', deployTransaction: hre.ethers.deployContract('PoolFacet') }),
-			deployContract({ name: 'RedemptionFacet', deployTransaction: hre.ethers.deployContract('RedemptionFacet') }),
-			deployContract({ name: 'TreasuryFacet', deployTransaction: hre.ethers.deployContract('TreasuryFacet') }),
-		].map(async facetDeploying => {
-			const facet = await facetDeploying
-			return {
-				facetAddress: await facet.getAddress(),
-				action: FacetCutAction.Add,
-				functionSelectors: getSelectors(facet),
-			}
-		}),
-	)
-
-	const DiamondCut = await hre.ethers.getContractAt('IDiamondCut', await Arga.getAddress())
-	const entropyContractAddress = '0x4821932D0CDd71225A6d914706A621e0389D7061'
-	const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner, entropyContractAddress])
-	const diamondCutTransaction = await DiamondCut.diamondCut(
-		facetCuts,
-		await DiamondInit.getAddress(),
-		initFunctionCall,
-	)
-	const diamondCutReceipt = await diamondCutTransaction.wait()
-	if (!diamondCutReceipt?.status) {
-		throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
-	}
-
-	const ArgaDiamond = await hre.ethers.getContractAt('ArgaDiamond', await Arga.getAddress())
-
-	return {
-		arga: ArgaDiamond,
-	}
 }
 
 export const declarationStatus = {
