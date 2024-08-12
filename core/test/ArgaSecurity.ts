@@ -1,11 +1,14 @@
 import { expect } from 'chai'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
-import { declaration, deploy, getSigners, makeDeclaration, randomNumberForDraw, submitDeclarationProof } from './utils'
+import { declaration, getSigners, makeDeclaration, randomNumberForDraw, submitDeclarationProof } from './utils'
 import { ArgaLibrary } from '../typechain-types'
+import hre, { deployments } from 'hardhat'
 
 const fixture = async () => {
+	await deployments.fixture()
+	const argaDeployment = await deployments.get('Arga')
+	const arga = await hre.ethers.getContractAt('ArgaDiamond', argaDeployment.address)
 	const signers = await getSigners()
-	const { arga } = await deploy()
 	return { arga, ...signers }
 }
 
