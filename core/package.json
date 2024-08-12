@@ -17,7 +17,7 @@
 		"test": "nr hardhat:dev test",
 		"console": "nr hardhat:dev console",
 		"size-contracts": "hardhat size-contracts",
-		"deploy:optimism-sepolia": "hardhat deploy --network optimismSepolia",
+		"deploy:optimism-sepolia": "hardhat deploy --network optimismSepolia --export ../dapp/exported.ts",
 		"deploy:sepolia": "hardhat deploy --network sepolia",
 		"deploy:verify": "hardhat etherscan-verify --network sepolia",
 		"declaration-create": "nr hardhat:dev:localhost run scripts/declaration-create.ts",

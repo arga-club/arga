@@ -10,6 +10,7 @@
 		"dev": "next dev",
 		"dev:hardhat": "cross-env NEXT_PUBLIC_CHAIN_NAME=hardhat next dev",
 		"dev:sepolia": "cross-env NEXT_PUBLIC_CHAIN_NAME=sepolia next dev",
+		"dev:optimism-sepolia": "cross-env NEXT_PUBLIC_CHAIN_NAME=optimismSepolia next dev",
 		"postinstall": "prisma generate",
 		"lint": "next lint",
 		"lint:fix": "next lint --fix",
