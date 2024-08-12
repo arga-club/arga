@@ -1,0 +1,139 @@
+{
+  "address": "0x23Cf916b755bd1Cd9E5e90256d770261F018D9cB",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_invalidAddress",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "owner_",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xe7d23cf0df008f1fd3bc0ae936b8e256cf9da727f268fa3ea8db0f3ddc369932",
+  "receipt": {
+    "to": null,
+    "from": "0x2D9E9CCf7EaDcb8d42C85F7678d0311A0479DD50",
+    "contractAddress": "0x23Cf916b755bd1Cd9E5e90256d770261F018D9cB",
+    "transactionIndex": 4,
+    "gasUsed": "176301",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xf4ee445d2a9755919bc72e05fe796d91adf54709c1be4d1b3c10028c84d8e71a",
+    "transactionHash": "0xe7d23cf0df008f1fd3bc0ae936b8e256cf9da727f268fa3ea8db0f3ddc369932",
+    "logs": [],
+    "blockNumber": 15830738,
+    "cumulativeGasUsed": "1610105",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "03ead49419304f1061aea1d2404a3e18",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.22+commit.4fc1097e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_invalidAddress\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"owner_\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"events\":{\"OwnershipTransferred(address,address)\":{\"details\":\"This emits when ownership of a contract changes.\"}},\"kind\":\"dev\",\"methods\":{\"owner()\":{\"returns\":{\"owner_\":\"The address of the owner.\"}},\"transferOwnership(address)\":{\"details\":\"Set _newOwner to address(0) to renounce any ownership.\",\"params\":{\"_newOwner\":\"The address of the new owner of the contract\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"owner()\":{\"notice\":\"Get the address of the owner\"},\"transferOwnership(address)\":{\"notice\":\"Set the address of the new owner of the contract\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/facets-diamond/OwnershipFacet.sol\":\"OwnershipFacet\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":1},\"remappings\":[]},\"sources\":{\"contracts/facets-diamond/OwnershipFacet.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\nimport {LibDiamond} from '../libraries/LibDiamond.sol';\\nimport {IERC173} from '../interfaces/IERC173.sol';\\n\\ncontract OwnershipFacet is IERC173 {\\n\\tfunction transferOwnership(address _newOwner) external override {\\n\\t\\tLibDiamond.enforceIsContractOwner();\\n\\t\\tif (_newOwner == address(0)) {\\n\\t\\t\\trevert LibDiamond.OwnableInvalidOwner(_newOwner);\\n\\t\\t}\\n\\t\\tLibDiamond.setContractOwner(_newOwner);\\n\\t}\\n\\n\\tfunction owner() external view override returns (address owner_) {\\n\\t\\towner_ = LibDiamond.contractOwner();\\n\\t}\\n\\n\\tfunction renounceOwnership() external {\\n\\t\\tLibDiamond.enforceIsContractOwner();\\n\\t\\tLibDiamond.setContractOwner(address(0));\\n\\t}\\n}\\n\",\"keccak256\":\"0x3286641fb0ab56d76b8526a4868fd2824882afd4aa8173da2c04ec25c487d60e\",\"license\":\"MIT\"},\"contracts/interfaces/IDiamondCut.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\n/******************************************************************************\\\\\\n* Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)\\n* EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535\\n/******************************************************************************/\\n\\ninterface IDiamondCut {\\n\\tenum FacetCutAction {\\n\\t\\tAdd,\\n\\t\\tReplace,\\n\\t\\tRemove\\n\\t}\\n\\t// Add=0, Replace=1, Remove=2\\n\\n\\tstruct FacetCut {\\n\\t\\taddress facetAddress;\\n\\t\\tFacetCutAction action;\\n\\t\\tbytes4[] functionSelectors;\\n\\t}\\n\\n\\t/// @notice Add/replace/remove any number of functions and optionally execute\\n\\t///         a function with delegatecall\\n\\t/// @param _diamondCut Contains the facet addresses and function selectors\\n\\t/// @param _init The address of the contract or facet to execute _calldata\\n\\t/// @param _calldata A function call, including function selector and arguments\\n\\t///                  _calldata is executed with delegatecall on _init\\n\\tfunction diamondCut(FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;\\n\\n\\tevent DiamondCut(FacetCut[] _diamondCut, address _init, bytes _calldata);\\n}\\n\",\"keccak256\":\"0xf92889a9e14ab87d3c46ffe838894453d3a86e5d6433b549c3ec2b2dd788a623\",\"license\":\"MIT\"},\"contracts/interfaces/IERC173.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\n/// @title ERC-173 Contract Ownership Standard\\n///  Note: the ERC-165 identifier for this interface is 0x7f5828d0\\n/* is ERC165 */\\ninterface IERC173 {\\n\\t/// @dev This emits when ownership of a contract changes.\\n\\tevent OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n\\t/// @notice Get the address of the owner\\n\\t/// @return owner_ The address of the owner.\\n\\tfunction owner() external view returns (address owner_);\\n\\n\\t/// @notice Set the address of the new owner of the contract\\n\\t/// @dev Set _newOwner to address(0) to renounce any ownership.\\n\\t/// @param _newOwner The address of the new owner of the contract\\n\\tfunction transferOwnership(address _newOwner) external;\\n}\\n\",\"keccak256\":\"0x3c7a88d2e78d66154b0fb99bcd6bf3c86ea220dc7624672004a4934683490e71\",\"license\":\"MIT\"},\"contracts/libraries/LibDiamond.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\n/******************************************************************************\\\\\\n* Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)\\n* EIP-2535 Diamonds: https://eips.ethereum.org/EIPS/eip-2535\\n/******************************************************************************/\\nimport {IDiamondCut} from '../interfaces/IDiamondCut.sol';\\nimport {IERC173} from '../interfaces/IERC173.sol';\\n\\nerror InitializationFunctionReverted(address _initializationContractAddress, bytes _calldata);\\n\\nlibrary LibDiamond {\\n\\tbytes32 constant DIAMOND_STORAGE_POSITION = keccak256('diamond.standard.diamond.storage');\\n\\n\\terror OwnableUnauthorizedAccount(address _invalidAddress);\\n\\terror OwnableInvalidOwner(address _owner);\\n\\n\\tstruct DiamondStorage {\\n\\t\\t// maps function selectors to the facets that execute the functions.\\n\\t\\t// and maps the selectors to their position in the selectorSlots array.\\n\\t\\t// func selector => address facet, selector position\\n\\t\\tmapping(bytes4 => bytes32) facets;\\n\\t\\t// array of slots of function selectors.\\n\\t\\t// each slot holds 8 function selectors.\\n\\t\\tmapping(uint256 => bytes32) selectorSlots;\\n\\t\\t// The number of function selectors in selectorSlots\\n\\t\\tuint16 selectorCount;\\n\\t\\t// Used to query if a contract implements an interface.\\n\\t\\t// Used to implement ERC-165.\\n\\t\\tmapping(bytes4 => bool) supportedInterfaces;\\n\\t\\t// owner of the contract\\n\\t\\taddress contractOwner;\\n\\t}\\n\\n\\tfunction diamondStorage() internal pure returns (DiamondStorage storage ds) {\\n\\t\\tbytes32 position = DIAMOND_STORAGE_POSITION;\\n\\t\\tassembly {\\n\\t\\t\\tds.slot := position\\n\\t\\t}\\n\\t}\\n\\n\\t// move ownership stuff to Ownership facet\\n\\tfunction setContractOwner(address _newOwner) internal {\\n\\t\\tDiamondStorage storage ds = diamondStorage();\\n\\t\\taddress previousOwner = ds.contractOwner;\\n\\t\\tds.contractOwner = _newOwner;\\n\\t\\temit IERC173.OwnershipTransferred(previousOwner, _newOwner);\\n\\t}\\n\\n\\tfunction contractOwner() internal view returns (address contractOwner_) {\\n\\t\\tcontractOwner_ = diamondStorage().contractOwner;\\n\\t}\\n\\n\\tfunction enforceIsContractOwner() internal view {\\n\\t\\tif (msg.sender != diamondStorage().contractOwner) {\\n\\t\\t\\trevert OwnableUnauthorizedAccount(msg.sender);\\n\\t\\t}\\n\\t}\\n\\n\\tevent DiamondCut(IDiamondCut.FacetCut[] _diamondCut, address _init, bytes _calldata);\\n\\n\\tbytes32 constant CLEAR_ADDRESS_MASK = bytes32(uint256(0xffffffffffffffffffffffff));\\n\\tbytes32 constant CLEAR_SELECTOR_MASK = bytes32(uint256(0xffffffff << 224));\\n\\n\\t// Internal function version of diamondCut\\n\\t// This code is almost the same as the external diamondCut,\\n\\t// except it is using 'Facet[] memory _diamondCut' instead of\\n\\t// 'Facet[] calldata _diamondCut'.\\n\\t// The code is duplicated to prevent copying calldata to memory which\\n\\t// causes an error for a two dimensional array.\\n\\tfunction diamondCut(IDiamondCut.FacetCut[] memory _diamondCut, address _init, bytes memory _calldata) internal {\\n\\t\\tDiamondStorage storage ds = diamondStorage();\\n\\t\\tuint256 originalSelectorCount = ds.selectorCount;\\n\\t\\tuint256 selectorCount = originalSelectorCount;\\n\\t\\tbytes32 selectorSlot;\\n\\t\\t// Check if last selector slot is not full\\n\\t\\t// \\\"selectorCount & 7\\\" is a gas efficient modulo by eight \\\"selectorCount % 8\\\"\\n\\t\\tif (selectorCount & 7 > 0) {\\n\\t\\t\\t// get last selectorSlot\\n\\t\\t\\t// \\\"selectorSlot >> 3\\\" is a gas efficient division by 8 \\\"selectorSlot / 8\\\"\\n\\t\\t\\tselectorSlot = ds.selectorSlots[selectorCount >> 3];\\n\\t\\t}\\n\\t\\t// loop through diamond cut\\n\\t\\tfor (uint256 facetIndex; facetIndex < _diamondCut.length; ) {\\n\\t\\t\\t(selectorCount, selectorSlot) = addReplaceRemoveFacetSelectors(\\n\\t\\t\\t\\tselectorCount,\\n\\t\\t\\t\\tselectorSlot,\\n\\t\\t\\t\\t_diamondCut[facetIndex].facetAddress,\\n\\t\\t\\t\\t_diamondCut[facetIndex].action,\\n\\t\\t\\t\\t_diamondCut[facetIndex].functionSelectors\\n\\t\\t\\t);\\n\\n\\t\\t\\tunchecked {\\n\\t\\t\\t\\tfacetIndex++;\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\tif (selectorCount != originalSelectorCount) {\\n\\t\\t\\tds.selectorCount = uint16(selectorCount);\\n\\t\\t}\\n\\t\\t// If last selector slot is not full\\n\\t\\t// \\\"selectorCount & 7\\\" is a gas efficient modulo by eight \\\"selectorCount % 8\\\"\\n\\t\\tif (selectorCount & 7 > 0) {\\n\\t\\t\\t// \\\"selectorSlot >> 3\\\" is a gas efficient division by 8 \\\"selectorSlot / 8\\\"\\n\\t\\t\\tds.selectorSlots[selectorCount >> 3] = selectorSlot;\\n\\t\\t}\\n\\t\\temit DiamondCut(_diamondCut, _init, _calldata);\\n\\t\\tinitializeDiamondCut(_init, _calldata);\\n\\t}\\n\\n\\tfunction addReplaceRemoveFacetSelectors(\\n\\t\\tuint256 _selectorCount,\\n\\t\\tbytes32 _selectorSlot,\\n\\t\\taddress _newFacetAddress,\\n\\t\\tIDiamondCut.FacetCutAction _action,\\n\\t\\tbytes4[] memory _selectors\\n\\t) internal returns (uint256, bytes32) {\\n\\t\\tDiamondStorage storage ds = diamondStorage();\\n\\t\\trequire(_selectors.length > 0, 'LibDiamondCut: No selectors in facet to cut');\\n\\t\\tif (_action == IDiamondCut.FacetCutAction.Add) {\\n\\t\\t\\tenforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Add facet has no code');\\n\\t\\t\\tfor (uint256 selectorIndex; selectorIndex < _selectors.length; ) {\\n\\t\\t\\t\\tbytes4 selector = _selectors[selectorIndex];\\n\\t\\t\\t\\tbytes32 oldFacet = ds.facets[selector];\\n\\t\\t\\t\\trequire(address(bytes20(oldFacet)) == address(0), \\\"LibDiamondCut: Can't add function that already exists\\\");\\n\\t\\t\\t\\t// add facet for selector\\n\\t\\t\\t\\tds.facets[selector] = bytes20(_newFacetAddress) | bytes32(_selectorCount);\\n\\t\\t\\t\\t// \\\"_selectorCount & 7\\\" is a gas efficient modulo by eight \\\"_selectorCount % 8\\\"\\n\\t\\t\\t\\t// \\\" << 5 is the same as multiplying by 32 ( * 32)\\n\\t\\t\\t\\tuint256 selectorInSlotPosition = (_selectorCount & 7) << 5;\\n\\t\\t\\t\\t// clear selector position in slot and add selector\\n\\t\\t\\t\\t_selectorSlot =\\n\\t\\t\\t\\t\\t(_selectorSlot & ~(CLEAR_SELECTOR_MASK >> selectorInSlotPosition)) |\\n\\t\\t\\t\\t\\t(bytes32(selector) >> selectorInSlotPosition);\\n\\t\\t\\t\\t// if slot is full then write it to storage\\n\\t\\t\\t\\tif (selectorInSlotPosition == 224) {\\n\\t\\t\\t\\t\\t// \\\"_selectorSlot >> 3\\\" is a gas efficient division by 8 \\\"_selectorSlot / 8\\\"\\n\\t\\t\\t\\t\\tds.selectorSlots[_selectorCount >> 3] = _selectorSlot;\\n\\t\\t\\t\\t\\t_selectorSlot = 0;\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\t_selectorCount++;\\n\\n\\t\\t\\t\\tunchecked {\\n\\t\\t\\t\\t\\tselectorIndex++;\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t} else if (_action == IDiamondCut.FacetCutAction.Replace) {\\n\\t\\t\\tenforceHasContractCode(_newFacetAddress, 'LibDiamondCut: Replace facet has no code');\\n\\t\\t\\tfor (uint256 selectorIndex; selectorIndex < _selectors.length; ) {\\n\\t\\t\\t\\tbytes4 selector = _selectors[selectorIndex];\\n\\t\\t\\t\\tbytes32 oldFacet = ds.facets[selector];\\n\\t\\t\\t\\taddress oldFacetAddress = address(bytes20(oldFacet));\\n\\t\\t\\t\\t// only useful if immutable functions exist\\n\\t\\t\\t\\trequire(oldFacetAddress != address(this), \\\"LibDiamondCut: Can't replace immutable function\\\");\\n\\t\\t\\t\\trequire(oldFacetAddress != _newFacetAddress, \\\"LibDiamondCut: Can't replace function with same function\\\");\\n\\t\\t\\t\\trequire(oldFacetAddress != address(0), \\\"LibDiamondCut: Can't replace function that doesn't exist\\\");\\n\\t\\t\\t\\t// replace old facet address\\n\\t\\t\\t\\tds.facets[selector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(_newFacetAddress);\\n\\n\\t\\t\\t\\tunchecked {\\n\\t\\t\\t\\t\\tselectorIndex++;\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t} else if (_action == IDiamondCut.FacetCutAction.Remove) {\\n\\t\\t\\trequire(_newFacetAddress == address(0), 'LibDiamondCut: Remove facet address must be address(0)');\\n\\t\\t\\t// \\\"_selectorCount >> 3\\\" is a gas efficient division by 8 \\\"_selectorCount / 8\\\"\\n\\t\\t\\tuint256 selectorSlotCount = _selectorCount >> 3;\\n\\t\\t\\t// \\\"_selectorCount & 7\\\" is a gas efficient modulo by eight \\\"_selectorCount % 8\\\"\\n\\t\\t\\tuint256 selectorInSlotIndex = _selectorCount & 7;\\n\\t\\t\\tfor (uint256 selectorIndex; selectorIndex < _selectors.length; ) {\\n\\t\\t\\t\\tif (selectorInSlotIndex == 0) {\\n\\t\\t\\t\\t\\t// get last selectorSlot\\n\\t\\t\\t\\t\\tselectorSlotCount--;\\n\\t\\t\\t\\t\\t_selectorSlot = ds.selectorSlots[selectorSlotCount];\\n\\t\\t\\t\\t\\tselectorInSlotIndex = 7;\\n\\t\\t\\t\\t} else {\\n\\t\\t\\t\\t\\tselectorInSlotIndex--;\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tbytes4 lastSelector;\\n\\t\\t\\t\\tuint256 oldSelectorsSlotCount;\\n\\t\\t\\t\\tuint256 oldSelectorInSlotPosition;\\n\\t\\t\\t\\t// adding a block here prevents stack too deep error\\n\\t\\t\\t\\t{\\n\\t\\t\\t\\t\\tbytes4 selector = _selectors[selectorIndex];\\n\\t\\t\\t\\t\\tbytes32 oldFacet = ds.facets[selector];\\n\\t\\t\\t\\t\\trequire(\\n\\t\\t\\t\\t\\t\\taddress(bytes20(oldFacet)) != address(0),\\n\\t\\t\\t\\t\\t\\t\\\"LibDiamondCut: Can't remove function that doesn't exist\\\"\\n\\t\\t\\t\\t\\t);\\n\\t\\t\\t\\t\\t// only useful if immutable functions exist\\n\\t\\t\\t\\t\\trequire(address(bytes20(oldFacet)) != address(this), \\\"LibDiamondCut: Can't remove immutable function\\\");\\n\\t\\t\\t\\t\\t// replace selector with last selector in ds.facets\\n\\t\\t\\t\\t\\t// gets the last selector\\n\\t\\t\\t\\t\\t// \\\" << 5 is the same as multiplying by 32 ( * 32)\\n\\t\\t\\t\\t\\tlastSelector = bytes4(_selectorSlot << (selectorInSlotIndex << 5));\\n\\t\\t\\t\\t\\tif (lastSelector != selector) {\\n\\t\\t\\t\\t\\t\\t// update last selector slot position info\\n\\t\\t\\t\\t\\t\\tds.facets[lastSelector] = (oldFacet & CLEAR_ADDRESS_MASK) | bytes20(ds.facets[lastSelector]);\\n\\t\\t\\t\\t\\t}\\n\\t\\t\\t\\t\\tdelete ds.facets[selector];\\n\\t\\t\\t\\t\\tuint256 oldSelectorCount = uint16(uint256(oldFacet));\\n\\t\\t\\t\\t\\t// \\\"oldSelectorCount >> 3\\\" is a gas efficient division by 8 \\\"oldSelectorCount / 8\\\"\\n\\t\\t\\t\\t\\toldSelectorsSlotCount = oldSelectorCount >> 3;\\n\\t\\t\\t\\t\\t// \\\"oldSelectorCount & 7\\\" is a gas efficient modulo by eight \\\"oldSelectorCount % 8\\\"\\n\\t\\t\\t\\t\\t// \\\" << 5 is the same as multiplying by 32 ( * 32)\\n\\t\\t\\t\\t\\toldSelectorInSlotPosition = (oldSelectorCount & 7) << 5;\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tif (oldSelectorsSlotCount != selectorSlotCount) {\\n\\t\\t\\t\\t\\tbytes32 oldSelectorSlot = ds.selectorSlots[oldSelectorsSlotCount];\\n\\t\\t\\t\\t\\t// clears the selector we are deleting and puts the last selector in its place.\\n\\t\\t\\t\\t\\toldSelectorSlot =\\n\\t\\t\\t\\t\\t\\t(oldSelectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)) |\\n\\t\\t\\t\\t\\t\\t(bytes32(lastSelector) >> oldSelectorInSlotPosition);\\n\\t\\t\\t\\t\\t// update storage with the modified slot\\n\\t\\t\\t\\t\\tds.selectorSlots[oldSelectorsSlotCount] = oldSelectorSlot;\\n\\t\\t\\t\\t} else {\\n\\t\\t\\t\\t\\t// clears the selector we are deleting and puts the last selector in its place.\\n\\t\\t\\t\\t\\t_selectorSlot =\\n\\t\\t\\t\\t\\t\\t(_selectorSlot & ~(CLEAR_SELECTOR_MASK >> oldSelectorInSlotPosition)) |\\n\\t\\t\\t\\t\\t\\t(bytes32(lastSelector) >> oldSelectorInSlotPosition);\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tif (selectorInSlotIndex == 0) {\\n\\t\\t\\t\\t\\tdelete ds.selectorSlots[selectorSlotCount];\\n\\t\\t\\t\\t\\t_selectorSlot = 0;\\n\\t\\t\\t\\t}\\n\\n\\t\\t\\t\\tunchecked {\\n\\t\\t\\t\\t\\tselectorIndex++;\\n\\t\\t\\t\\t}\\n\\t\\t\\t}\\n\\t\\t\\t_selectorCount = selectorSlotCount * 8 + selectorInSlotIndex;\\n\\t\\t} else {\\n\\t\\t\\trevert('LibDiamondCut: Incorrect FacetCutAction');\\n\\t\\t}\\n\\t\\treturn (_selectorCount, _selectorSlot);\\n\\t}\\n\\n\\tfunction initializeDiamondCut(address _init, bytes memory _calldata) internal {\\n\\t\\tif (_init == address(0)) {\\n\\t\\t\\treturn;\\n\\t\\t}\\n\\t\\tenforceHasContractCode(_init, 'LibDiamondCut: _init address has no code');\\n\\t\\t(bool success, bytes memory error) = _init.delegatecall(_calldata);\\n\\t\\tif (!success) {\\n\\t\\t\\tif (error.length > 0) {\\n\\t\\t\\t\\t// bubble up error\\n\\t\\t\\t\\t/// @solidity memory-safe-assembly\\n\\t\\t\\t\\tassembly {\\n\\t\\t\\t\\t\\tlet returndata_size := mload(error)\\n\\t\\t\\t\\t\\trevert(add(32, error), returndata_size)\\n\\t\\t\\t\\t}\\n\\t\\t\\t} else {\\n\\t\\t\\t\\trevert InitializationFunctionReverted(_init, _calldata);\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n\\n\\tfunction enforceHasContractCode(address _contract, string memory _errorMessage) internal view {\\n\\t\\tuint256 contractSize;\\n\\t\\tassembly {\\n\\t\\t\\tcontractSize := extcodesize(_contract)\\n\\t\\t}\\n\\t\\trequire(contractSize > 0, _errorMessage);\\n\\t}\\n}\\n\",\"keccak256\":\"0xd3bb09562891df5dc9d7a1b36d2a90e451c01ca00a3b88112c791dce5bf8ced7\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061023a806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c8063715018a6146100465780638da5cb5b14610050578063f2fde38b1461006e575b600080fd5b61004e610081565b005b610058610095565b60405161006591906101c0565b60405180910390f35b61004e61007c3660046101d4565b6100a4565b6100896100ea565b6100936000610120565b565b600061009f610180565b905090565b6100ac6100ea565b6001600160a01b0381166100de5780604051631e4fbdf760e01b81526004016100d591906101c0565b60405180910390fd5b6100e781610120565b50565b6100f261019c565b600401546001600160a01b03163314610093573360405163118cdaa760e01b81526004016100d591906101c0565b600061012a61019c565b6004810180546001600160a01b038581166001600160a01b031983168117909355604051939450169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3505050565b600061018a61019c565b600401546001600160a01b0316919050565b7fc8fcad8db84d3cc18b4c41d551ea0ee66dd599cde068d998e57d5e09332c131c90565b6001600160a01b0391909116815260200190565b6000602082840312156101e657600080fd5b81356001600160a01b03811681146101fd57600080fd5b939250505056fea2646970667358221220564685670ece1c0e4a0897a2e26ad4ac78553269777ab7454343f4a1ebea2c7464736f6c63430008160033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c8063715018a6146100465780638da5cb5b14610050578063f2fde38b1461006e575b600080fd5b61004e610081565b005b610058610095565b60405161006591906101c0565b60405180910390f35b61004e61007c3660046101d4565b6100a4565b6100896100ea565b6100936000610120565b565b600061009f610180565b905090565b6100ac6100ea565b6001600160a01b0381166100de5780604051631e4fbdf760e01b81526004016100d591906101c0565b60405180910390fd5b6100e781610120565b50565b6100f261019c565b600401546001600160a01b03163314610093573360405163118cdaa760e01b81526004016100d591906101c0565b600061012a61019c565b6004810180546001600160a01b038581166001600160a01b031983168117909355604051939450169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3505050565b600061018a61019c565b600401546001600160a01b0316919050565b7fc8fcad8db84d3cc18b4c41d551ea0ee66dd599cde068d998e57d5e09332c131c90565b6001600160a01b0391909116815260200190565b6000602082840312156101e657600080fd5b81356001600160a01b03811681146101fd57600080fd5b939250505056fea2646970667358221220564685670ece1c0e4a0897a2e26ad4ac78553269777ab7454343f4a1ebea2c7464736f6c63430008160033",
+  "devdoc": {
+    "events": {
+      "OwnershipTransferred(address,address)": {
+        "details": "This emits when ownership of a contract changes."
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "owner()": {
+        "returns": {
+          "owner_": "The address of the owner."
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Set _newOwner to address(0) to renounce any ownership.",
+        "params": {
+          "_newOwner": "The address of the new owner of the contract"
+        }
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "owner()": {
+        "notice": "Get the address of the owner"
+      },
+      "transferOwnership(address)": {
+        "notice": "Set the address of the new owner of the contract"
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
