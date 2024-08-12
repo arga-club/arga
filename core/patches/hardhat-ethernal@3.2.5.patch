@@ -1,0 +1,38 @@
+diff --git a/dist/Ethernal.js b/dist/Ethernal.js
+index d891bf40ec313060cfcc957fd8c02413e3a944a7..769c13d19d0a1ee6f9e177f4d5e3ad264955a39d 100644
+--- a/dist/Ethernal.js
++++ b/dist/Ethernal.js
+@@ -69,7 +69,7 @@ class Ethernal {
+             return;
+         }
+         try {
+-            await this.api.syncContractData(contract.name, contract.address, contract.abi, targetContract.workspace);
++            await this.api.syncContractData(contract.name, contract.address, targetContract.abi || contract.abi, targetContract.workspace);
+         }
+         catch (error) {
+             handleError('Error syncing contract data', error, this.verbose);
+@@ -284,12 +284,6 @@ class Ethernal {
+             if (fqn.split(':')[1] == targetContract.name)
+                 fullyQualifiedNames.push(fqn);
+         });
+-        var defaultBuildInfo = {
+-            output: {
+-                contracts: {},
+-                sources: {}
+-            }
+-        };
+         let res = {
+             name: '',
+             address: '',
+diff --git a/dist/types.d.ts b/dist/types.d.ts
+index 35875a7d4757749c6e7b52e5a108229488417ab3..e57faa1aa23ca294bf42a27d66bbea8d8fd241d0 100644
+--- a/dist/types.d.ts
++++ b/dist/types.d.ts
+@@ -16,6 +16,7 @@ export interface ContractInput {
+     name: string;
+     address: string;
+     workspace?: string;
++    abi?: any;
+ }
+ export declare type EthernalContract = {
+     name: string;

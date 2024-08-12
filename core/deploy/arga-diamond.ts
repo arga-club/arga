@@ -1,5 +1,6 @@
 import { BaseContract, FunctionFragment } from 'ethers'
 import { DeployFunction } from 'hardhat-deploy/types'
+import sleep from 'await-sleep'
 
 const FacetCutAction = { Add: 0, Replace: 1, Remove: 2 }
 
@@ -11,7 +12,7 @@ function getSelectors(contract: BaseContract) {
 	return selectors
 }
 
-export default (async function ({ ethers, ethernal, getNamedAccounts, deployments: { deploy, log } }) {
+export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts, deployments: { deploy, log } }) {
 	log('deploying Arga diamond contract')
 	const { owner, entropyContract } = await getNamedAccounts()
 	const diamondCutFacet = await deploy('DiamondCutFacet', { from: owner })
@@ -48,9 +49,13 @@ export default (async function ({ ethers, ethernal, getNamedAccounts, deployment
 		throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
 	}
 
-	log('pushing to ethernal...')
-	await ethernal.push({
-		name: 'Arga',
-		address: arga.address,
+	sleep(10e3).then(async () => {
+		log('pushing to ethernal...')
+		const artifact = await artifacts.readArtifact('ArgaDiamond')
+		ethernal.push({
+			name: 'Arga',
+			address: arga.address,
+			abi: artifact.abi,
+		})
 	})
 } satisfies DeployFunction)

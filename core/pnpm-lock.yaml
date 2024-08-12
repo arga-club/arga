@@ -8,6 +8,9 @@ patchedDependencies:
   hardhat-diamond-abi@3.0.1:
     hash: sutulqv7gbkyrsm4qkfucx76k4
     path: patches/hardhat-diamond-abi@3.0.1.patch
+  hardhat-ethernal@3.2.5:
+    hash: maysu2wt3w557ml7ge35ydo63m
+    path: patches/hardhat-ethernal@3.2.5.patch
 
 importers:
 
@@ -70,6 +73,9 @@ importers:
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
+      await-sleep:
+        specifier: ^0.0.1
+        version: 0.0.1
       chai:
         specifier: 4.2.0
         version: 4.2.0
@@ -99,7 +105,7 @@ importers:
         version: 3.0.1(patch_hash=sutulqv7gbkyrsm4qkfucx76k4)(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4))
       hardhat-ethernal:
         specifier: ^3.2.5
-        version: 3.2.5(@firebase/app-types@0.7.0)(@nomicfoundation/hardhat-ethers@3.0.5(ethers@6.10.0)(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4)))(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4))
+        version: 3.2.5(patch_hash=maysu2wt3w557ml7ge35ydo63m)(@firebase/app-types@0.7.0)(@nomicfoundation/hardhat-ethers@3.0.5(ethers@6.10.0)(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4)))(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4))
       hardhat-gas-reporter:
         specifier: 1.0.8
         version: 1.0.8(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4))
@@ -1153,6 +1159,9 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
+
+  await-sleep@0.0.1:
+    resolution: {integrity: sha512-H3X3eAxwGpeNIk/yvFOs8g7500Q1YvzrxjSC9TNgLGtjrMFxPwhDdcT34QNs2iGWpZ+5WKkMJdjDoYs+Sw+TaA==}
 
   axios@0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
@@ -4613,6 +4622,8 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
+  await-sleep@0.0.1: {}
+
   axios@0.21.4(debug@4.3.4):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
@@ -5556,7 +5567,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  hardhat-ethernal@3.2.5(@firebase/app-types@0.7.0)(@nomicfoundation/hardhat-ethers@3.0.5(ethers@6.10.0)(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4)))(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4)):
+  hardhat-ethernal@3.2.5(patch_hash=maysu2wt3w557ml7ge35ydo63m)(@firebase/app-types@0.7.0)(@nomicfoundation/hardhat-ethers@3.0.5(ethers@6.10.0)(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4)))(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4)):
     dependencies:
       '@firebase/firestore-types': 2.2.0(@firebase/app-types@0.7.0)
       '@nomicfoundation/hardhat-ethers': 3.0.5(ethers@6.10.0)(hardhat@2.20.0(ts-node@10.9.2(@types/node@20.11.5)(typescript@5.0.4))(typescript@5.0.4))

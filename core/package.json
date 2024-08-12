@@ -51,6 +51,7 @@
 		"@types/mocha": "^10.0.6",
 		"@types/ms": "^0.7.34",
 		"@types/node": "^20.11.5",
+		"await-sleep": "^0.0.1",
 		"chai": "4.2.0",
 		"cross-env": "^7.0.3",
 		"ethers": "^6.7.1",
@@ -75,7 +76,8 @@
 	},
 	"pnpm": {
 		"patchedDependencies": {
-			"hardhat-diamond-abi@3.0.1": "patches/hardhat-diamond-abi@3.0.1.patch"
+			"hardhat-diamond-abi@3.0.1": "patches/hardhat-diamond-abi@3.0.1.patch",
+			"hardhat-ethernal@3.2.5": "patches/hardhat-ethernal@3.2.5.patch"
 		}
 	}
 }

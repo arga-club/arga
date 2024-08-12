@@ -1,10 +1,10 @@
 import hre from 'hardhat'
 import { declaration, value } from '../test/utils'
-import deployments from '../ignition/deployments/chain-31337/deployed_addresses.json'
 
 const createCommunityDeclaration = async () => {
 	const [, , , other] = await hre.ethers.getSigners()
-	const arga = await hre.ethers.getContractAt('ArgaDiamond', deployments['Arga#Arga'])
+	const { address: argaAddress } = await hre.deployments.get('Arga')
+	const arga = await hre.ethers.getContractAt('ArgaDiamond', argaAddress)
 	const { hash } = await arga
 		.connect(other)
 		.declareWithEther(
