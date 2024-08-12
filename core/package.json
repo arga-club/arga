@@ -57,6 +57,8 @@
 		"fs-extra": "^11.2.0",
 		"hardhat": "2.20.0",
 		"hardhat-contract-sizer": "^2.10.0",
+		"hardhat-deploy": "^0.12.4",
+		"hardhat-deploy-ethers": "^0.4.2",
 		"hardhat-diamond-abi": "^3.0.1",
 		"hardhat-ethernal": "^3.2.5",
 		"hardhat-gas-reporter": "1.0.8",
@@ -66,6 +68,7 @@
 		"rimraf": "^5.0.5",
 		"solidity-coverage": "^0.8.5",
 		"ts-node": "^10.9.2",
+		"type-fest": "^4.24.0",
 		"typescript": "~5.0.4",
 		"viem": "^2.14.2",
 		"zx": "^8.1.2"

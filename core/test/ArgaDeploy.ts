@@ -1,7 +1,7 @@
-import { deploy } from './utils'
+import { deployments } from 'hardhat'
 
 describe('Deploy', function () {
 	it('deploys', async function () {
-		await deploy()
+		await deployments.fixture()
 	})
 })
