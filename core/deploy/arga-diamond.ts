@@ -17,7 +17,20 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 	const { owner, entropyContract } = await getNamedAccounts()
 	const shouldLog = true
 	const diamondCutFacet = await deploy('DiamondCutFacet', { from: owner, log: shouldLog })
-	const arga = await deploy('Arga', { from: owner, log: shouldLog, args: [owner, diamondCutFacet.address] })
+	const argaDiamondArtifact = await artifacts.readArtifact('ArgaDiamond')
+	const argaArtifact = await artifacts.readArtifact('Arga')
+	const arga = await deploy('Arga', {
+		contract: {
+			abi: [
+				...argaArtifact.abi.filter(abiItem => !('name' in abiItem) || abiItem.name !== 'OwnershipTransferred'),
+				...argaDiamondArtifact.abi,
+			],
+			bytecode: argaArtifact.bytecode,
+		},
+		from: owner,
+		log: shouldLog,
+		args: [owner, diamondCutFacet.address],
+	})
 
 	log('deploying facets')
 	const facetNames = [
@@ -31,7 +44,7 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 	const facetCutArgs = [] as { facetAddress: string; action: number; functionSelectors: string[] }[]
 	for (const facetName of facetNames) {
 		const facet = await deploy(facetName, { from: owner, log: shouldLog })
-		if (!facet.newlyDeployed) continue
+		if (!arga.newlyDeployed && !facet.newlyDeployed) continue
 		const Contract = await ethers.getContractAt(facetName, facet.address)
 		facetCutArgs.push({
 			facetAddress: facet.address,
@@ -55,11 +68,10 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 
 	sleep(10e3).then(async () => {
 		log('pushing to ethernal...')
-		const artifact = await artifacts.readArtifact('ArgaDiamond')
 		ethernal.push({
 			name: 'Arga',
 			address: arga.address,
-			abi: artifact.abi,
+			abi: argaDiamondArtifact.abi,
 		})
 	})
 } satisfies DeployFunction)
