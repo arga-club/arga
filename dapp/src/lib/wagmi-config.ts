@@ -3,8 +3,8 @@ import { hardhat, optimismSepolia } from 'viem/chains'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
 import { createConfig as createConfigCore } from '@wagmi/core'
 import { walletConnect, injected, coinbaseWallet } from 'wagmi/connectors'
-import { argaAbi } from '~/lib/generated'
 import contracts from '~/lib/contracts'
+import { getContractAddress } from '~/lib/config-utils'
 
 export const walletConnectProjectId = '94c503a4bc0400523c25e21e615cad4d'
 
@@ -20,12 +20,11 @@ assert(process.env.NEXT_PUBLIC_CHAIN_NAME)
 export const chainId = { optimismSepolia }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
 assert(chainId)
 
-type ChainId = 31337 | 11155420
-
-export const getContractAddress = <Id extends ChainId>({ chainId }: { chainId: Id }) =>
-	contracts[chainId][0].contracts.Arga.address
-
-export const argaInstance = { address: getContractAddress({ chainId }), abi: argaAbi, chainId } as const
+export const argaInstance = {
+	address: getContractAddress({ chainId }),
+	abi: contracts[chainId][0].contracts.Arga.abi,
+	chainId,
+} as const
 
 export const wagmiConfig = createConfig({
 	chains: [optimismSepolia],
