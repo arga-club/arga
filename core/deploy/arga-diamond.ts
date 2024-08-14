@@ -15,8 +15,9 @@ function getSelectors(contract: BaseContract) {
 export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts, deployments: { deploy, log } }) {
 	log('deploying Arga diamond contract')
 	const { owner, entropyContract } = await getNamedAccounts()
-	const diamondCutFacet = await deploy('DiamondCutFacet', { from: owner })
-	const arga = await deploy('Arga', { from: owner, args: [owner, diamondCutFacet.address] })
+	const shouldLog = true
+	const diamondCutFacet = await deploy('DiamondCutFacet', { from: owner, log: shouldLog })
+	const arga = await deploy('Arga', { from: owner, log: shouldLog, args: [owner, diamondCutFacet.address] })
 
 	log('deploying facets')
 	const facetNames = [
@@ -29,7 +30,8 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 	] as const
 	const facetCutArgs = [] as { facetAddress: string; action: number; functionSelectors: string[] }[]
 	for (const facetName of facetNames) {
-		const facet = await deploy(facetName, { from: owner })
+		const facet = await deploy(facetName, { from: owner, log: shouldLog })
+		if (!facet.newlyDeployed) continue
 		const Contract = await ethers.getContractAt(facetName, facet.address)
 		facetCutArgs.push({
 			facetAddress: facet.address,
@@ -38,15 +40,17 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 		})
 	}
 
-	log('registering facets')
-	const diamondInit = await deploy('DiamondInit', { from: owner })
-	const DiamondInit = await ethers.getContractAt('DiamondInit', diamondInit.address)
-	const DiamondCut = await ethers.getContractAt('IDiamondCut', arga.address)
-	const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner, entropyContract])
-	const diamondCutTransaction = await DiamondCut.diamondCut(facetCutArgs, diamondInit.address, initFunctionCall)
-	const diamondCutReceipt = await diamondCutTransaction.wait()
-	if (!diamondCutReceipt?.status) {
-		throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
+	const diamondInit = await deploy('DiamondInit', { from: owner, log: shouldLog })
+	if (arga.newlyDeployed) {
+		log('registering facets and initializing')
+		const DiamondInit = await ethers.getContractAt('DiamondInit', diamondInit.address)
+		const DiamondCut = await ethers.getContractAt('IDiamondCut', arga.address)
+		const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner, entropyContract])
+		const diamondCutTransaction = await DiamondCut.diamondCut(facetCutArgs, diamondInit.address, initFunctionCall)
+		const diamondCutReceipt = await diamondCutTransaction.wait()
+		if (!diamondCutReceipt?.status) {
+			throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
+		}
 	}
 
 	sleep(10e3).then(async () => {
