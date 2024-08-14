@@ -14,10 +14,11 @@ export default defineConfig({
 				rebuild: 'pnpm hardhat compile',
 			},
 			deployments: {
-				Arga: {
+				ArgaDiamond: {
 					[optimismSepolia.id]: getContractAddress({ chainId: optimismSepolia.id }),
 				},
 			},
+			include: ['**/ArgaDiamond.json'],
 		}),
 		react(),
 		actions(),
