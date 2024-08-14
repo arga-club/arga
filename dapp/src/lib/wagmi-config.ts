@@ -17,10 +17,7 @@ const metadata = {
 
 assert(process.env.NEXT_PUBLIC_CHAIN_NAME)
 
-export const chainId = {
-	hardhat,
-	optimismSepolia,
-}[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
+export const chainId = { optimismSepolia }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
 assert(chainId)
 
 type ChainId = 31337 | 11155420
@@ -31,7 +28,7 @@ export const getContractAddress = <Id extends ChainId>({ chainId }: { chainId: I
 export const argaInstance = { address: getContractAddress({ chainId }), abi: argaAbi, chainId } as const
 
 export const wagmiConfig = createConfig({
-	chains: [hardhat, optimismSepolia],
+	chains: [optimismSepolia],
 	transports: {
 		[hardhat.id]: http('http://127.0.0.1:8545/'),
 		[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
@@ -51,9 +48,8 @@ export const wagmiConfig = createConfig({
 })
 
 export const wagmiCoreConfig = createConfigCore({
-	chains: [hardhat, optimismSepolia],
+	chains: [optimismSepolia],
 	transports: {
-		[hardhat.id]: http('http://127.0.0.1:8545/'),
 		[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
 	},
 })
