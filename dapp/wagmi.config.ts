@@ -1,7 +1,7 @@
 import { defineConfig } from '@wagmi/cli'
 import { hardhat as hardhatPlugin, react, actions } from '@wagmi/cli/plugins'
-import { hardhat, sepolia } from 'viem/chains'
-import { argaAddress } from '~/lib/generated'
+import { hardhat, optimismSepolia } from 'viem/chains'
+import { getContractAddress } from '~/lib/wagmi-config'
 
 export default defineConfig({
 	out: 'src/lib/generated.ts',
@@ -15,8 +15,8 @@ export default defineConfig({
 			},
 			deployments: {
 				Arga: {
-					[hardhat.id]: argaAddress[hardhat.id],
-					[sepolia.id]: argaAddress[sepolia.id],
+					[hardhat.id]: getContractAddress({ chainId: hardhat.id }),
+					[optimismSepolia.id]: getContractAddress({ chainId: optimismSepolia.id }),
 				},
 			},
 		}),
