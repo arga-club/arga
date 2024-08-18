@@ -97,8 +97,8 @@ contract DeclarationFacet {
 			revert ArgaLibrary.InvalidActor(actor);
 		}
 		require(actor != address(0), "can't use zero address for actor");
-		require(endDate > startDate, 'endDate must be before startDate');
-		require(witnessByDate > endDate, 'witnessByDate must be before endDate');
+		require(endDate >= startDate, 'endDate must be after startDate');
+		require(witnessByDate >= endDate, 'witnessByDate must be after endDate');
 
 		DeclarationLibrary.State storage ds = DeclarationLibrary.diamondStorage();
 		uint declarationIndex = ds.declarations.length;

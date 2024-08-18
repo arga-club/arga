@@ -70,7 +70,7 @@ describe('Declaration', function () {
 					declaration.witnessByDate,
 					{ value },
 				),
-			).to.be.revertedWith('endDate must be before startDate')
+			).to.be.revertedWith('endDate must be after startDate')
 		})
 		it('will not work when witnessByDate is before endDate', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
@@ -85,7 +85,7 @@ describe('Declaration', function () {
 					declaration.endDate, // swapped
 					{ value },
 				),
-			).to.be.revertedWith('witnessByDate must be before endDate')
+			).to.be.revertedWith('witnessByDate must be after endDate')
 		})
 		it('will not work when actor address is 0x0', async () => {
 			const { arga, actor, witness } = await loadFixture(fixture)
