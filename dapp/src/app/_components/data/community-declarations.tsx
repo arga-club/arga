@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
-import { useReadArgaCommunityDeclarations } from '~/lib/generated'
+import { useReadArgaDiamondCommunityDeclarations } from '~/lib/generated'
 import { usePendingTransactions } from '~/stores/pending-transactions'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
 import { LazyReactJSON } from '~/lib/react-utils'
@@ -13,7 +13,7 @@ import { Button } from '~/app/_components/ui/button'
 export default function CommunityDeclarations() {
 	const { address, isConnecting } = useAccount()
 	const { pendingTransactions } = usePendingTransactions()
-	const { isInitialLoading, data: communityDeclarations } = useReadArgaCommunityDeclarations({
+	const { isInitialLoading, data: communityDeclarations } = useReadArgaDiamondCommunityDeclarations({
 		query: { enabled: !!address, refetchInterval: pendingTransactions.length ? 2000 : undefined },
 		args: address ? [address, 4n] : undefined,
 		chainId,

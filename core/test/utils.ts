@@ -2,8 +2,9 @@ import hre from 'hardhat'
 import ms from 'ms'
 import { ArgaDiamond, ArgaLibrary } from '../typechain-types'
 import assert from 'assert'
-import { ContractTransactionResponse, FunctionFragment, BaseContract, BigNumberish } from 'ethers'
+import { ContractTransactionResponse, BaseContract, BigNumberish } from 'ethers'
 import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers'
+import { bytesToHex } from 'viem'
 
 export const getSigners = async () => {
 	const [owner, actor, witness, other] = await hre.ethers.getSigners()
@@ -50,8 +51,8 @@ export const declaration: ArgaLibrary.DeclarationStruct = {
 }
 
 export const randomNumberForDraw = () => {
-	const randomBytes = hre.ethers.randomBytes(32)
-	const randomHex = hre.ethers.hexlify(randomBytes)
+	const randomBytes = crypto.getRandomValues(new Uint8Array(32))
+	const randomHex = bytesToHex(randomBytes)
 	return randomHex
 }
 

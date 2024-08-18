@@ -27,7 +27,7 @@ import { Textarea } from '~/app/_components/ui/textarea'
 import { Popover, PopoverContent, PopoverTrigger } from '~/app/_components/ui/popover'
 import { cn } from '~/lib/shadcn-utils'
 import { Calendar } from '~/app/_components/ui/calendar'
-import { useWriteArgaDeclareWithEther } from '~/lib/generated'
+import { useWriteArgaDiamondDeclareWithEther } from '~/lib/generated'
 import { bigIntDateSchema, ethAddressSchema, ethValueSchema } from '~/lib/validation-utils'
 import { chainId } from '~/lib/wagmi-config'
 import borderImage from '~/images/border-horz-01.svg'
@@ -50,7 +50,7 @@ export default function DeclarationNew() {
 	const { open } = useWeb3Modal()
 	const { reconnectAsync } = useReconnect()
 	const { address, isDisconnected } = useAccount()
-	const { writeContractAsync, isLoading } = useWriteArgaDeclareWithEther()
+	const { writeContractAsync, isLoading } = useWriteArgaDiamondDeclareWithEther()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onSubmit',

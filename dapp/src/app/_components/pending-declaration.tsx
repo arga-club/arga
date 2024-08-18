@@ -5,7 +5,7 @@ import { parseEventLogs, type Hash, decodeEventLog } from 'viem'
 import { useWaitForTransactionReceipt } from 'wagmi'
 import { Card, CardContent, CardHeader } from '~/app/_components/ui/card'
 import { withDisplayName } from '~/app/_components/withDisplayName'
-import { argaAbi } from '~/lib/generated'
+import { argaDiamondAbi } from '~/lib/generated'
 import { usePendingTransactions } from '~/stores/pending-transactions'
 import { type Declaration } from '~/types/arga'
 
@@ -28,12 +28,12 @@ export const PendingDeclaration = withDisplayName(
 		const declaration = useMemo(() => {
 			const [logRaw] =
 				parseEventLogs({
-					abi: argaAbi,
+					abi: argaDiamondAbi,
 					logs: waitForTransactionReceipt.data?.logs ?? [],
 				}) ?? []
 			if (!logRaw) return
 			const log = decodeEventLog({
-				abi: argaAbi,
+				abi: argaDiamondAbi,
 				data: logRaw.data,
 				topics: logRaw.topics,
 			})

@@ -8,7 +8,7 @@ import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
 import { Prose } from '~/app/_components/ui/prose'
 import borderImage from '~/images/border-horz-01.svg'
-import { useReadArgaRedemptionsForParty } from '~/lib/generated'
+import { useReadArgaDiamondRedemptionsForParty } from '~/lib/generated'
 import { argaInstance, chainId } from '~/lib/wagmi-config'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
 import { LazyReactJSON } from '~/lib/react-utils'
@@ -21,7 +21,7 @@ export default function Home() {
 	const { reconnectAsync } = useReconnect()
 	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading: isSigning } = useWriteContract()
-	const { data: redemptions, isLoading } = useReadArgaRedemptionsForParty({
+	const { data: redemptions, isLoading } = useReadArgaDiamondRedemptionsForParty({
 		query: { enabled: !!address },
 		args: address ? [address] : undefined,
 		chainId,

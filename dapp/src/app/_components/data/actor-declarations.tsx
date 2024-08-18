@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
-import { useReadArgaActorDeclarations } from '~/lib/generated'
+import { useReadArgaDiamondActorDeclarations } from '~/lib/generated'
 import { PendingDeclaration } from '~/app/_components/pending-declaration'
 import { usePendingTransactions } from '~/stores/pending-transactions'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
@@ -14,7 +14,7 @@ import { Button } from '~/app/_components/ui/button'
 export default function ActorDeclarations() {
 	const { address, isConnecting } = useAccount()
 	const { pendingTransactions } = usePendingTransactions()
-	const { isInitialLoading, data: actorDeclarations } = useReadArgaActorDeclarations({
+	const { isInitialLoading, data: actorDeclarations } = useReadArgaDiamondActorDeclarations({
 		query: { enabled: !!address, refetchInterval: pendingTransactions.length ? 2000 : undefined },
 		args: address ? [address] : undefined,
 		chainId,

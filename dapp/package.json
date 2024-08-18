@@ -14,6 +14,7 @@
 		"postinstall": "prisma generate",
 		"lint": "next lint",
 		"lint:fix": "next lint --fix",
+		"type-check": "tsc --noEmit",
 		"start": "next start",
 		"prettier": "prettier .",
 		"prettier:fix": "prettier --write .",

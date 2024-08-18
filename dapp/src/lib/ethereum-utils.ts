@@ -2,10 +2,10 @@ import 'viem/window'
 import { hardhat } from 'viem/chains'
 import JSONBig from 'json-bigint'
 import { waitForTransactionReceipt } from '@wagmi/core'
-import { type Hash, decodeEventLog, parseEventLogs } from 'viem'
+import { type Hash, decodeEventLog, parseEventLogs, bytesToHex } from 'viem'
 import { toHexString } from '~/lib/validation-utils'
 import { chainId, wagmiCoreConfig } from '~/lib/wagmi-config'
-import { argaAbi } from '~/lib/generated'
+import { argaDiamondAbi } from '~/lib/generated'
 
 export const addChainToWallet = async () => {
 	const result = await window.ethereum?.request({
@@ -29,13 +29,19 @@ export const logFromPendingTransaction = async (pendingTransaction: Hash) => {
 		chainId,
 	})
 	const [logRaw] = parseEventLogs({
-		abi: argaAbi,
+		abi: argaDiamondAbi,
 		logs: receipt.logs,
 	})
 	if (!logRaw) return
 	return decodeEventLog({
-		abi: argaAbi,
+		abi: argaDiamondAbi,
 		data: logRaw.data,
 		topics: logRaw.topics,
 	})
+}
+
+export const randomNumberForDraw = () => {
+	const randomBytes = crypto.getRandomValues(new Uint8Array(32))
+	const randomHex = bytesToHex(randomBytes)
+	return randomHex
 }

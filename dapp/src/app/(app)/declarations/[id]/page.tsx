@@ -10,8 +10,8 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useRouter } from 'next/navigation'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
-import { useReadArgaDeclaration } from '~/lib/generated'
-import { normalizeBigJSON } from '~/lib/ethereum-utils'
+import { useReadArgaDiamondGetDeclaration } from '~/lib/generated'
+import { normalizeBigJSON, randomNumberForDraw } from '~/lib/ethereum-utils'
 import { LazyReactJSON, useAutoReconnect } from '~/lib/react-utils'
 import { declarationStatus } from '~/types/arga'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/app/_components/ui/form'
@@ -30,7 +30,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading } = useWriteContract()
 
-	const { isInitialLoading, data: declaration } = useReadArgaDeclaration({
+	const { isInitialLoading, data: declaration } = useReadArgaDiamondGetDeclaration({
 		args: [BigInt(params.id)],
 		chainId,
 	})
@@ -56,7 +56,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		await writeContractAsync({
 			...argaInstance,
 			functionName: 'concludeDeclarationWithApproval',
-			args: [BigInt(params.id)],
+			args: [BigInt(params.id), randomNumberForDraw()],
 		})
 		router.push('/declarations')
 	}
@@ -66,7 +66,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		await writeContractAsync({
 			...argaInstance,
 			functionName: 'concludeDeclarationWithApproval',
-			args: [BigInt(params.id)],
+			args: [BigInt(params.id), randomNumberForDraw()],
 		})
 		router.push('/declarations')
 	}
