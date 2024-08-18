@@ -48,13 +48,13 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 		const Contract = await ethers.getContractAt(facetName, facet.address)
 		facetCutArgs.push({
 			facetAddress: facet.address,
-			action: FacetCutAction.Add,
+			action: arga.newlyDeployed ? FacetCutAction.Add : FacetCutAction.Replace,
 			functionSelectors: getSelectors(Contract),
 		})
 	}
 
 	const diamondInit = await deploy('DiamondInit', { from: owner, log: shouldLog })
-	if (arga.newlyDeployed) {
+	if (facetCutArgs.length) {
 		log('registering facets and initializing')
 		const DiamondInit = await ethers.getContractAt('DiamondInit', diamondInit.address)
 		const DiamondCut = await ethers.getContractAt('IDiamondCut', arga.address)
