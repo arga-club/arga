@@ -100,5 +100,11 @@
 		"twin": {
 			"preset": "styled-components"
 		}
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"@coinbase/wallet-sdk@3.9.3": "patches/@coinbase__wallet-sdk@3.9.3.patch",
+			"@metamask/sdk@0.27.0": "patches/@metamask__sdk@0.27.0.patch"
+		}
 	}
 }

@@ -4,6 +4,14 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@coinbase/wallet-sdk@3.9.3':
+    hash: 4yemvmp3pvgkehs3q4cf76cwzy
+    path: patches/@coinbase__wallet-sdk@3.9.3.patch
+  '@metamask/sdk@0.27.0':
+    hash: n7nwlrmikjnaop3tam7phkmda4
+    path: patches/@metamask__sdk@0.27.0.patch
+
 importers:
 
   .:
@@ -8128,7 +8136,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@coinbase/wallet-sdk@3.9.3':
+  '@coinbase/wallet-sdk@3.9.3(patch_hash=4yemvmp3pvgkehs3q4cf76cwzy)':
     dependencies:
       bn.js: 5.2.1
       buffer: 6.0.3
@@ -8593,7 +8601,7 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       react-native: 0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10)
 
-  '@metamask/sdk@0.27.0(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(utf-8-validate@5.0.10)':
+  '@metamask/sdk@0.27.0(patch_hash=n7nwlrmikjnaop3tam7phkmda4)(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(utf-8-validate@5.0.10)':
     dependencies:
       '@metamask/onboarding': 1.0.1
       '@metamask/providers': 16.1.0
@@ -9949,13 +9957,13 @@ snapshots:
   '@wagmi/connectors@5.1.5(@react-native-async-storage/async-storage@1.22.3(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10)))(@types/react@18.2.57)(@wagmi/core@2.13.4(@tanstack/query-core@5.51.21)(@types/react@18.2.57)(react@18.2.0)(typescript@5.3.3)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4)))(bufferutil@4.0.8)(ioredis@5.3.2)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)':
     dependencies:
       '@coinbase/wallet-sdk': 4.0.4
-      '@metamask/sdk': 0.27.0(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(utf-8-validate@5.0.10)
+      '@metamask/sdk': 0.27.0(patch_hash=n7nwlrmikjnaop3tam7phkmda4)(bufferutil@4.0.8)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(utf-8-validate@5.0.10)
       '@safe-global/safe-apps-provider': 0.18.3(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@safe-global/safe-apps-sdk': 9.1.0(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4)
       '@wagmi/core': 2.13.4(@tanstack/query-core@5.51.21)(@types/react@18.2.57)(react@18.2.0)(typescript@5.3.3)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4))
       '@walletconnect/ethereum-provider': 2.14.0(@react-native-async-storage/async-storage@1.22.3(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10)))(@types/react@18.2.57)(bufferutil@4.0.8)(ioredis@5.3.2)(react@18.2.0)(utf-8-validate@5.0.10)
       '@walletconnect/modal': 2.6.2(@types/react@18.2.57)(react@18.2.0)
-      cbw-sdk: '@coinbase/wallet-sdk@3.9.3'
+      cbw-sdk: '@coinbase/wallet-sdk@3.9.3(patch_hash=4yemvmp3pvgkehs3q4cf76cwzy)'
       viem: 2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     optionalDependencies:
       typescript: 5.3.3
