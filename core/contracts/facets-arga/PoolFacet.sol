@@ -62,11 +62,6 @@ library PoolLibrary {
 		emit ArgaLibrary.PoolDrawn(drawId);
 		return drawId;
 	}
-
-	function addToPool(ArgaLibrary.Collateral memory collateral) internal {
-		State storage ds = diamondStorage();
-		ArgaLibrary.addToCollateralsSingle(ds.pool, collateral);
-	}
 }
 
 contract PoolFacet is IEntropyConsumer {

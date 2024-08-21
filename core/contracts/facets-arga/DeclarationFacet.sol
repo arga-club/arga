@@ -173,6 +173,7 @@ contract DeclarationFacet {
 		DeclarationLibrary.State storage ds = DeclarationLibrary.diamondStorage();
 		RedemptionLibrary.State storage rds = RedemptionLibrary.diamondStorage();
 		TreasuryLibrary.State storage tds = TreasuryLibrary.diamondStorage();
+		PoolLibrary.State storage pds = PoolLibrary.diamondStorage();
 		ArgaLibrary.Declaration storage declaration = ds.declarations[id];
 		if (msg.sender != declaration.witness) {
 			revert ArgaLibrary.InvalidWitness(msg.sender);
@@ -185,7 +186,10 @@ contract DeclarationFacet {
 		uint treasurerValue = (declaration.collateral.value * tds.treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * tds.witnessRedemptionPercentage) / 100;
 		uint poolValue = declaration.collateral.value - treasurerValue - witnessValue;
-		PoolLibrary.addToPool(ArgaLibrary.Collateral(poolValue, declaration.collateral.erc20Address));
+		ArgaLibrary.addToCollateralsSingle(
+			pds.pool,
+			ArgaLibrary.Collateral(poolValue, declaration.collateral.erc20Address)
+		);
 		ArgaLibrary.addToCollateralsSingle(
 			rds.redemptions[tds.treasurer],
 			ArgaLibrary.Collateral(treasurerValue, declaration.collateral.erc20Address)
