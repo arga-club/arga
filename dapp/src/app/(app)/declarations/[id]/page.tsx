@@ -65,7 +65,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		await reconnectAsync()
 		await writeContractAsync({
 			...argaInstance,
-			functionName: 'concludeDeclarationWithApproval',
+			functionName: 'concludeDeclarationWithRejection',
 			args: [BigInt(params.id), randomNumberForDraw()],
 		})
 		router.push('/declarations')
