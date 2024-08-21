@@ -2800,7 +2800,7 @@ export default {
           ]
         },
         "DeclarationFacet": {
-          "address": "0xd8D3eB8d309235CC88ae11792513727B497C4eA1",
+          "address": "0x5439842451Fb567658913cC0703116a30803b0F3",
           "abi": [
             {
               "inputs": [
@@ -3762,7 +3762,7 @@ export default {
           ]
         },
         "DiamondInit": {
-          "address": "0xE0b0A0CDcc3Fb4f07030b3f8AF6E58bDcC2A11D3",
+          "address": "0x3411c9045FE5a78113E3DeA727B987adc185710d",
           "abi": [
             {
               "inputs": [
@@ -3994,7 +3994,7 @@ export default {
           ]
         },
         "PoolFacet": {
-          "address": "0x5359204DC0287779792dd690eF5E0382B1D34Be2",
+          "address": "0x06F8389eCeB07d1d018D593809569B7f9e53Df09",
           "abi": [
             {
               "inputs": [
@@ -4194,7 +4194,7 @@ export default {
           ]
         },
         "TreasuryFacet": {
-          "address": "0x63dBc3F00eAe635855886020578f6113Af9d8744",
+          "address": "0x781e601f00605850223BB54CB8479849083a5b9E",
           "abi": [
             {
               "inputs": [
