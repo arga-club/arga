@@ -443,7 +443,7 @@ export const argaDiamondAbi = [
 	},
 	{
 		type: 'function',
-		inputs: [{ name: 'winMultiplier', internalType: 'uint256', type: 'uint256' }],
+		inputs: [{ name: '_winMultiplier', internalType: 'uint256', type: 'uint256' }],
 		name: 'changeWinMultiplier',
 		outputs: [],
 		stateMutability: 'nonpayable',
@@ -499,6 +499,13 @@ export const argaDiamondAbi = [
 				],
 			},
 		],
+		stateMutability: 'view',
+	},
+	{
+		type: 'function',
+		inputs: [],
+		name: 'winMultiplier',
+		outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
 		stateMutability: 'view',
 	},
 	{
@@ -696,6 +703,17 @@ export const useReadArgaDiamondPool = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
 	address: argaDiamondAddress,
 	functionName: 'pool',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"winMultiplier"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ */
+export const useReadArgaDiamondWinMultiplier = /*#__PURE__*/ createUseReadContract({
+	abi: argaDiamondAbi,
+	address: argaDiamondAddress,
+	functionName: 'winMultiplier',
 })
 
 /**
@@ -1114,6 +1132,17 @@ export const readArgaDiamondPool = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
 	address: argaDiamondAddress,
 	functionName: 'pool',
+})
+
+/**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"winMultiplier"`
+ *
+ * [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ */
+export const readArgaDiamondWinMultiplier = /*#__PURE__*/ createReadContract({
+	abi: argaDiamondAbi,
+	address: argaDiamondAddress,
+	functionName: 'winMultiplier',
 })
 
 /**
