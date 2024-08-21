@@ -70,15 +70,20 @@ contract PoolFacet is IEntropyConsumer {
 		return ds.pool;
 	}
 
+	function winMultiplier() external view returns (uint) {
+		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
+		return ds.winMultiplier;
+	}
+
 	function draw(uint64 drawId) external view returns (ArgaLibrary.Draw memory) {
 		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
 		return ds.draws[drawId];
 	}
 
-	function changeWinMultiplier(uint winMultiplier) external {
+	function changeWinMultiplier(uint _winMultiplier) external {
 		LibDiamond.enforceIsContractOwner();
 		PoolLibrary.State storage ds = PoolLibrary.diamondStorage();
-		ds.winMultiplier = winMultiplier;
+		ds.winMultiplier = _winMultiplier;
 	}
 
 	function getEntropy() internal view override returns (address) {
