@@ -32,6 +32,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@antfu/ni": "^0.21.12",
+		"@jgjp/fire": "^1.0.0",
 		"@nomicfoundation/hardhat-ethers": "^3.0.5",
 		"@nomicfoundation/hardhat-ignition": "^0.15.0",
 		"@nomicfoundation/hardhat-ignition-viem": "^0.15.0",
