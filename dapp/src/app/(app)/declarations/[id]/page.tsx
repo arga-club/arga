@@ -10,7 +10,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useRouter } from 'next/navigation'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
-import { useReadArgaDiamondGetDeclaration } from '~/lib/generated'
+import { useReadArgaDiamondDraw, useReadArgaDiamondGetDeclaration } from '~/lib/generated'
 import { normalizeBigJSON, randomNumberForDraw } from '~/lib/ethereum-utils'
 import { LazyReactJSON, useAutoReconnect } from '~/lib/react-utils'
 import { declarationStatus } from '~/types/arga'
@@ -33,6 +33,11 @@ export default function Declaration({ params }: { params: { id: string } }) {
 	const { isInitialLoading, data: declaration } = useReadArgaDiamondGetDeclaration({
 		args: [BigInt(params.id)],
 		chainId,
+	})
+	const { data: draw } = useReadArgaDiamondDraw({
+		query: {enabled: !!declaration},
+		args: [BigInt(declaration?.drawId ?? 0)],
+		chainId
 	})
 
 	const proofForm = useForm<z.infer<typeof proofFormSchema>>({
@@ -90,6 +95,7 @@ export default function Declaration({ params }: { params: { id: string } }) {
 								<CardHeader>{declaration.summary}</CardHeader>
 								<CardContent>
 									<LazyReactJSON src={normalizeBigJSON(declaration)} name='declaration' />
+									<LazyReactJSON src={normalizeBigJSON(draw ?? {})} name='draw' />
 								</CardContent>
 								<CardFooter>
 									{isDisconnected ? (

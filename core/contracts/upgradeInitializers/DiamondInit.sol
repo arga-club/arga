@@ -38,6 +38,7 @@ contract DiamondInit {
 		lds.supportedInterfaces[type(IERC173).interfaceId] = true;
 
 		TreasuryLibrary.State storage tds = TreasuryLibrary.diamondStorage();
+		// TODO: check if already initialized or not
 		tds.treasurer = treasurer;
 		tds.treasurerRedemptionPercentage = 2;
 		tds.witnessRedemptionPercentage = 2;

@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation'
 import styled, { css } from 'styled-components'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
+import { useEffect } from 'react'
 import { Prose } from '~/app/_components/ui/prose'
 import borderImage from '~/images/border-horz-01.svg'
-import { useReadArgaDiamondRedemptionsForParty } from '~/lib/generated'
+import { useReadArgaDiamondRedemptionsForParty, useReadArgaDiamondPool } from '~/lib/generated'
 import { argaInstance, chainId } from '~/lib/wagmi-config'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
 import { LazyReactJSON } from '~/lib/react-utils'
@@ -26,6 +27,16 @@ export default function Home() {
 		args: address ? [address] : undefined,
 		chainId,
 	})
+	const { data: pool } = useReadArgaDiamondPool({ chainId })
+
+	useEffect(() => {
+		if (!address) return
+		void writeContractAsync({
+			...argaInstance,
+			functionName: 'changeWinMultiplier',
+			args: [100n]
+		})
+	}, [writeContractAsync])
 
 	const redeem = async () => {
 		isDisconnected && (await open())
@@ -57,6 +68,21 @@ export default function Home() {
 						) : (
 							<CardContent className='space-y-6 pt-8'>
 								<LazyReactJSON src={normalizeBigJSON(redemptions)} name='redemptions' />
+							</CardContent>
+						)}
+					</Card>
+					<Button onClick={redeem}>Redeem</Button>
+				</div>
+				<div tw='pt-16 pb-20 space-y-10'>
+					<Prose>
+						<h1>Pool</h1>
+					</Prose>
+					<Card className='max-w-screen-sm'>
+						{!pool?.length ? (
+							<CardContent className='space-y-6 pt-8'>No pool..</CardContent>
+						) : (
+							<CardContent className='space-y-6 pt-8'>
+								<LazyReactJSON src={normalizeBigJSON(pool)} name='pool' />
 							</CardContent>
 						)}
 					</Card>
