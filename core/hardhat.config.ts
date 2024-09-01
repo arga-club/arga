@@ -25,11 +25,13 @@ export default {
 		owner: {
 			default: 0,
 			optimismSepolia: '0x2D9E9CCf7EaDcb8d42C85F7678d0311A0479DD50',
+			optimism: '0x97C860be7A003938a916e8633dD3E8d45Bcd0028',
 		},
 		// https://docs.pyth.network/entropy/contract-addresses
 		entropyContract: {
 			default: '0x4821932D0CDd71225A6d914706A621e0389D7061',
 			optimismSepolia: '0x4821932D0CDd71225A6d914706A621e0389D7061',
+			optimism: '0x4821932D0CDd71225A6d914706A621e0389D7061',
 		},
 		entropyProvider: {
 			default: '0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344',
