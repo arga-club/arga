@@ -49,9 +49,12 @@ export default {
 		optimismSepolia: {
 			url: `https://optimism-sepolia.infura.io/v3/${vars.get('INFURA_API_KEY')}`,
 			accounts: [vars.get('SEPOLIA_PRIVATE_KEY')],
+			verify: {
+				etherscan: {
+					apiKey: vars.get('ETHERSCAN_API_KEY'),
+					apiUrl: 'https://optimism-sepolia.blockscout.com/api',
+				},
+			},
 		},
-	},
-	etherscan: {
-		apiKey: vars.get('ETHERSCAN_API_KEY'),
 	},
 } satisfies HardhatUserConfig
