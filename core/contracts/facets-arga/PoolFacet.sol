@@ -59,6 +59,11 @@ library PoolLibrary {
 		draw.declarationId = declaration.id;
 		draw.chanceToWin = chanceToWin;
 		draw.pool = ds.pool;
+		draw.declarationCollateralValue = declaration.collateral.value;
+		draw.poolValue = ds.pool[0].value;
+		draw.feesTotalPercent = feesTotalPercent;
+		draw.winMultiplier = ds.winMultiplier;
+
 		emit ArgaLibrary.PoolDrawn(drawId);
 		return drawId;
 	}
