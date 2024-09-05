@@ -182,6 +182,10 @@ contract DeclarationFacet {
 		declaration.status = ArgaLibrary.DeclarationStatus.Rejected;
 		emit ArgaLibrary.DeclarationStatusChange(declaration);
 
+		// draw and keep drawId
+		uint64 drawId = PoolLibrary.maybeWinPool(declaration, tds.treasurerRedemptionPercentage, randomNumber);
+		declaration.drawId = drawId;
+
 		// distribute collateral to relevant parties
 		uint treasurerValue = (declaration.collateral.value * tds.treasurerRedemptionPercentage) / 100;
 		uint witnessValue = (declaration.collateral.value * tds.witnessRedemptionPercentage) / 100;
@@ -198,9 +202,5 @@ contract DeclarationFacet {
 			rds.redemptions[declaration.witness],
 			ArgaLibrary.Collateral(treasurerValue, declaration.collateral.erc20Address)
 		);
-
-		// draw and keep drawId
-		uint64 drawId = PoolLibrary.maybeWinPool(declaration, tds.treasurerRedemptionPercentage, randomNumber);
-		declaration.drawId = drawId;
 	}
 }
