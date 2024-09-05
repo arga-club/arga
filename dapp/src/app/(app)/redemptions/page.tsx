@@ -34,9 +34,9 @@ export default function Home() {
 		void writeContractAsync({
 			...argaInstance,
 			functionName: 'changeWinMultiplier',
-			args: [100n]
+			args: [100n],
 		})
-	}, [writeContractAsync])
+	}, [address, writeContractAsync])
 
 	const redeem = async () => {
 		isDisconnected && (await open())

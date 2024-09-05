@@ -35,9 +35,9 @@ export default function Declaration({ params }: { params: { id: string } }) {
 		chainId,
 	})
 	const { data: draw } = useReadArgaDiamondDraw({
-		query: {enabled: !!declaration},
+		query: { enabled: !!declaration },
 		args: [BigInt(declaration?.drawId ?? 0)],
-		chainId
+		chainId,
 	})
 
 	const proofForm = useForm<z.infer<typeof proofFormSchema>>({
