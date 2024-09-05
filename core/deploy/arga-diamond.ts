@@ -93,6 +93,16 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 		if (!diamondCutReceipt?.status) {
 			throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
 		}
+	} else if (diamondInit.newlyDeployed) {
+		log('re-executing init only')
+		const DiamondInit = await ethers.getContractAt('DiamondInit', diamondInit.address)
+		const DiamondCut = await ethers.getContractAt('IDiamondCut', arga.address)
+		const initFunctionCall = DiamondInit.interface.encodeFunctionData('init', [owner, entropyContract])
+		const diamondCutTransaction = await DiamondCut.diamondCut([], diamondInit.address, initFunctionCall)
+		const diamondCutReceipt = await diamondCutTransaction.wait()
+		if (!diamondCutReceipt?.status) {
+			throw Error(`Diamond upgrade failed: ${diamondCutTransaction.hash}`)
+		}
 	}
 
 	sleep(10e3).then(async () => {
