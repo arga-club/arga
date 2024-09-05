@@ -2,6 +2,7 @@ import { BaseContract, FunctionFragment } from 'ethers'
 import { DeployFunction } from 'hardhat-deploy/types'
 import sleep from 'await-sleep'
 import { fire } from '@jgjp/fire'
+import assert from 'assert'
 
 const FacetCutAction = { Add: 0, Replace: 1, Remove: 2 }
 
@@ -37,7 +38,8 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 		address: string
 		selector: string
 	}
-	const facetSelectors: ExistingFacetSelector[] = await fire(async () => {
+	const existingFacetSelectors: ExistingFacetSelector[] = await fire(async () => {
+		assert(!arga.newlyDeployed)
 		const ArgaDiamond = await ethers.getContractAt('DiamondLoupeFacet', arga.address)
 		const facets = await ArgaDiamond.facets()
 		return facets.map(([address, selectors]) => selectors.map(selector => ({ address, selector }))).flat()
@@ -59,7 +61,7 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 		const Contract = await ethers.getContractAt(facetName, facet.address)
 		const selectors = getSelectors(Contract)
 		// add new selectors
-		const selectorsToAdd = selectors.filter(selector => facetSelectors.every(fs => fs.selector !== selector))
+		const selectorsToAdd = selectors.filter(selector => existingFacetSelectors.every(fs => fs.selector !== selector))
 		if (selectorsToAdd.length) {
 			facetCutArgs.push({
 				facetAddress: facet.address,
@@ -69,7 +71,7 @@ export default (async function ({ ethers, ethernal, artifacts, getNamedAccounts,
 		}
 		// update already existing selectors
 		const selectorsToUpdate = selectors.filter(selector =>
-			facetSelectors.find(fs => fs.selector === selector && fs.address !== facet.address),
+			existingFacetSelectors.find(fs => fs.selector === selector && fs.address !== facet.address),
 		)
 		if (selectorsToUpdate.length) {
 			facetCutArgs.push({
