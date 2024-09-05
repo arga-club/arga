@@ -17,7 +17,7 @@ const metadata = {
 
 assert(process.env.NEXT_PUBLIC_CHAIN_NAME)
 
-export const chainId = { optimismSepolia }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
+export const chainId = { optimismSepolia, hardhat }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
 assert(chainId)
 
 export const argaInstance = {
@@ -26,12 +26,19 @@ export const argaInstance = {
 	chainId,
 } as const
 
-export const wagmiConfig = createConfig({
-	chains: [optimismSepolia],
+const chain = [optimismSepolia, hardhat].find(chain => chain.id === chainId)
+assert(chain)
+
+const commonConfig = {
+	chains: [chain],
 	transports: {
 		[hardhat.id]: http('http://127.0.0.1:8545/'),
 		[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
 	},
+} as const
+
+export const wagmiConfig = createConfig({
+	...commonConfig,
 	connectors: [
 		walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false }),
 		injected({ shimDisconnect: true }),
@@ -46,9 +53,4 @@ export const wagmiConfig = createConfig({
 	}),
 })
 
-export const wagmiCoreConfig = createConfigCore({
-	chains: [optimismSepolia],
-	transports: {
-		[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
-	},
-})
+export const wagmiCoreConfig = createConfigCore(commonConfig)

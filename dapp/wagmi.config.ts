@@ -1,6 +1,6 @@
 import { defineConfig } from '@wagmi/cli'
 import { hardhat as hardhatPlugin, react, actions } from '@wagmi/cli/plugins'
-import { optimismSepolia } from 'viem/chains'
+import { hardhat, optimismSepolia } from 'viem/chains'
 import { getContractAddress } from '~/lib/config-utils'
 
 export default defineConfig({
@@ -15,6 +15,7 @@ export default defineConfig({
 			},
 			deployments: {
 				ArgaDiamond: {
+					[hardhat.id]: getContractAddress({ chainId: hardhat.id }),
 					[optimismSepolia.id]: getContractAddress({ chainId: optimismSepolia.id }),
 				},
 			},
