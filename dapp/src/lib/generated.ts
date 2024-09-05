@@ -17,7 +17,7 @@ import {
 
 /**
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const argaDiamondAbi = [
 	{
@@ -480,6 +480,18 @@ export const argaDiamondAbi = [
 						type: 'uint8',
 					},
 					{ name: 'value', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'declarationCollateralValue',
+						internalType: 'uint256',
+						type: 'uint256',
+					},
+					{ name: 'poolValue', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'feesTotalPercent',
+						internalType: 'uint256',
+						type: 'uint256',
+					},
+					{ name: 'winMultiplier', internalType: 'uint256', type: 'uint256' },
 				],
 			},
 		],
@@ -613,16 +625,16 @@ export const argaDiamondAbi = [
 
 /**
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const argaDiamondAddress = {
 	31337: '0x5416adf327242B7224413Dcd6E454FfcB5C1e73C',
-	11155420: '0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f',
+	11155420: '0x29314a5679B32FcF529A14136AD2b50A82eE7f94',
 } as const
 
 /**
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const argaDiamondConfig = {
 	address: argaDiamondAddress,
@@ -637,7 +649,7 @@ export const argaDiamondConfig = {
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamond = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -648,7 +660,7 @@ export const useReadArgaDiamond = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"actorDeclarations"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondActorDeclarations = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -660,7 +672,7 @@ export const useReadArgaDiamondActorDeclarations = /*#__PURE__*/ createUseReadCo
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"communityDeclarations"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondCommunityDeclarations = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -672,7 +684,7 @@ export const useReadArgaDiamondCommunityDeclarations = /*#__PURE__*/ createUseRe
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"getDeclaration"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondGetDeclaration = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -684,7 +696,7 @@ export const useReadArgaDiamondGetDeclaration = /*#__PURE__*/ createUseReadContr
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"witnessDeclarations"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondWitnessDeclarations = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -696,7 +708,7 @@ export const useReadArgaDiamondWitnessDeclarations = /*#__PURE__*/ createUseRead
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"draw"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondDraw = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -708,7 +720,7 @@ export const useReadArgaDiamondDraw = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"pool"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondPool = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -720,7 +732,7 @@ export const useReadArgaDiamondPool = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"winMultiplier"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondWinMultiplier = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -732,7 +744,7 @@ export const useReadArgaDiamondWinMultiplier = /*#__PURE__*/ createUseReadContra
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"redemptionsForParty"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondRedemptionsForParty = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -744,7 +756,7 @@ export const useReadArgaDiamondRedemptionsForParty = /*#__PURE__*/ createUseRead
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"treasurer"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondTreasurer = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -756,7 +768,7 @@ export const useReadArgaDiamondTreasurer = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"owner"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useReadArgaDiamondOwner = /*#__PURE__*/ createUseReadContract({
 	abi: argaDiamondAbi,
@@ -768,7 +780,7 @@ export const useReadArgaDiamondOwner = /*#__PURE__*/ createUseReadContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamond = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -779,7 +791,7 @@ export const useWriteArgaDiamond = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithApproval"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -791,7 +803,7 @@ export const useWriteArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ 
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithRejection"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -803,7 +815,7 @@ export const useWriteArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"declareWithEther"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondDeclareWithEther = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -815,7 +827,7 @@ export const useWriteArgaDiamondDeclareWithEther = /*#__PURE__*/ createUseWriteC
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"submitDeclarationProof"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -827,7 +839,7 @@ export const useWriteArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createUse
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"_entropyCallback"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondEntropyCallback = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -839,7 +851,7 @@ export const useWriteArgaDiamondEntropyCallback = /*#__PURE__*/ createUseWriteCo
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeWinMultiplier"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -851,7 +863,7 @@ export const useWriteArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createUseWri
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"redeem"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondRedeem = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -863,7 +875,7 @@ export const useWriteArgaDiamondRedeem = /*#__PURE__*/ createUseWriteContract({
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeTreasurer"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondChangeTreasurer = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -875,7 +887,7 @@ export const useWriteArgaDiamondChangeTreasurer = /*#__PURE__*/ createUseWriteCo
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"renounceOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondRenounceOwnership = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -887,7 +899,7 @@ export const useWriteArgaDiamondRenounceOwnership = /*#__PURE__*/ createUseWrite
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"transferOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWriteArgaDiamondTransferOwnership = /*#__PURE__*/ createUseWriteContract({
 	abi: argaDiamondAbi,
@@ -899,7 +911,7 @@ export const useWriteArgaDiamondTransferOwnership = /*#__PURE__*/ createUseWrite
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamond = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -910,7 +922,7 @@ export const useSimulateArgaDiamond = /*#__PURE__*/ createUseSimulateContract({
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithApproval"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -922,7 +934,7 @@ export const useSimulateArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithRejection"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -934,7 +946,7 @@ export const useSimulateArgaDiamondConcludeDeclarationWithRejection = /*#__PURE_
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"declareWithEther"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondDeclareWithEther = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -946,7 +958,7 @@ export const useSimulateArgaDiamondDeclareWithEther = /*#__PURE__*/ createUseSim
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"submitDeclarationProof"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -958,7 +970,7 @@ export const useSimulateArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ create
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"_entropyCallback"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondEntropyCallback = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -970,7 +982,7 @@ export const useSimulateArgaDiamondEntropyCallback = /*#__PURE__*/ createUseSimu
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeWinMultiplier"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -982,7 +994,7 @@ export const useSimulateArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createUse
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"redeem"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondRedeem = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -994,7 +1006,7 @@ export const useSimulateArgaDiamondRedeem = /*#__PURE__*/ createUseSimulateContr
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeTreasurer"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondChangeTreasurer = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -1006,7 +1018,7 @@ export const useSimulateArgaDiamondChangeTreasurer = /*#__PURE__*/ createUseSimu
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"renounceOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondRenounceOwnership = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -1018,7 +1030,7 @@ export const useSimulateArgaDiamondRenounceOwnership = /*#__PURE__*/ createUseSi
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"transferOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useSimulateArgaDiamondTransferOwnership = /*#__PURE__*/ createUseSimulateContract({
 	abi: argaDiamondAbi,
@@ -1030,7 +1042,7 @@ export const useSimulateArgaDiamondTransferOwnership = /*#__PURE__*/ createUseSi
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWatchArgaDiamondEvent = /*#__PURE__*/ createUseWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1041,7 +1053,7 @@ export const useWatchArgaDiamondEvent = /*#__PURE__*/ createUseWatchContractEven
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"DeclarationMade"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWatchArgaDiamondDeclarationMadeEvent = /*#__PURE__*/ createUseWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1053,7 +1065,7 @@ export const useWatchArgaDiamondDeclarationMadeEvent = /*#__PURE__*/ createUseWa
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"DeclarationStatusChange"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWatchArgaDiamondDeclarationStatusChangeEvent = /*#__PURE__*/ createUseWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1065,7 +1077,7 @@ export const useWatchArgaDiamondDeclarationStatusChangeEvent = /*#__PURE__*/ cre
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"PoolDrawn"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWatchArgaDiamondPoolDrawnEvent = /*#__PURE__*/ createUseWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1077,7 +1089,7 @@ export const useWatchArgaDiamondPoolDrawnEvent = /*#__PURE__*/ createUseWatchCon
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"TreasurerChanged"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWatchArgaDiamondTreasurerChangedEvent = /*#__PURE__*/ createUseWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1089,7 +1101,7 @@ export const useWatchArgaDiamondTreasurerChangedEvent = /*#__PURE__*/ createUseW
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const useWatchArgaDiamondOwnershipTransferredEvent = /*#__PURE__*/ createUseWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1105,7 +1117,7 @@ export const useWatchArgaDiamondOwnershipTransferredEvent = /*#__PURE__*/ create
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamond = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1116,7 +1128,7 @@ export const readArgaDiamond = /*#__PURE__*/ createReadContract({
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"actorDeclarations"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondActorDeclarations = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1128,7 +1140,7 @@ export const readArgaDiamondActorDeclarations = /*#__PURE__*/ createReadContract
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"communityDeclarations"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondCommunityDeclarations = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1140,7 +1152,7 @@ export const readArgaDiamondCommunityDeclarations = /*#__PURE__*/ createReadCont
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"getDeclaration"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondGetDeclaration = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1152,7 +1164,7 @@ export const readArgaDiamondGetDeclaration = /*#__PURE__*/ createReadContract({
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"witnessDeclarations"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondWitnessDeclarations = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1164,7 +1176,7 @@ export const readArgaDiamondWitnessDeclarations = /*#__PURE__*/ createReadContra
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"draw"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondDraw = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1176,7 +1188,7 @@ export const readArgaDiamondDraw = /*#__PURE__*/ createReadContract({
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"pool"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondPool = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1188,7 +1200,7 @@ export const readArgaDiamondPool = /*#__PURE__*/ createReadContract({
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"winMultiplier"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondWinMultiplier = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1200,7 +1212,7 @@ export const readArgaDiamondWinMultiplier = /*#__PURE__*/ createReadContract({
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"redemptionsForParty"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondRedemptionsForParty = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1212,7 +1224,7 @@ export const readArgaDiamondRedemptionsForParty = /*#__PURE__*/ createReadContra
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"treasurer"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondTreasurer = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1224,7 +1236,7 @@ export const readArgaDiamondTreasurer = /*#__PURE__*/ createReadContract({
  * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"owner"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const readArgaDiamondOwner = /*#__PURE__*/ createReadContract({
 	abi: argaDiamondAbi,
@@ -1236,7 +1248,7 @@ export const readArgaDiamondOwner = /*#__PURE__*/ createReadContract({
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamond = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1247,7 +1259,7 @@ export const writeArgaDiamond = /*#__PURE__*/ createWriteContract({
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithApproval"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1259,7 +1271,7 @@ export const writeArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ cre
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithRejection"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1271,7 +1283,7 @@ export const writeArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/ cr
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"declareWithEther"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondDeclareWithEther = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1283,7 +1295,7 @@ export const writeArgaDiamondDeclareWithEther = /*#__PURE__*/ createWriteContrac
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"submitDeclarationProof"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1295,7 +1307,7 @@ export const writeArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createWriteC
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"_entropyCallback"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondEntropyCallback = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1307,7 +1319,7 @@ export const writeArgaDiamondEntropyCallback = /*#__PURE__*/ createWriteContract
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeWinMultiplier"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1319,7 +1331,7 @@ export const writeArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createWriteCont
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"redeem"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondRedeem = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1331,7 +1343,7 @@ export const writeArgaDiamondRedeem = /*#__PURE__*/ createWriteContract({
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeTreasurer"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondChangeTreasurer = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1343,7 +1355,7 @@ export const writeArgaDiamondChangeTreasurer = /*#__PURE__*/ createWriteContract
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"renounceOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondRenounceOwnership = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1355,7 +1367,7 @@ export const writeArgaDiamondRenounceOwnership = /*#__PURE__*/ createWriteContra
  * Wraps __{@link writeContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"transferOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const writeArgaDiamondTransferOwnership = /*#__PURE__*/ createWriteContract({
 	abi: argaDiamondAbi,
@@ -1367,7 +1379,7 @@ export const writeArgaDiamondTransferOwnership = /*#__PURE__*/ createWriteContra
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamond = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1378,7 +1390,7 @@ export const simulateArgaDiamond = /*#__PURE__*/ createSimulateContract({
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithApproval"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1390,7 +1402,7 @@ export const simulateArgaDiamondConcludeDeclarationWithApproval = /*#__PURE__*/ 
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"concludeDeclarationWithRejection"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1402,7 +1414,7 @@ export const simulateArgaDiamondConcludeDeclarationWithRejection = /*#__PURE__*/
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"declareWithEther"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondDeclareWithEther = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1414,7 +1426,7 @@ export const simulateArgaDiamondDeclareWithEther = /*#__PURE__*/ createSimulateC
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"submitDeclarationProof"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1426,7 +1438,7 @@ export const simulateArgaDiamondSubmitDeclarationProof = /*#__PURE__*/ createSim
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"_entropyCallback"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondEntropyCallback = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1438,7 +1450,7 @@ export const simulateArgaDiamondEntropyCallback = /*#__PURE__*/ createSimulateCo
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeWinMultiplier"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1450,7 +1462,7 @@ export const simulateArgaDiamondChangeWinMultiplier = /*#__PURE__*/ createSimula
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"redeem"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondRedeem = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1462,7 +1474,7 @@ export const simulateArgaDiamondRedeem = /*#__PURE__*/ createSimulateContract({
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"changeTreasurer"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondChangeTreasurer = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1474,7 +1486,7 @@ export const simulateArgaDiamondChangeTreasurer = /*#__PURE__*/ createSimulateCo
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"renounceOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondRenounceOwnership = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1486,7 +1498,7 @@ export const simulateArgaDiamondRenounceOwnership = /*#__PURE__*/ createSimulate
  * Wraps __{@link simulateContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"transferOwnership"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const simulateArgaDiamondTransferOwnership = /*#__PURE__*/ createSimulateContract({
 	abi: argaDiamondAbi,
@@ -1498,7 +1510,7 @@ export const simulateArgaDiamondTransferOwnership = /*#__PURE__*/ createSimulate
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const watchArgaDiamondEvent = /*#__PURE__*/ createWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1509,7 +1521,7 @@ export const watchArgaDiamondEvent = /*#__PURE__*/ createWatchContractEvent({
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"DeclarationMade"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const watchArgaDiamondDeclarationMadeEvent = /*#__PURE__*/ createWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1521,7 +1533,7 @@ export const watchArgaDiamondDeclarationMadeEvent = /*#__PURE__*/ createWatchCon
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"DeclarationStatusChange"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const watchArgaDiamondDeclarationStatusChangeEvent = /*#__PURE__*/ createWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1533,7 +1545,7 @@ export const watchArgaDiamondDeclarationStatusChangeEvent = /*#__PURE__*/ create
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"PoolDrawn"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const watchArgaDiamondPoolDrawnEvent = /*#__PURE__*/ createWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1545,7 +1557,7 @@ export const watchArgaDiamondPoolDrawnEvent = /*#__PURE__*/ createWatchContractE
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"TreasurerChanged"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const watchArgaDiamondTreasurerChangedEvent = /*#__PURE__*/ createWatchContractEvent({
 	abi: argaDiamondAbi,
@@ -1557,7 +1569,7 @@ export const watchArgaDiamondTreasurerChangedEvent = /*#__PURE__*/ createWatchCo
  * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link argaDiamondAbi}__ and `eventName` set to `"OwnershipTransferred"`
  *
  * -
- * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0xcc42A9c7e0536Ea67Be83A7f69Fb275aEcE67F1f)
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
  */
 export const watchArgaDiamondOwnershipTransferredEvent = /*#__PURE__*/ createWatchContractEvent({
 	abi: argaDiamondAbi,
