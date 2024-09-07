@@ -1,4 +1,2719 @@
 export default {
+  "10": [
+    {
+      "name": "optimism",
+      "chainId": "10",
+      "contracts": {
+        "DiamondCutFacet": {
+          "address": "0xD5413A5D23191cf1f1C79AF01544FCDd763Ba898",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_initializationContractAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "_calldata",
+                  "type": "bytes"
+                }
+              ],
+              "name": "InitializationFunctionReverted",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_invalidAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableUnauthorizedAccount",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "facetAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum IDiamondCut.FacetCutAction",
+                      "name": "action",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes4[]",
+                      "name": "functionSelectors",
+                      "type": "bytes4[]"
+                    }
+                  ],
+                  "indexed": false,
+                  "internalType": "struct IDiamondCut.FacetCut[]",
+                  "name": "_diamondCut",
+                  "type": "tuple[]"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "address",
+                  "name": "_init",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "bytes",
+                  "name": "_calldata",
+                  "type": "bytes"
+                }
+              ],
+              "name": "DiamondCut",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "facetAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum IDiamondCut.FacetCutAction",
+                      "name": "action",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes4[]",
+                      "name": "functionSelectors",
+                      "type": "bytes4[]"
+                    }
+                  ],
+                  "internalType": "struct IDiamondCut.FacetCut[]",
+                  "name": "_diamondCut",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "_init",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "_calldata",
+                  "type": "bytes"
+                }
+              ],
+              "name": "diamondCut",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        },
+        "Arga": {
+          "address": "0x87356f30ee14515F467bb6c263593080775880d2",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_contractOwner",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "_diamondCutFacet",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "payable",
+              "type": "constructor"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_initializationContractAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "_calldata",
+                  "type": "bytes"
+                }
+              ],
+              "name": "InitializationFunctionReverted",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "facetAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum IDiamondCut.FacetCutAction",
+                      "name": "action",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes4[]",
+                      "name": "functionSelectors",
+                      "type": "bytes4[]"
+                    }
+                  ],
+                  "indexed": false,
+                  "internalType": "struct IDiamondCut.FacetCut[]",
+                  "name": "_diamondCut",
+                  "type": "tuple[]"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "address",
+                  "name": "_init",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "bytes",
+                  "name": "_calldata",
+                  "type": "bytes"
+                }
+              ],
+              "name": "DiamondCut",
+              "type": "event"
+            },
+            {
+              "stateMutability": "payable",
+              "type": "fallback"
+            },
+            {
+              "stateMutability": "payable",
+              "type": "receive"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                }
+              ],
+              "name": "InvalidActor",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "witness",
+                  "type": "address"
+                }
+              ],
+              "name": "InvalidWitness",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "indexed": false,
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "declaration",
+                  "type": "tuple"
+                }
+              ],
+              "name": "DeclarationMade",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "indexed": false,
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "declaration",
+                  "type": "tuple"
+                }
+              ],
+              "name": "DeclarationStatusChange",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "drawId",
+                  "type": "uint256"
+                }
+              ],
+              "name": "PoolDrawn",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                }
+              ],
+              "name": "actorDeclarations",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "communityDeclarations",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "randomNumber",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "concludeDeclarationWithApproval",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "randomNumber",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "concludeDeclarationWithRejection",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "string",
+                  "name": "summary",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "witness",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "startDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "endDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "witnessByDate",
+                  "type": "uint256"
+                }
+              ],
+              "name": "declareWithEther",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "payable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "index",
+                  "type": "uint256"
+                }
+              ],
+              "name": "getDeclaration",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "proof",
+                  "type": "string"
+                }
+              ],
+              "name": "submitDeclarationProof",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "witness",
+                  "type": "address"
+                }
+              ],
+              "name": "witnessDeclarations",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                }
+              ],
+              "name": "InvalidEntropyContract",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_invalidAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableUnauthorizedAccount",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint64",
+                  "name": "sequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "address",
+                  "name": "provider",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "randomNumber",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "_entropyCallback",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "_winMultiplier",
+                  "type": "uint256"
+                }
+              ],
+              "name": "changeWinMultiplier",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint64",
+                  "name": "drawId",
+                  "type": "uint64"
+                }
+              ],
+              "name": "draw",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "declarationId",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral[]",
+                      "name": "pool",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "chanceToWin",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DrawStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "value",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Draw",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "pool",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "erc20Address",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Collateral[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "winMultiplier",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address payable",
+                  "name": "destination",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "erc20Addresses",
+                  "type": "address[]"
+                }
+              ],
+              "name": "redeem",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "party",
+                  "type": "address"
+                }
+              ],
+              "name": "redemptionsForParty",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "erc20Address",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Collateral[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "ZeroAddress",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": false,
+                  "internalType": "address",
+                  "name": "treasurer",
+                  "type": "address"
+                }
+              ],
+              "name": "TreasurerChanged",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "newTreasurer",
+                  "type": "address"
+                }
+              ],
+              "name": "changeTreasurer",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "treasurer",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "_treasurer",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_owner",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableInvalidOwner",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "previousOwner",
+                  "type": "address"
+                },
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "newOwner",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnershipTransferred",
+              "type": "event"
+            },
+            {
+              "inputs": [],
+              "name": "owner",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "owner_",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "renounceOwnership",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_newOwner",
+                  "type": "address"
+                }
+              ],
+              "name": "transferOwnership",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        },
+        "DiamondLoupeFacet": {
+          "address": "0xc8539eaC81dFF9a88EB9A1facD1a4fB3ff08bE93",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes4",
+                  "name": "_functionSelector",
+                  "type": "bytes4"
+                }
+              ],
+              "name": "facetAddress",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "facetAddress_",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "facetAddresses",
+              "outputs": [
+                {
+                  "internalType": "address[]",
+                  "name": "facetAddresses_",
+                  "type": "address[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_facet",
+                  "type": "address"
+                }
+              ],
+              "name": "facetFunctionSelectors",
+              "outputs": [
+                {
+                  "internalType": "bytes4[]",
+                  "name": "_facetFunctionSelectors",
+                  "type": "bytes4[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "facets",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "facetAddress",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes4[]",
+                      "name": "functionSelectors",
+                      "type": "bytes4[]"
+                    }
+                  ],
+                  "internalType": "struct IDiamondLoupe.Facet[]",
+                  "name": "facets_",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes4",
+                  "name": "_interfaceId",
+                  "type": "bytes4"
+                }
+              ],
+              "name": "supportsInterface",
+              "outputs": [
+                {
+                  "internalType": "bool",
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        },
+        "OwnershipFacet": {
+          "address": "0x7D08522EF9B498d2c36E887d10c7ffd5B75Ad8Fc",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_owner",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableInvalidOwner",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_invalidAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableUnauthorizedAccount",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "previousOwner",
+                  "type": "address"
+                },
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "newOwner",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnershipTransferred",
+              "type": "event"
+            },
+            {
+              "inputs": [],
+              "name": "owner",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "owner_",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "renounceOwnership",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_newOwner",
+                  "type": "address"
+                }
+              ],
+              "name": "transferOwnership",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ]
+        },
+        "DeclarationFacet": {
+          "address": "0xc5AE0eB696494189724cb699Fd42733e27EBDed9",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                }
+              ],
+              "name": "InvalidActor",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "witness",
+                  "type": "address"
+                }
+              ],
+              "name": "InvalidWitness",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "indexed": false,
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "declaration",
+                  "type": "tuple"
+                }
+              ],
+              "name": "DeclarationMade",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "indexed": false,
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "declaration",
+                  "type": "tuple"
+                }
+              ],
+              "name": "DeclarationStatusChange",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "drawId",
+                  "type": "uint256"
+                }
+              ],
+              "name": "PoolDrawn",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                }
+              ],
+              "name": "actorDeclarations",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "communityDeclarations",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "randomNumber",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "concludeDeclarationWithApproval",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "randomNumber",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "concludeDeclarationWithRejection",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "string",
+                  "name": "summary",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "actor",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "witness",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "startDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "endDate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "witnessByDate",
+                  "type": "uint256"
+                }
+              ],
+              "name": "declareWithEther",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "payable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "index",
+                  "type": "uint256"
+                }
+              ],
+              "name": "getDeclaration",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "proof",
+                  "type": "string"
+                }
+              ],
+              "name": "submitDeclarationProof",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "witness",
+                  "type": "address"
+                }
+              ],
+              "name": "witnessDeclarations",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "id",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DeclarationStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "summary",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "description",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "actor",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "witness",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "startDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "endDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "witnessByDate",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral",
+                      "name": "collateral",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "string",
+                      "name": "proof",
+                      "type": "string"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "drawId",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Declaration[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        },
+        "PoolFacet": {
+          "address": "0x6dBa93a3f0604F3CBd9E60261522EE6326B74DAf",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                }
+              ],
+              "name": "InvalidEntropyContract",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_invalidAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableUnauthorizedAccount",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint64",
+                  "name": "sequence",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "address",
+                  "name": "provider",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "randomNumber",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "_entropyCallback",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "_winMultiplier",
+                  "type": "uint256"
+                }
+              ],
+              "name": "changeWinMultiplier",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint64",
+                  "name": "drawId",
+                  "type": "uint64"
+                }
+              ],
+              "name": "draw",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "declarationId",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint256",
+                          "name": "value",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "erc20Address",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct ArgaLibrary.Collateral[]",
+                      "name": "pool",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "chanceToWin",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ArgaLibrary.DrawStatus",
+                      "name": "status",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "value",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Draw",
+                  "name": "",
+                  "type": "tuple"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "pool",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "erc20Address",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Collateral[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "winMultiplier",
+              "outputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        },
+        "RedemptionFacet": {
+          "address": "0xeC20C96aC0430F7451cf6CB58B548338B5c779Cc",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address payable",
+                  "name": "destination",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "erc20Addresses",
+                  "type": "address[]"
+                }
+              ],
+              "name": "redeem",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "party",
+                  "type": "address"
+                }
+              ],
+              "name": "redemptionsForParty",
+              "outputs": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "erc20Address",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct ArgaLibrary.Collateral[]",
+                  "name": "",
+                  "type": "tuple[]"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        },
+        "TreasuryFacet": {
+          "address": "0xa5B8DA17929D00F302F6729611E58c3E91bAE088",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_invalidAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "OwnableUnauthorizedAccount",
+              "type": "error"
+            },
+            {
+              "inputs": [],
+              "name": "ZeroAddress",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": false,
+                  "internalType": "address",
+                  "name": "treasurer",
+                  "type": "address"
+                }
+              ],
+              "name": "TreasurerChanged",
+              "type": "event"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "newTreasurer",
+                  "type": "address"
+                }
+              ],
+              "name": "changeTreasurer",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "treasurer",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "_treasurer",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        },
+        "DiamondInit": {
+          "address": "0x2cB9893C4F3F37c7E11963fC8597eCf37F2788B1",
+          "abi": [
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "entropyContractAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "WrongEntropyContractAddress",
+              "type": "error"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "treasurer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "entropyContractAddress",
+                  "type": "address"
+                }
+              ],
+              "name": "init",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "address",
+                  "name": "_addr",
+                  "type": "address"
+                }
+              ],
+              "name": "isContract",
+              "outputs": [
+                {
+                  "internalType": "bool",
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            }
+          ]
+        }
+      }
+    }
+  ],
   "31337": [
     {
       "name": "localhost",

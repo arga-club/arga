@@ -65,7 +65,7 @@ export default {
 			verify: {
 				etherscan: {
 					apiKey: vars.get('OPTIMISM_ETHERSCAN_API_KEY'),
-					apiUrl: 'https://optimistic.etherscan.io/api',
+					apiUrl: 'https://api-optimistic.etherscan.io',
 				},
 			},
 		},
