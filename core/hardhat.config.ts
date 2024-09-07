@@ -31,11 +31,12 @@ export default {
 		entropyContract: {
 			default: '0x4821932D0CDd71225A6d914706A621e0389D7061',
 			optimismSepolia: '0x4821932D0CDd71225A6d914706A621e0389D7061',
-			optimism: '0x4821932D0CDd71225A6d914706A621e0389D7061',
+			optimism: '0xdF21D137Aadc95588205586636710ca2890538d5',
 		},
 		entropyProvider: {
 			default: '0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344',
 			optimismSepolia: '0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344',
+			optimism: '0x52DeaA1c84233F7bb8C8A45baeDE41091c616506',
 		},
 	},
 	diamondAbi: {
@@ -55,6 +56,16 @@ export default {
 				etherscan: {
 					apiKey: vars.get('ETHERSCAN_API_KEY'),
 					apiUrl: 'https://optimism-sepolia.blockscout.com/api',
+				},
+			},
+		},
+		optimism: {
+			url: `https://optimism-mainnet.infura.io/v3/${vars.get('INFURA_API_KEY')}`,
+			accounts: [vars.get('OPTIMISM_PRIVATE_KEY')],
+			verify: {
+				etherscan: {
+					apiKey: vars.get('OPTIMISM_ETHERSCAN_API_KEY'),
+					apiUrl: 'https://optimistic.etherscan.io/api',
 				},
 			},
 		},
