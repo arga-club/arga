@@ -58,10 +58,6 @@ library ArgaLibrary {
 		uint chanceToWin;
 		DrawStatus status;
 		uint value;
-		uint declarationCollateralValue;
-		uint poolValue;
-		uint feesTotalPercent;
-		uint winMultiplier;
 	}
 
 	function addToCollateralsSingle(Collateral[] storage collaterals, Collateral memory collateral) internal {
