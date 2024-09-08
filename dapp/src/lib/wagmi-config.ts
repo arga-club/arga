@@ -2,7 +2,7 @@ import assert from 'assert'
 import { hardhat, optimismSepolia } from 'viem/chains'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
 import { createConfig as createConfigCore } from '@wagmi/core'
-import { walletConnect, injected, coinbaseWallet } from 'wagmi/connectors'
+import { walletConnect } from 'wagmi/connectors'
 import contracts from '~/lib/contracts'
 import { getContractAddress } from '~/lib/config-utils'
 
@@ -41,11 +41,6 @@ export const wagmiConfig = createConfig({
 	...commonConfig,
 	connectors: [
 		walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false }),
-		injected({ shimDisconnect: true }),
-		coinbaseWallet({
-			appName: metadata.name,
-			appLogoUrl: metadata.icons[0],
-		}),
 	],
 	ssr: true,
 	storage: createStorage({
