@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
+import {zeroAddress} from 'viem'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
 import { useReadArgaDiamondCommunityDeclarations } from '~/lib/generated'
 import { usePendingTransactions } from '~/stores/pending-transactions'
@@ -14,8 +15,8 @@ export default function CommunityDeclarations() {
 	const { address, isConnecting } = useAccount()
 	const { pendingTransactions } = usePendingTransactions()
 	const { isInitialLoading, data: communityDeclarations } = useReadArgaDiamondCommunityDeclarations({
-		query: { enabled: !!address, refetchInterval: pendingTransactions.length ? 2000 : undefined },
-		args: address ? [address, 4n] : undefined,
+		query: { refetchInterval: pendingTransactions.length ? 2000 : undefined },
+		args: [address ?? zeroAddress, 4n],
 		chainId,
 	})
 
