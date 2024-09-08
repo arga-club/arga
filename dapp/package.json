@@ -96,7 +96,9 @@
 	"ct3aMetadata": {
 		"initVersion": "7.28.0"
 	},
-	"packageManager": "pnpm@8.6.12",
+	"engines": {
+		"pnpm": "9.x"
+	},
 	"babelMacros": {
 		"twin": {
 			"preset": "styled-components"
