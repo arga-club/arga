@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { hardhat, optimismSepolia } from 'viem/chains'
+import { hardhat, optimismSepolia, optimism } from 'viem/chains'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
 import { createConfig as createConfigCore } from '@wagmi/core'
 import { walletConnect } from 'wagmi/connectors'
@@ -17,7 +17,7 @@ const metadata = {
 
 assert(process.env.NEXT_PUBLIC_CHAIN_NAME)
 
-export const chainId = { optimismSepolia, hardhat }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
+export const chainId = { hardhat, optimismSepolia, optimism }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
 assert(chainId)
 
 export const argaInstance = {
@@ -26,7 +26,7 @@ export const argaInstance = {
 	chainId,
 } as const
 
-const chain = [optimismSepolia, hardhat].find(chain => chain.id === chainId)
+const chain = [hardhat, optimismSepolia, optimism].find(chain => chain.id === chainId)
 assert(chain)
 
 const commonConfig = {
@@ -34,6 +34,7 @@ const commonConfig = {
 	transports: {
 		[hardhat.id]: http('http://127.0.0.1:8545/'),
 		[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
+		[optimism.id]: http(`https://optimism-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
 	},
 } as const
 
