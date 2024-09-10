@@ -1,5 +1,6 @@
 'use client'
 
+import { SignInButton } from '@farcaster/auth-kit'
 import tw, { styled } from 'twin.macro'
 import {
 	NavigationMenu,
@@ -22,6 +23,11 @@ export const MenuApp = () => {
 							</Prose>
 						</NavigationMenuLink>
 					</NavigationMenuItem>
+
+					<NavigationMenuItem>
+						<SignInButton />
+					</NavigationMenuItem>
+
 				</NavigationMenuList>
 			</NavigationMenu>
 			<NavigationMenu>
