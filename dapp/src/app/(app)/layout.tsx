@@ -1,3 +1,4 @@
+import { AuthKitProvider, SignInButton } from '@farcaster/auth-kit';
 import { Inter } from 'next/font/google'
 import { cookieToInitialState } from 'wagmi'
 import { headers } from 'next/headers'
@@ -8,6 +9,8 @@ import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
 import { MenuApp } from '~/app/_components/menu-app'
+import '@farcaster/auth-kit/styles.css';
+import { farcaster_config } from '~/lib/farcaster-config';
 
 const inter = Inter({
 	subsets: ['latin'],

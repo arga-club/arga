@@ -3,6 +3,7 @@ import { TRPCReactProvider } from '~/trpc/react'
 import '~/styles/globals.css'
 import StyledComponentsRegistry from '~/styles/registry'
 import { MenuTop } from '~/app/_components/menu-top'
+import { farcaster_config } from '~/lib/farcaster-config'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -26,6 +27,7 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+	farcaster_config
 	return (
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>

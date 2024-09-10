@@ -1,6 +1,6 @@
 'use client'
 
-import { AuthKitProvider, SignInButton, useSignIn} from '@farcaster/auth-kit'
+import { SignInButton } from '@farcaster/auth-kit'
 import tw, { styled } from 'twin.macro'
 import {
 	NavigationMenu,
@@ -10,31 +10,9 @@ import {
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
 import { Prose } from '~/app/_components/ui/prose'
-import { farcasterConfig } from '~/lib/farcaster-config'
-
-const FarcasterSignIn = () => {
-	const { signIn, signOut, isSuccess } = useSignIn({
-		onSuccess: (res) => {
-			console.log('Farcaster sign-in successful:', res)
-		},
-		onError: (err) => {
-			console.error('Farcaster sign-in error:', err)
-		},
-	})
-
-	return (
-		<SignInButton
-		  onSignIn={signIn}
-		  onSignOut={signOut}
-		>
-		  {isSuccess ? 'Connected with Farcaster' : 'Sign in with Farcaster'}
-		</SignInButton>
-	)
-}
 
 export const MenuApp = () => {
 	return (
-		<AuthKitProvider config={farcasterConfig}>
 		<Root>
 			<NavigationMenu>
 				<NavigationMenuList>
@@ -72,7 +50,6 @@ export const MenuApp = () => {
 				</NavigationMenuList>
 			</NavigationMenu>
 		</Root>
-		</AuthKitProvider>
 	)
 }
 
