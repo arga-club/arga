@@ -1,6 +1,6 @@
 'use client'
 
-import { SignInButton } from '@farcaster/auth-kit'
+import { AuthKitProvider, SignInButton, useSignIn} from '@farcaster/auth-kit'
 import tw, { styled } from 'twin.macro'
 import {
 	NavigationMenu,
