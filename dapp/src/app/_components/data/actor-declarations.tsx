@@ -1,15 +1,11 @@
 'use client'
 
-import Link from 'next/link'
 import { useAccount } from 'wagmi'
-import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
 import { useReadArgaDiamondActorDeclarations } from '~/lib/generated'
 import { PendingDeclaration } from '~/app/_components/pending-declaration'
 import { usePendingTransactions } from '~/stores/pending-transactions'
-import { normalizeBigJSON } from '~/lib/ethereum-utils'
-import { LazyReactJSON } from '~/lib/react-utils'
 import { chainId } from '~/lib/wagmi-config'
-import { Button } from '~/app/_components/ui/button'
+import { DeclarationCard } from '~/app/_components/DeclarationCard'
 
 export default function ActorDeclarations() {
 	const { address, isConnecting } = useAccount()
@@ -43,19 +39,7 @@ export default function ActorDeclarations() {
 					{actorDeclarations
 						?.slice()
 						.reverse()
-						.map(declaration => (
-							<Card key={declaration.id}>
-								<CardHeader>{declaration.summary}</CardHeader>
-								<CardContent>
-									<LazyReactJSON src={normalizeBigJSON(declaration)} collapsed name='declaration' />
-								</CardContent>
-								<CardFooter>
-									<Link href={`/declarations/${declaration.id}`}>
-										<Button>View</Button>
-									</Link>
-								</CardFooter>
-							</Card>
-						))}
+						.map(declaration => <DeclarationCard key={declaration.id} declaration={declaration} />)}
 				</>
 			)}
 		</div>
