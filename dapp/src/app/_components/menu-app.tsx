@@ -45,11 +45,6 @@ export const MenuApp = () => {
 							</Prose>
 						</NavigationMenuLink>
 					</NavigationMenuItem>
-
-					<NavigationMenuItem>
-    					<FarcasterSignIn />
-					</NavigationMenuItem>
-
 				</NavigationMenuList>
 			</NavigationMenu>
 			<NavigationMenu>
@@ -72,7 +67,7 @@ export const MenuApp = () => {
 						<w3m-button />
 					</NavigationMenuItem>
 					<NavigationMenuItem>
-						<SignInButton />
+    					<FarcasterSignIn />
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>
