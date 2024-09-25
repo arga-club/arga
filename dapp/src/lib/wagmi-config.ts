@@ -40,9 +40,7 @@ const commonConfig = {
 
 export const wagmiConfig = createConfig({
 	...commonConfig,
-	connectors: [
-		walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false }),
-	],
+	connectors: [walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false })],
 	ssr: true,
 	storage: createStorage({
 		storage: cookieStorage,
