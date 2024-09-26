@@ -86,7 +86,6 @@ export default function Home() {
 							</CardContent>
 						)}
 					</Card>
-					<Button onClick={redeem}>Redeem</Button>
 				</div>
 			</div>
 		</>
