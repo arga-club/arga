@@ -7,7 +7,7 @@ import { usePendingTransactions } from '~/stores/pending-transactions'
 import { chainId } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
 
-export default function ActorDeclarations() {
+export default function MyDeclarations() {
 	const { address, isConnecting } = useAccount()
 	const { pendingTransactions } = usePendingTransactions()
 	const { isInitialLoading, data: actorDeclarations } = useReadArgaDiamondActorDeclarations({

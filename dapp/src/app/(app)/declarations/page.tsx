@@ -3,7 +3,7 @@
 
 import Link from 'next/link'
 import styled, { css } from 'styled-components'
-import ActorDeclarations from '~/app/_components/data/actor-declarations'
+import MyDeclarations from '~/app/_components/data/MyDeclarations'
 import CommunityDeclarations from '~/app/_components/data/community-declarations'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent } from '~/app/_components/ui/card'
@@ -45,7 +45,7 @@ export default function Home() {
 						<Prose>
 							<h1>My declarations</h1>
 						</Prose>
-						<ActorDeclarations />
+						<MyDeclarations />
 						<Link tw='block' href='/declarations/new'>
 							<Button>New Declaration</Button>
 						</Link>
