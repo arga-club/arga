@@ -89,7 +89,7 @@ export default function DeclarationNew() {
 			<div tw='container'>
 				<div tw='px-3 pt-16 pb-20'>
 					<Prose>
-						<h1>My declarations</h1>
+						<h1>New Declaration</h1>
 					</Prose>
 					<Card className='mx-auto max-w-screen-sm'>
 						{isLoading ? (
@@ -143,7 +143,6 @@ export default function DeclarationNew() {
 														<InputWithButtonWrapper>
 															<Input placeholder='0xA1B2C3..' {...field} />
 															<Button
-																variant='secondary'
 																onClick={async () => {
 																	if (!address) return
 																	form.setValue(field.name, address)
@@ -168,7 +167,6 @@ export default function DeclarationNew() {
 														<InputWithButtonWrapper>
 															<Input placeholder='0xA1B2C3..' {...field} />
 															<Button
-																variant='secondary'
 																onClick={async () => {
 																	if (!address) return
 																	form.setValue(field.name, address)
