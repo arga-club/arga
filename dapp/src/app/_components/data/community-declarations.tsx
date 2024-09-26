@@ -17,7 +17,7 @@ export default function CommunityDeclarations() {
 	})
 
 	return (
-		<div tw='space-y-4'>
+		<div tw='space-y-8'>
 			{isInitialLoading
 				? 'Loading..'
 				: isConnecting
