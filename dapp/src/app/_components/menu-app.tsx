@@ -34,6 +34,13 @@ export const MenuApp = () => {
 				</NavigationMenuList>
 				<NavigationMenuList>
 					<NavigationMenuItem>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/witnessing'>
+							Witnessing
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+				</NavigationMenuList>
+				<NavigationMenuList>
+					<NavigationMenuItem>
 						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/redemptions'>
 							Redemptions
 						</NavigationMenuLink>
