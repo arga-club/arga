@@ -3,8 +3,6 @@
 import { formatISO } from 'date-fns'
 import Link from 'next/link'
 import { type Ref } from 'react'
-import styled from 'styled-components'
-import tw from 'twin.macro'
 import { formatEther } from 'viem'
 import { useAccount } from 'wagmi'
 import { Button } from '~/app/_components/ui/button'
@@ -29,8 +27,6 @@ export const DeclarationCard = withDisplayName(
 			<Card ref={ref}>
 				<CardHeader>
 					<Prose>
-						{!!address && declaration.actor === address && <Badge>Acting!</Badge>}
-						{!!address && declaration.witness === address && <Badge>Witnessing!</Badge>}
 						<h2 tw='m-0'>{declaration.summary}</h2>
 					</Prose>
 				</CardHeader>
@@ -56,16 +52,16 @@ export const DeclarationCard = withDisplayName(
 				</CardContent>
 				<CardFooter>
 					<Link href={`/declarations/${declaration.id}`}>
-						<Button>View declaration →</Button>
+						{address && declaration.actor === address ? (
+							<Button>View declaration (as actor) →</Button>
+						) : address && declaration.witness === address ? (
+							<Button>View declaration (as witness) →</Button>
+						) : (
+							<Button>View declaration →</Button>
+						)}
 					</Link>
 				</CardFooter>
 			</Card>
 		)
 	},
 )
-
-const Badge = styled.p`
-	position: absolute;
-	${tw`bg-red-600 text-white shadow-lg text-sm`}
-	${tw`-top-7 -right-3 px-3 py-1 rounded-md`}
-`
