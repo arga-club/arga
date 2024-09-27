@@ -1,6 +1,5 @@
 'use client'
 
-import { AuthKitProvider, SignInButton, useSignIn} from '@farcaster/auth-kit'
 import tw, { styled } from 'twin.macro'
 import {
 	NavigationMenu,
@@ -10,6 +9,7 @@ import {
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
 import { Prose } from '~/app/_components/ui/prose'
+import { FarcasterSignIn } from './FarcasterSignIn'
 
 export const MenuApp = () => {
 	return (
