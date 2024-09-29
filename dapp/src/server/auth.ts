@@ -2,8 +2,10 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
 import { type Adapter } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { env } from '~/env'
 import { db } from '~/server/db'
+import { createAppClient, viemConnector } from "@farcaster/auth-client"
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -15,15 +17,15 @@ declare module 'next-auth' {
 	interface Session extends DefaultSession {
 		user: {
 			id: string
+			fid?: string
 			// ...other properties
 			// role: UserRole;
 		} & DefaultSession['user']
 	}
 
-	// interface User {
-	//   // ...other properties
-	//   // role: UserRole;
-	// }
+	 interface User {
+		 fid?: string
+	 }
 }
 
 /**
@@ -38,6 +40,7 @@ export const authOptions: NextAuthOptions = {
 			user: {
 				...session.user,
 				id: user.id,
+				fid: user.fid,
 			},
 		}),
 	},
@@ -46,6 +49,49 @@ export const authOptions: NextAuthOptions = {
 		DiscordProvider({
 			clientId: env.DISCORD_CLIENT_ID,
 			clientSecret: env.DISCORD_CLIENT_SECRET,
+		}),
+		CredentialsProvider({
+			name: "Sign in with Farcaster",
+			credentials: {
+				message: { label: "Message", type: "text" },
+				signature: { label: "Signature", type: "text" },
+				name: { label: "Name", type: "text" },
+				pfp: { label: "Profile Picture", type: "text" },
+				nonce: { label: "Nonce", type: "text" },
+			},
+			async authorize(credentials) {
+				if (!credentials?.message || !credentials?.signature) {
+					return null
+				}
+
+				const appClient = createAppClient({
+					ethereum: viemConnector(),
+				})
+
+				try {
+					const verifyResponse = await appClient.verifySignInMessage({
+						message: credentials.message,
+						signature: credentials.signature as `0x${string}`,
+						domain: "arga.club",
+						nonce: credentials.nonce,
+					})
+
+					if (!verifyResponse.success) {
+						return null
+					}
+
+					// TODO check if user exists, if not create one
+					return {
+						id: verifyResponse.fid.toString(),
+						fid: verifyResponse.fid.toString(),
+						name: credentials.name,
+						image: credentials.pfp,
+					}
+				} catch (error) {
+					console.error("Error verifying Farcaster auth:", error)
+					return null
+				}
+			},
 		}),
 		/**
 		 * ...add more providers here.

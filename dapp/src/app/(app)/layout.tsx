@@ -3,11 +3,11 @@ import { cookieToInitialState } from 'wagmi'
 import { headers } from 'next/headers'
 import { TRPCReactProvider } from '~/trpc/react'
 import '~/styles/globals.css'
-import { ClientProviders } from '~/app/_components/client-providers'
 import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
 import { MenuApp } from '~/app/_components/menu-app'
+import { Providers } from '~/app/_components/Providers'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -38,10 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
-						<ClientProviders initialState={initialState}>
+						<Providers initialState={initialState}>
 							<MenuApp />
 							<DeclarationWatcher>{children}</DeclarationWatcher>
-						</ClientProviders>
+						</Providers>
 					</StyledComponentsRegistry>
 				</TRPCReactProvider>
 			</body>
