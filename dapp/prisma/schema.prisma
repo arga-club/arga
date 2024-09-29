@@ -54,14 +54,34 @@ model Session {
 }
 
 model User {
+    id                    String    @id @default(cuid())
+    name                  String?
+    email                 String?   @unique
+    emailVerified         DateTime?
+    image                 String?
+    accounts              Account[]
+    sessions              Session[]
+	 posts                 Post[]
+	 // testing farcaster stuff
+	 fid                   Int?      @unique
+	 username              String?   @unique
+	 ethAddress            String?   @unique
+	 declarations          Declaration[]
+	 witnessedDeclarations Declaration[] @relation("witnessedDeclarations")
+}
+
+model Declaration {
     id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+	 summary       String
+	 description   String
+	 startDate     DateTime
+	 endDate       DateTime
+	 status        String
+	 collateral    Float
+	 userId        String
+	 user          User      @relation(fields: [userId], references: [id])
+	 witnessId     String?
+	 witness       User?     @relation("witnessedDeclarations", fields: [witnessId], references: [id])
 }
 
 model VerificationToken {
