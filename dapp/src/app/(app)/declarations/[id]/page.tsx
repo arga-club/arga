@@ -109,6 +109,9 @@ export default function Declaration({ params }: { params: { id: string } }) {
 											{declarationStatusLabels[declaration.status]}
 										</span>
 										<br />
+										Proof:&nbsp;
+										{declaration.proof}
+										<br />
 										Start date:&nbsp;
 										{formatISO(new Date(Number(declaration.startDate)), {
 											representation: 'date',
