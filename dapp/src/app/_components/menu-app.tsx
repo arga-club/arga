@@ -1,8 +1,10 @@
 'use client'
 
 import tw, { styled } from 'twin.macro'
+import { useSession } from 'next-auth/react'
 import {
 	NavigationMenu,
+	NavigationMenuContent,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
@@ -11,6 +13,7 @@ import {
 import { Prose } from '~/app/_components/ui/prose'
 
 export const MenuApp = () => {
+	const { data: session } = useSession()
 	return (
 		<Root>
 			<NavigationMenu>
@@ -46,6 +49,28 @@ export const MenuApp = () => {
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>
+				{!session?.user ? (
+					<>
+						<NavigationMenuList>
+							<NavigationMenuItem>
+								<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/login'>
+									Log in
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						</NavigationMenuList>
+						<NavigationMenuList>
+							<NavigationMenuItem>
+								<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/register'>
+									Register
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						</NavigationMenuList>
+					</>
+				) : (
+					<NavigationMenuList>
+						<NavigationMenuItem>Authed</NavigationMenuItem>
+					</NavigationMenuList>
+				)}
 				<NavigationMenuList>
 					<NavigationMenuItem>
 						<w3m-button />
