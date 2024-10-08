@@ -8,6 +8,7 @@ import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
 import { MenuApp } from '~/app/_components/menu-app'
+import { getServerAuthSession } from '~/server/auth'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -30,15 +31,16 @@ export const metadata = {
 	],
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
 	const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
+	const session = await getServerAuthSession()
 
 	return (
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
-						<ClientProviders initialState={initialState}>
+						<ClientProviders initialState={initialState} session={session}>
 							<MenuApp />
 							<DeclarationWatcher>{children}</DeclarationWatcher>
 						</ClientProviders>
