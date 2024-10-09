@@ -1,88 +1,102 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { type ChangeEvent, useState } from 'react'
+import styled, { css } from 'styled-components'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useSearchParams } from 'next/navigation'
+import { Prose } from '~/app/_components/ui/prose'
+import borderImage from '~/images/border-horz-01.svg'
+import { Button } from '~/app/_components/ui/button'
+import { Card, CardContent, CardFooter } from '~/app/_components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/app/_components/ui/form'
+import { Input } from '~/app/_components/ui/input'
 
-const inputStyle = [
-	'block w-full px-4 py-5 m-0',
-	'bg-white bg-clip-padding border border-solid border-gray-300 rounded',
-	'text-sm font-normal text-gray-700',
-	'transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none',
-].join(' ')
+const formSchema = z.object({
+	preferredName: z.string().min(2).max(50).optional(),
+	handle: z.string().min(2).max(250).optional(),
+	email: z.string().email(),
+	password: z.string().min(2).max(40),
+})
 
-export default function RegisterPage() {
-	const router = useRouter()
-	const [loading, setLoading] = useState(false)
-	const [formValues, setFormValues] = useState({
-		email: '',
-		password: '',
-	})
-	const [error, setError] = useState('')
-
+export default function LogInPage() {
 	const searchParams = useSearchParams()
 	const callbackUrl = searchParams.get('callbackUrl') ?? '/declarations'
+	// const router = useRouter()
 
-	const onSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		try {
-			setLoading(true)
-			setFormValues({ email: '', password: '' })
+	const form = useForm<z.infer<typeof formSchema>>({
+		mode: 'onSubmit',
+		resolver: zodResolver(formSchema),
+	})
 
-			const res = await signIn('credentials', {
-				redirect: true,
-				email: formValues.email,
-				password: formValues.password,
-				callbackUrl,
-			})
-			if (!res?.error) {
-				router.push(callbackUrl)
-			} else {
-				setError('invalid email or password')
-			}
-		} catch (e) {
-			const error: FIXME = e
-			setLoading(false)
-			setError(error)
-		}
-	}
-
-	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target
-		setFormValues({ ...formValues, [name]: value })
-	}
+	const submit = form.handleSubmit(async values => {
+		await signIn('credentials', {
+			redirect: true,
+			email: values.email,
+			password: values.password,
+			callbackUrl,
+		})
+	})
 
 	return (
-		<form onSubmit={onSubmit} className="space-y-6">
-			{error && <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>}
-			<input
-				required
-				type="email"
-				name="email"
-				value={formValues.email}
-				onChange={handleChange}
-				placeholder="Email address"
-				className={inputStyle}
-			/>
-			<input
-				required
-				type="password"
-				name="password"
-				value={formValues.password}
-				onChange={handleChange}
-				placeholder="Password"
-				className={inputStyle}
-			/>
-			<div className="space-y-3">
-				<button
-					type="submit"
-					style={{ backgroundColor: `${loading ? '#ccc' : '#3446eb'}` }}
-					className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
-					disabled={loading}
-				>
-					{loading ? 'loading...' : 'Sign In'}
-				</button>
+		<>
+			<Border $flip tw='-mt-2' />
+			<div tw='container'>
+				<div tw='pt-16 pb-20 space-y-10'>
+					<Prose>
+						<h1>Log In</h1>
+					</Prose>
+					<Card className='max-w-screen-sm'>
+						<Form {...form}>
+							<form onSubmit={submit}>
+								<CardContent className='space-y-6 pt-8'>
+									<FormField
+										control={form.control}
+										name='email'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Email Address</FormLabel>
+												<FormControl>
+													<Input placeholder='riches@plebemail.ro' {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name='password'
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Password</FormLabel>
+												<FormControl>
+													<Input type='password' {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</CardContent>
+								<CardFooter>
+									<Button type='submit'>Register</Button>
+								</CardFooter>
+							</form>
+						</Form>
+					</Card>
+				</div>
 			</div>
-		</form>
+		</>
 	)
 }
+
+const Border = styled.div<{ $flip?: boolean }>`
+	background: url(${borderImage.src});
+	background-size: ${borderImage.width / 3}px ${borderImage.height / 3}px;
+	height: ${borderImage.height / 3}px;
+	${({ $flip }) =>
+		$flip &&
+		css`
+			transform: scaleY(-1);
+		`}
+`

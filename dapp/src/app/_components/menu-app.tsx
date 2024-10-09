@@ -1,16 +1,25 @@
 'use client'
 
 import tw, { styled } from 'twin.macro'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 import {
 	NavigationMenu,
-	NavigationMenuContent,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
 import { Prose } from '~/app/_components/ui/prose'
+import { Avatar, AvatarFallback, AvatarImage } from '~/app/_components/ui/avatar'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '~/app/_components/ui/dropdown-menu'
 
 export const MenuApp = () => {
 	const { data: session } = useSession()
@@ -21,7 +30,7 @@ export const MenuApp = () => {
 					<NavigationMenuItem>
 						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declarations'>
 							<Prose>
-								<h1 tw='mb-2 md:-mt-4 -mt-2 mr-4 text-6xl'>Arga</h1>
+								<h1 tw='mb-0 text-6xl'>Arga</h1>
 							</Prose>
 						</NavigationMenuLink>
 					</NavigationMenuItem>
@@ -32,13 +41,6 @@ export const MenuApp = () => {
 					<NavigationMenuItem>
 						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/declarations/new'>
 							New Declaration
-						</NavigationMenuLink>
-					</NavigationMenuItem>
-				</NavigationMenuList>
-				<NavigationMenuList>
-					<NavigationMenuItem>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/witnessing'>
-							Witnessing
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>
@@ -67,15 +69,35 @@ export const MenuApp = () => {
 						</NavigationMenuList>
 					</>
 				) : (
-					<NavigationMenuList>
-						<NavigationMenuItem>Authed</NavigationMenuItem>
+					<NavigationMenuList tw='ml-6'>
+						<NavigationMenuItem>
+							<DropdownMenu>
+								<DropdownMenuTrigger>
+									<Avatar>
+										<AvatarImage src='/avatardefault.png' />
+										<AvatarFallback>{session.user.email?.substring(0, 2)}</AvatarFallback>
+									</Avatar>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent>
+									<DropdownMenuLabel>{session.user.email}</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem>Account</DropdownMenuItem>
+									<DropdownMenuItem>Declarations Acting</DropdownMenuItem>
+									<DropdownMenuItem>
+										<Link href='/witnessing'>Declarations Witnessing</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+										<w3m-button />
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem>
+										<div onClick={() => signOut()}>Log out</div>
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</NavigationMenuItem>
 					</NavigationMenuList>
 				)}
-				<NavigationMenuList>
-					<NavigationMenuItem>
-						<w3m-button />
-					</NavigationMenuItem>
-				</NavigationMenuList>
 			</NavigationMenu>
 		</Root>
 	)
