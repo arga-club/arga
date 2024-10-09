@@ -8,7 +8,7 @@ import { Prose } from '~/app/_components/ui/prose'
 import borderImage from '~/images/border-horz-01.svg'
 
 export default function Home() {
-	const {address} = useAccount()
+	const { address } = useAccount()
 	return (
 		<>
 			<Border $flip tw='-mt-2' />
@@ -16,9 +16,7 @@ export default function Home() {
 				<div tw='pt-16 pb-20 space-y-10'>
 					<Prose>
 						<h1>Witnessing</h1>
-						<p>
-							My address: {address}
-						</p>
+						<p>My address: {address}</p>
 					</Prose>
 					<WitnessingDeclarations />
 				</div>
