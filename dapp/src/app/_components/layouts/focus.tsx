@@ -7,10 +7,12 @@ import { Header } from '~/app/_components/header'
 export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<WholeScreenDiv>
-			<Header />
 			<div tw='md:flex md:items-center'>
-				<PictureBackground tw='hidden md:block md:self-stretch md:bg-black w-1/2' />
-				<div tw='md:w-1/2 md:px-12'>{children}</div>
+				<PictureBackground tw='hidden md:block md:self-stretch md:bg-black w-[45%]' />
+				<div tw='md:w-[55%]'>
+					<Header hideMenu />
+					{children}
+				</div>
 			</div>
 		</WholeScreenDiv>
 	)
