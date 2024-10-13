@@ -2,7 +2,7 @@
 
 import styled from 'styled-components'
 import background from '~/images/sign-in-bg.jpg'
-import { Header } from '~/app/_components/menu-app'
+import { Header } from '~/app/_components/header'
 
 export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 	return (

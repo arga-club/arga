@@ -7,7 +7,7 @@ import { ClientProviders } from '~/app/_components/client-providers'
 import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
-import { MenuApp } from '~/app/_components/menu-app'
+import { Header } from '~/app/_components/header'
 import { getServerAuthSession } from '~/server/auth'
 
 const inter = Inter({
@@ -41,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
 						<ClientProviders initialState={initialState} session={session}>
-							<MenuApp />
+							<Header />
 							<DeclarationWatcher>{children}</DeclarationWatcher>
 						</ClientProviders>
 					</StyledComponentsRegistry>
