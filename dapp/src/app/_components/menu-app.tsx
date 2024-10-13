@@ -58,7 +58,7 @@ export const MenuApp = () => {
 					<>
 						<NavigationMenuList>
 							<NavigationMenuItem>
-								<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/login'>
+								<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/sign-in'>
 									Log in
 								</NavigationMenuLink>
 							</NavigationMenuItem>
