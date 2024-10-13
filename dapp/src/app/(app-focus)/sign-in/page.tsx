@@ -57,11 +57,11 @@ export default function LogInPage() {
 										render={({ field }) => (
 											<FormItem>
 												<FormLabel>Email Address</FormLabel>
-												<FormControl>
-													<Input placeholder='riches@plebemail.ro' {...field} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
+											<FormControl>
+												<Input placeholder='riches@patricians.ro' {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
 										)}
 									/>
 									<FormField

@@ -99,7 +99,7 @@ export default function RegisterPage() {
 											<FormItem>
 												<FormLabel>Email Address</FormLabel>
 												<FormControl>
-													<Input placeholder='riches@plebemail.ro' {...field} />
+													<Input placeholder='riches@patricians.ro' {...field} />
 												</FormControl>
 												<FormMessage />
 											</FormItem>
