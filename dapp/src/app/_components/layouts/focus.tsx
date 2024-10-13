@@ -1,14 +1,24 @@
 'use client'
 
 import styled from 'styled-components'
-import background from '~/images/sign-in-bg.jpg'
+import { usePathname } from 'next/navigation'
+import registerBG from '~/images/register-bg.jpg'
+import signInBG from '~/images/sign-in-bg-04.jpg'
 import { Header } from '~/app/_components/header'
 
 export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
+	const pathname = usePathname()
+	const backgroundImageSrc = {
+		'/sign-in': signInBG.src,
+		'/register': registerBG.src,
+	}[pathname]
 	return (
 		<WholeScreenDiv>
 			<div tw='md:flex md:items-center'>
-				<PictureBackground tw='hidden md:block md:self-stretch md:bg-black w-[45%]' />
+				<PictureBackground
+					backgroundImageSrc={backgroundImageSrc}
+					tw='hidden md:block md:self-stretch md:bg-black w-[45%]'
+				/>
 				<div tw='md:w-[55%]'>
 					<Header hideMenu />
 					{children}
@@ -26,8 +36,8 @@ const WholeScreenDiv = styled.div`
 	}
 `
 
-const PictureBackground = styled.div`
-	background: url(${background.src});
+const PictureBackground = styled.div<{ backgroundImageSrc?: string }>`
+	background: url(${({ backgroundImageSrc }) => backgroundImageSrc});
 	background-size: cover;
 	background-position: center center;
 `
