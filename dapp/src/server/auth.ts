@@ -1,5 +1,6 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
+import { createAppClient, viemConnector } from "@farcaster/auth-client";
 import { type Adapter } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
 import { compare } from 'bcryptjs'
@@ -84,6 +85,62 @@ export const authOptions: NextAuthOptions = {
 				}
 			},
 		}),
+      CredentialsProvider({
+		  id: "farcaster-credentials",
+        name: "Sign in with Farcaster",
+        credentials: {
+          message: {
+            label: "Message",
+            type: "text",
+            placeholder: "0x0",
+          },
+          signature: {
+            label: "Signature",
+            type: "text",
+            placeholder: "0x0",
+          },
+          // In a production app with a server, these should be fetched from
+          // your Farcaster data indexer rather than have them accepted as part
+          // of credentials.
+          name: {
+            label: "Name",
+            type: "text",
+            placeholder: "0x0",
+          },
+          pfp: {
+            label: "Pfp",
+            type: "text",
+            placeholder: "0x0",
+          },
+        },
+        async authorize(credentials) {
+          const {
+            body: { csrfToken },
+          } = req;
+
+          const appClient = createAppClient({
+            ethereum: viemConnector(),
+          });
+
+          const verifyResponse = await appClient.verifySignInMessage({
+            message: credentials?.message as string,
+            signature: credentials?.signature as `0x${string}`,
+            domain: "example.com",
+            nonce: csrfToken,
+          });
+          const { success, fid } = verifyResponse;
+
+          if (!success) {
+            return null;
+          }
+
+          return {
+            id: fid.toString(),
+            name: credentials?.name,
+            image: credentials?.pfp,
+          };
+        },
+      }),
 	],
 	callbacks: {
 		session: ({ session, token }) => {
