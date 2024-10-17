@@ -1,13 +1,12 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
-import { createAppClient, viemConnector } from "@farcaster/auth-client";
+import { createAppClient, viemConnector } from '@farcaster/auth-client'
 import { type Adapter } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
 import { compare } from 'bcryptjs'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { env } from '~/env'
 import { db } from '~/server/db'
-import { type FIXME } from '~/types/utils'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -29,6 +28,19 @@ declare module 'next-auth' {
 	//   // role: UserRole;
 	// }
 }
+
+type AuthToken =
+	| {
+			id: string
+			credentialsType: 'email'
+			email: string
+	  }
+	| {
+			id: string
+			credentialsType: 'farcaster'
+			username: string
+			profileImage: string
+	  }
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -81,86 +93,86 @@ export const authOptions: NextAuthOptions = {
 
 				return {
 					id: user.id,
+					credentialsType: 'email',
 					email: user.email,
-				}
+				} as AuthToken
 			},
 		}),
-      CredentialsProvider({
-		  id: "farcaster-credentials",
-        name: "Sign in with Farcaster",
-        credentials: {
-          message: {
-            label: "Message",
-            type: "text",
-            placeholder: "0x0",
-          },
-          signature: {
-            label: "Signature",
-            type: "text",
-            placeholder: "0x0",
-          },
-          // In a production app with a server, these should be fetched from
-          // your Farcaster data indexer rather than have them accepted as part
-          // of credentials.
-          name: {
-            label: "Name",
-            type: "text",
-            placeholder: "0x0",
-          },
-          pfp: {
-            label: "Pfp",
-            type: "text",
-            placeholder: "0x0",
-          },
-        },
-        async authorize(credentials) {
-          const {
-            body: { csrfToken },
-          } = req;
+		CredentialsProvider({
+			id: 'farcaster-credentials',
+			name: 'Sign in with Farcaster',
+			credentials: {
+				message: {
+					label: 'Message',
+					type: 'text',
+					placeholder: '0x0',
+				},
+				signature: {
+					label: 'Signature',
+					type: 'text',
+					placeholder: '0x0',
+				},
+				// In a production app with a server, these should be fetched from
+				// your Farcaster data indexer rather than have them accepted as part
+				// of credentials.
+				name: {
+					label: 'Name',
+					type: 'text',
+					placeholder: '0x0',
+				},
+				pfp: {
+					label: 'Pfp',
+					type: 'text',
+					placeholder: '0x0',
+				},
+			},
+			async authorize(credentials, req) {
+				console.log('authorize')
+				const { body } = req
+				const csrfToken = body?.csrfToken
+				if (!csrfToken) throw 'no token'
+				if (!credentials) throw 'no credentials'
+				console.log({ csrfToken })
+				console.log({ credentials })
 
-          const appClient = createAppClient({
-            ethereum: viemConnector(),
-          });
+				const appClient = createAppClient({
+					ethereum: viemConnector(),
+				})
 
-          const verifyResponse = await appClient.verifySignInMessage({
-            message: credentials?.message as string,
-            signature: credentials?.signature as `0x${string}`,
-            domain: "example.com",
-            nonce: csrfToken,
-          });
-          const { success, fid } = verifyResponse;
+				const verifyResponse = await appClient.verifySignInMessage({
+					message: credentials.message,
+					signature: credentials.signature as `0x${string}`,
+					domain: 'localhost',
+					nonce: csrfToken,
+				})
+				console.log({ verifyResponse })
+				const { success, fid } = verifyResponse
+				console.log({ success, fid })
 
-          if (!success) {
-            return null;
-          }
+				if (!success) {
+					return null
+				}
 
-          return {
-            id: fid.toString(),
-            name: credentials?.name,
-            image: credentials?.pfp,
-          };
-        },
-      }),
+				return {
+					id: fid.toString(),
+					credentialsType: 'farcaster',
+					username: credentials?.name,
+					profileImage: credentials?.pfp,
+				} as AuthToken
+			},
+		}),
 	],
 	callbacks: {
-		session: ({ session, token }) => {
-			return {
-				...session,
-				user: {
-					email: session.user.email,
-					id: token.id,
-				},
+		jwt: ({ token, trigger, user }) => {
+			if (trigger !== 'signUp' && trigger !== 'signIn') {
+				return token
 			}
+			return { user }
 		},
-		jwt: ({ token, user }) => {
-			if (user) {
-				const u = user as unknown as FIXME
-				return {
-					email: token.email,
-					id: u.id,
-				}
-			}
-			return token
+		session: ({ session, token }) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const user: AuthToken = (token as any).user as AuthToken
+			return { ...session, user }
 		},
 	},
 }
