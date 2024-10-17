@@ -6,9 +6,8 @@ import '~/styles/globals.css'
 import { ClientProviders } from '~/app/_components/client-providers'
 import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
-import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
-import { Header } from '~/app/_components/header'
 import { getServerAuthSession } from '~/server/auth'
+import { SidebarLayout } from '~/app/_components/layouts/SidebarLayout'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -41,8 +40,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<TRPCReactProvider>
 					<StyledComponentsRegistry>
 						<ClientProviders initialState={initialState} session={session}>
-							<Header />
-							<DeclarationWatcher>{children}</DeclarationWatcher>
+						<SidebarLayout>
+							{children}
+						</SidebarLayout>
 						</ClientProviders>
 					</StyledComponentsRegistry>
 				</TRPCReactProvider>

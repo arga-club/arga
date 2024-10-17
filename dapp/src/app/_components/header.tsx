@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import tw, { styled } from 'twin.macro'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -11,7 +10,6 @@ import {
 	NavigationMenuList,
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
-import { Prose } from '~/app/_components/ui/prose'
 import { Avatar, AvatarFallback, AvatarImage } from '~/app/_components/ui/avatar'
 import {
 	DropdownMenu,
@@ -21,7 +19,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '~/app/_components/ui/dropdown-menu'
-import logo from '~/images/abstract-option-08.png'
+import { Logo } from '~/app/_components/Logo'
 
 export const Header = ({ className, hideMenu }: { className?: string; hideMenu?: boolean }) => {
 	const { data: session } = useSession()
@@ -31,10 +29,7 @@ export const Header = ({ className, hideMenu }: { className?: string; hideMenu?:
 				<NavigationMenuList>
 					<NavigationMenuItem>
 						<NavigationMenuLink className={navigationMenuTriggerStyle()} tw='px-0 -ml-1' href='/declarations'>
-							<Prose tw='flex space-x-4 items-center'>
-								<Image src={logo} alt='flowchart showing process in detail' tw='w-16 h-16 my-0' />
-								<h1 tw='mb-0 text-5xl'>Arga</h1>
-							</Prose>
+							<Logo />
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>

@@ -7,7 +7,7 @@ import { ClientProviders } from '~/app/_components/client-providers'
 import StyledComponentsRegistry from '~/styles/registry'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { getServerAuthSession } from '~/server/auth'
-import { FocusLayout } from '~/app/_components/layouts/focus'
+import { FocusLayout } from '~/app/_components/layouts/FocusLayout'
 
 const inter = Inter({
 	subsets: ['latin'],
