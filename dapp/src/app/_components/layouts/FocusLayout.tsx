@@ -16,7 +16,7 @@ export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 		<WholeScreenDiv>
 			<div tw='md:flex md:items-center'>
 				<PictureBackground
-					backgroundImageSrc={backgroundImageSrc}
+					$backgroundImageSrc={backgroundImageSrc}
 					tw='hidden md:block md:self-stretch md:bg-black w-[45%]'
 				/>
 				<div tw='md:w-[55%]'>
@@ -36,8 +36,8 @@ const WholeScreenDiv = styled.div`
 	}
 `
 
-const PictureBackground = styled.div<{ backgroundImageSrc?: string }>`
-	background: url(${({ backgroundImageSrc }) => backgroundImageSrc});
+const PictureBackground = styled.div<{ $backgroundImageSrc?: string }>`
+	background: url(${({ $backgroundImageSrc }) => $backgroundImageSrc});
 	background-size: cover;
 	background-position: center center;
 `
