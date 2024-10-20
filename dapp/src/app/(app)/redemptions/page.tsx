@@ -3,12 +3,10 @@
 
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useRouter } from 'next/navigation'
-import styled, { css } from 'styled-components'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
 import { useEffect } from 'react'
 import { Prose } from '~/app/_components/ui/prose'
-import borderImage from '~/images/border-horz-01.svg'
 import { useReadArgaDiamondRedemptionsForParty, useReadArgaDiamondPool } from '~/lib/generated'
 import { argaInstance, chainId } from '~/lib/wagmi-config'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
@@ -27,7 +25,7 @@ export default function Home() {
 		args: address ? [address] : undefined,
 		chainId,
 	})
-	const { data: pool } = useReadArgaDiamondPool({ chainId })
+	useReadArgaDiamondPool({ chainId })
 
 	useEffect(() => {
 		if (!address) return
@@ -51,54 +49,24 @@ export default function Home() {
 	}
 
 	return (
-		<>
-			<Border $flip tw='-mt-2' />
-			<div tw='container'>
-				<div tw='pt-16 pb-20 space-y-10'>
-					<Prose>
-						<h1>Redemptions</h1>
-					</Prose>
-					<Card className='max-w-screen-sm'>
-						{isLoading ? (
-							<CardContent className='space-y-6 pt-8'>Loading..</CardContent>
-						) : isSigning ? (
-							<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
-						) : !redemptions?.length ? (
-							<CardContent className='space-y-6 pt-8'>No redemptions..</CardContent>
-						) : (
-							<CardContent className='space-y-6 pt-8'>
-								<LazyReactJSON src={normalizeBigJSON(redemptions)} name='redemptions' />
-							</CardContent>
-						)}
-					</Card>
-					<Button onClick={redeem}>Redeem</Button>
-				</div>
-				<div tw='pt-16 pb-20 space-y-10'>
-					<Prose>
-						<h1>Pool</h1>
-					</Prose>
-					<Card className='max-w-screen-sm'>
-						{!pool?.length ? (
-							<CardContent className='space-y-6 pt-8'>No pool..</CardContent>
-						) : (
-							<CardContent className='space-y-6 pt-8'>
-								<LazyReactJSON src={normalizeBigJSON(pool)} name='pool' />
-							</CardContent>
-						)}
-					</Card>
-				</div>
-			</div>
-		</>
+		<div tw='space-y-10'>
+			<Prose>
+				<h1>Redemptions</h1>
+			</Prose>
+			<Card className='max-w-screen-sm'>
+				{isLoading ? (
+					<CardContent className='space-y-6 pt-8'>Loading..</CardContent>
+				) : isSigning ? (
+					<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
+				) : !redemptions?.length ? (
+					<CardContent className='space-y-6 pt-8'>No redemptions..</CardContent>
+				) : (
+					<CardContent className='space-y-6 pt-8'>
+						<LazyReactJSON src={normalizeBigJSON(redemptions)} name='redemptions' />
+					</CardContent>
+				)}
+			</Card>
+			<Button onClick={redeem}>Redeem</Button>
+		</div>
 	)
 }
-
-const Border = styled.div<{ $flip?: boolean }>`
-	background: url(${borderImage.src});
-	background-size: ${borderImage.width / 3}px ${borderImage.height / 3}px;
-	height: ${borderImage.height / 3}px;
-	${({ $flip }) =>
-		$flip &&
-		css`
-			transform: scaleY(-1);
-		`}
-`

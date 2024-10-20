@@ -6,11 +6,11 @@ import { Prose } from '~/app/_components/ui/prose'
 
 export default function Home() {
 	return (
-		<div tw='container'>
+		<>
 			<Prose>
 				<h1>Declarations</h1>
 			</Prose>
 			<CommunityDeclarations />
-		</div>
+		</>
 	)
 }
