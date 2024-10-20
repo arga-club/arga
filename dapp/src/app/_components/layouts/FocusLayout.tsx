@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { usePathname } from 'next/navigation'
 import registerBG from '~/images/register-bg.jpg'
 import signInBG from '~/images/sign-in-bg-04.jpg'
-import { Header } from '~/app/_components/header'
+import { Logo } from '~/app/_components/Logo'
 
 export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
@@ -20,8 +20,10 @@ export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 					tw='hidden md:block md:self-stretch md:bg-black w-[45%]'
 				/>
 				<div tw='md:w-[55%]'>
-					<Header hideMenu />
-					{children}
+					<div tw='container'>
+						<Logo />
+						<div tw='pt-16 pb-20 space-y-10'>{children}</div>
+					</div>
 				</div>
 			</div>
 		</WholeScreenDiv>

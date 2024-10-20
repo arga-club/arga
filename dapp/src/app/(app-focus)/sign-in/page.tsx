@@ -39,54 +39,50 @@ export default function LogInPage() {
 
 	return (
 		<>
-			<div tw='container'>
-				<div tw='pt-16 pb-20 space-y-10'>
-					<Prose>
-						<h1>Sign In</h1>
-					</Prose>
-					<Form {...form}>
-						<form onSubmit={submit} tw='space-y-10'>
-							<div tw='space-y-4 w-96 max-w-full '>
-								<FormField
-									control={form.control}
-									name='email'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Email Address</FormLabel>
-											<FormControl>
-												<Input placeholder='riches@patricians.ro' {...field} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<FormField
-									control={form.control}
-									name='password'
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Password</FormLabel>
-											<FormControl>
-												<Input type='password' {...field} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							<Button type='submit'>Sign In →</Button>
-							<div>
-								<Prose>
-									<p>Don&#039;t have an account?</p>
-									<Link tw='block' href='/register'>
-										<Button variant='outline'>Register</Button>
-									</Link>
-								</Prose>
-							</div>
-						</form>
-					</Form>
-				</div>
-			</div>
+			<Prose>
+				<h1>Sign In</h1>
+			</Prose>
+			<Form {...form}>
+				<form onSubmit={submit} tw='space-y-10'>
+					<div tw='space-y-4 w-96 max-w-full '>
+						<FormField
+							control={form.control}
+							name='email'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email Address</FormLabel>
+									<FormControl>
+										<Input placeholder='riches@patricians.ro' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='password'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input type='password' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+					<Button type='submit'>Sign In →</Button>
+					<div>
+						<Prose>
+							<p>Don&#039;t have an account?</p>
+							<Link tw='block' href='/register'>
+								<Button variant='outline'>Register</Button>
+							</Link>
+						</Prose>
+					</div>
+				</form>
+			</Form>
 		</>
 	)
 }
