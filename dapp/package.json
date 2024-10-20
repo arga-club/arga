@@ -26,6 +26,7 @@
 		"@auth/prisma-adapter": "^1.4.0",
 		"@farcaster/auth-client": "^0.3.0",
 		"@farcaster/auth-kit": "^0.6.0",
+		"@jgjp/fire": "^1.0.0",
 		"@prisma/client": "^5.10.2",
 		"@radix-ui/react-avatar": "^1.1.1",
 		"@radix-ui/react-collapsible": "^1.1.1",

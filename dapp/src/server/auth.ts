@@ -1,12 +1,13 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
-import { createAppClient, viemConnector } from '@farcaster/auth-client'
 import { type Adapter } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
 import { compare } from 'bcryptjs'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { env } from '~/env'
 import { db } from '~/server/db'
+import { verifyFarcasterSignature } from '~/lib/farcaster'
+import { type User, userSchema } from '~/types/auth'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -16,11 +17,7 @@ import { db } from '~/server/db'
  */
 declare module 'next-auth' {
 	interface Session extends DefaultSession {
-		user: {
-			id: string
-			// ...other properties
-			// role: UserRole;
-		} & DefaultSession['user']
+		user: User
 	}
 
 	// interface User {
@@ -28,19 +25,6 @@ declare module 'next-auth' {
 	//   // role: UserRole;
 	// }
 }
-
-type AuthToken =
-	| {
-			id: string
-			credentialsType: 'email'
-			email: string
-	  }
-	| {
-			id: string
-			credentialsType: 'farcaster'
-			username: string
-			profileImage: string
-	  }
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -77,7 +61,7 @@ export const authOptions: NextAuthOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials) {
-				if (!credentials?.email || !credentials.password) {
+				if (!credentials?.email || !credentials?.password) {
 					return null
 				}
 
@@ -91,11 +75,9 @@ export const authOptions: NextAuthOptions = {
 					return null
 				}
 
-				return {
-					id: user.id,
-					credentialsType: 'email',
-					email: user.email,
-				} as AuthToken
+				const userParsed = userSchema.safeParse(user)
+
+				return !userParsed.success ? null : userParsed.data
 			},
 		}),
 		CredentialsProvider({
@@ -112,53 +94,29 @@ export const authOptions: NextAuthOptions = {
 					type: 'text',
 					placeholder: '0x0',
 				},
-				// In a production app with a server, these should be fetched from
-				// your Farcaster data indexer rather than have them accepted as part
-				// of credentials.
-				name: {
-					label: 'Name',
-					type: 'text',
-					placeholder: '0x0',
-				},
-				pfp: {
-					label: 'Pfp',
+				nonce: {
+					label: 'Nonce',
 					type: 'text',
 					placeholder: '0x0',
 				},
 			},
-			async authorize(credentials, req) {
-				console.log('authorize')
-				const { body } = req
-				const csrfToken = body?.csrfToken
-				if (!csrfToken) throw 'no token'
+			async authorize(credentials) {
 				if (!credentials) throw 'no credentials'
-				console.log({ csrfToken })
-				console.log({ credentials })
 
-				const appClient = createAppClient({
-					ethereum: viemConnector(),
-				})
-
-				const verifyResponse = await appClient.verifySignInMessage({
+				const { success, fid } = await verifyFarcasterSignature({
 					message: credentials.message,
 					signature: credentials.signature as `0x${string}`,
-					domain: 'localhost',
-					nonce: csrfToken,
+					nonce: credentials.nonce,
 				})
-				console.log({ verifyResponse })
-				const { success, fid } = verifyResponse
-				console.log({ success, fid })
+				if (!success) return null
 
-				if (!success) {
-					return null
-				}
+				const user = await db.user.findUnique({
+					where: { fid },
+				})
 
-				return {
-					id: fid.toString(),
-					credentialsType: 'farcaster',
-					username: credentials?.name,
-					profileImage: credentials?.pfp,
-				} as AuthToken
+				const userParsed = userSchema.safeParse(user)
+
+				return !userParsed.success ? null : userParsed.data
 			},
 		}),
 	],
@@ -170,9 +128,8 @@ export const authOptions: NextAuthOptions = {
 			return { user }
 		},
 		session: ({ session, token }) => {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const user: AuthToken = (token as any).user as AuthToken
-			return { ...session, user }
+			const user = userSchema.safeParse(token.user)
+			return !user.success ? session : { ...session, user: user.data }
 		},
 	},
 }

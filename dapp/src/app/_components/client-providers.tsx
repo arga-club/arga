@@ -7,7 +7,7 @@ import { SessionProvider } from 'next-auth/react'
 import { type Session } from 'next-auth'
 import { AuthKitProvider } from '@farcaster/auth-kit'
 import { wagmiConfig, walletConnectProjectId } from '~/lib/wagmi-config'
-import { farcasterConfig } from '~/lib/farcaster-config'
+import { farcasterConfig } from '~/lib/farcaster'
 
 createWeb3Modal({
 	wagmiConfig,
