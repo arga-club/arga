@@ -1,7 +1,6 @@
 import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 import { ClientProviders } from '~/app/_components/client-providers'
-import { SidebarProvider } from '~/app/_components/ui/sidebar'
 import { wagmiConfig } from '~/lib/wagmi-config'
 import { getServerAuthSession } from '~/server/auth'
 import StyledComponentsRegistry from '~/styles/registry'
@@ -13,11 +12,9 @@ export const Providers = async ({ children }: { children: React.ReactNode }) => 
 	return (
 		<TRPCReactProvider>
 			<StyledComponentsRegistry>
-				<SidebarProvider>
-					<ClientProviders initialState={initialState} session={session}>
-						{children}
-					</ClientProviders>
-				</SidebarProvider>
+				<ClientProviders initialState={initialState} session={session}>
+					{children}
+				</ClientProviders>
 			</StyledComponentsRegistry>
 		</TRPCReactProvider>
 	)

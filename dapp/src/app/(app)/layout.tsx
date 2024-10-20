@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import { SidebarLayout } from '~/app/_components/layouts/SidebarLayout'
 import { Providers } from '~/app/_components/providers'
+import { SidebarProvider } from '~/app/_components/ui/sidebar'
 import '~/styles/globals.css'
 
 const inter = Inter({
@@ -29,7 +30,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
 				<Providers>
-					<SidebarLayout>{children}</SidebarLayout>
+					<SidebarProvider>
+						<SidebarLayout>{children}</SidebarLayout>
+					</SidebarProvider>
 				</Providers>
 			</body>
 		</html>
