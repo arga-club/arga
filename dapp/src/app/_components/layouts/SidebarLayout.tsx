@@ -18,7 +18,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div tw='container'>
 			<div tw='md:flex md:items-start'>
-				<div tw='w-1/5 py-10 pr-4 space-y-4 flex flex-col items-end'>
+				<div tw='w-1/5 py-24 pr-4 space-y-4 flex flex-col items-end'>
 					<Logo />
 					<Link tw='block' href='/declarations/new'>
 						New Declaration
@@ -62,7 +62,9 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 						</DropdownMenu>
 					)}
 				</div>
-				<div tw='md:w-4/5 py-24 pl-4'>{children}</div>
+				<div tw='md:w-4/5 py-24 pl-4'>
+					<div tw='pt-2'>{children}</div>
+				</div>
 			</div>
 		</div>
 	)

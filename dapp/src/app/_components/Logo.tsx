@@ -8,7 +8,7 @@ export const Logo = ({ className }: { className?: string }) => {
 	return (
 		<Prose className={className} tw='flex space-x-4 items-center'>
 			<Image src={logo} alt='flowchart showing process in detail' tw='size-12 my-0' />
-			<h1 tw='mb-0 text-4xl translate-y-[-1px]'>Arga</h1>
+			<h1 tw='translate-y-[-1px] my-2'>Arga</h1>
 		</Prose>
 	)
 }
