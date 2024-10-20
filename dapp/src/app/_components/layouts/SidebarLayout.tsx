@@ -1,18 +1,6 @@
 'use client'
 
-import {
-	Eye,
-	Sword,
-	LogIn,
-	UserPlus,
-	Zap,
-	ChevronsUpDown,
-	BadgeCheck,
-	LogOut,
-	Wallet,
-	Users,
-	DollarSign,
-} from 'lucide-react'
+import { Eye, Sword, LogIn, UserPlus, Zap, ChevronsUpDown, LogOut, Users, DollarSign } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
@@ -79,7 +67,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 										</SidebarMenuItem>
 										<SidebarMenuItem>
 											<SidebarMenuButton asChild>
-												<Link tw='flex pr-4' href='/redemptions'>
+												<Link tw='flex pr-4' href='/acting'>
 													<Sword />
 													Acting
 												</Link>
@@ -87,7 +75,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 										</SidebarMenuItem>
 										<SidebarMenuItem>
 											<SidebarMenuButton asChild>
-												<Link tw='flex pr-4' href='/redemptions'>
+												<Link tw='flex pr-4' href='/witnessing'>
 													<Eye />
 													Witnessing
 												</Link>
@@ -121,7 +109,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 											</>
 										) : (
 											<>
-												<SidebarMenuItem>
+												{/*<SidebarMenuItem>
 													<SidebarMenuButton asChild>
 														<Link tw='flex pr-4' href='/account'>
 															<BadgeCheck />
@@ -136,7 +124,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 															Wallets
 														</Link>
 													</SidebarMenuButton>
-												</SidebarMenuItem>
+												</SidebarMenuItem>*/}
 												<SidebarMenuItem>
 													<SidebarMenuButton asChild>
 														<Link tw='flex pr-4' href='/redemptions'>

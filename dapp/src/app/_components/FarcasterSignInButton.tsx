@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 // import { type StatusAPIResponse } from '@farcaster/auth-client'
 import { useSignIn, QRCode } from '@farcaster/auth-kit'
 import { getCsrfToken, signIn } from 'next-auth/react'
@@ -12,13 +12,11 @@ import { registerCredentialsSchema } from '~/types/auth'
 
 export function FarcasterSignInButton({ authType }: { authType: 'sign-in' | 'register' }) {
 	const [shouldDialogOpen, setShouldDialogOpen] = useState(false)
-	const nonceRef = useRef<null | string>(null)
 	const router = useRouter()
 
 	const getNonce = useCallback(async () => {
 		const nonce = await getCsrfToken()
 		if (!nonce) throw new Error('Unable to generate nonce')
-		nonceRef.current = nonce
 		return nonce
 	}, [])
 

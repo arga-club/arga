@@ -5,14 +5,14 @@ import { useAppKit } from '@reown/appkit/react'
 import { useRouter } from 'next/navigation'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
-import { useEffect } from 'react'
 import { Prose } from '~/app/_components/ui/prose'
 import { useReadArgaDiamondRedemptionsForParty, useReadArgaDiamondPool } from '~/lib/generated'
-import { argaInstance, chainId } from '~/lib/wagmi-config'
+import { chainId } from '~/lib/wagmi-config'
 import { normalizeBigJSON } from '~/lib/ethereum-utils'
 import { LazyReactJSON } from '~/lib/react-utils'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent } from '~/app/_components/ui/card'
+import { argaInstance } from '~/lib/arga-utils'
 
 export default function Home() {
 	const router = useRouter()
@@ -26,15 +26,6 @@ export default function Home() {
 		chainId,
 	})
 	useReadArgaDiamondPool({ chainId })
-
-	useEffect(() => {
-		if (!address) return
-		void writeContractAsync({
-			...argaInstance,
-			functionName: 'changeWinMultiplier',
-			args: [100n],
-		})
-	}, [address, writeContractAsync])
 
 	const redeem = async () => {
 		isDisconnected && (await open())

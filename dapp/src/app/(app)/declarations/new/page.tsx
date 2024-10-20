@@ -8,9 +8,8 @@ import tw from 'twin.macro'
 import { z } from 'zod'
 import { format } from 'date-fns'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { useAccount, useConnect, useConnectors, useReconnect } from 'wagmi'
 import { useRouter } from 'next/navigation'
-import { useAppKit } from '@reown/appkit/react'
+import { useAppKit, useAppKitAccount } from '@reown/appkit/react'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter } from '~/app/_components/ui/card'
 import {
@@ -47,9 +46,8 @@ const formSchema = z.object({
 export default function DeclarationNew() {
 	const router = useRouter()
 	const { open } = useAppKit()
-	const { reconnectAsync } = useReconnect()
-	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading } = useWriteArgaDiamondDeclareWithEther()
+	const { address, isConnected } = useAppKitAccount()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		mode: 'onSubmit',
@@ -64,8 +62,7 @@ export default function DeclarationNew() {
 	})
 
 	const submit = form.handleSubmit(async declaration => {
-		isDisconnected && (await open())
-		await reconnectAsync()
+		!isConnected && (await open())
 		await writeContractAsync({
 			chainId,
 			args: [
@@ -82,15 +79,9 @@ export default function DeclarationNew() {
 		router.push('/declarations')
 	})
 
-	const { connect } = useConnect()
-	const connectors = useConnectors()
 	const setMyAddress = async ({ fieldName }: { fieldName: keyof z.infer<typeof formSchema> }) => {
-		console.log('reconnectAsync')
-		await connect({
-			connector: connectors[0],
-		})
-		await reconnectAsync()
-		form.setValue(fieldName, '')
+		!isConnected && (await open())
+		form.setValue(fieldName, address ?? '')
 	}
 
 	return (
@@ -98,7 +89,6 @@ export default function DeclarationNew() {
 			<Prose>
 				<h1>New Declaration</h1>
 			</Prose>
-			<w3m-button/>
 			<Card>
 				{isLoading ? (
 					<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
@@ -169,12 +159,7 @@ export default function DeclarationNew() {
 											<FormControl>
 												<InputWithButtonWrapper>
 													<Input placeholder='0xA1B2C3..' {...field} />
-													<Button
-														onClick={async () => {
-															if (!address) return
-															form.setValue(field.name, address)
-														}}
-													>
+													<Button onClick={() => setMyAddress({ fieldName: field.name })}>
 														use my address
 													</Button>
 												</InputWithButtonWrapper>

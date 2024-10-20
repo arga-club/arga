@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
-import styled, { css } from 'styled-components'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { z } from 'zod'
 import { useAppKit } from '@reown/appkit/react'
@@ -14,11 +13,10 @@ import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
 import { useReadArgaDiamondDraw, useReadArgaDiamondGetDeclaration } from '~/lib/generated'
 import { useAutoReconnect } from '~/lib/react-utils'
-import { argaInstance, chainId } from '~/lib/wagmi-config'
+import { chainId } from '~/lib/wagmi-config'
 import { Prose } from '~/app/_components/ui/prose'
-import borderImage from '~/images/border-horz-01.svg'
 import { randomNumberForDraw } from '~/lib/ethereum-utils'
-import { declarationStatus, declarationStatusClasses, declarationStatusLabels } from '~/lib/arga-utils'
+import { argaInstance, declarationStatus, declarationStatusClasses, declarationStatusLabels } from '~/lib/arga-utils'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '~/app/_components/ui/form'
 import { Textarea } from '~/app/_components/ui/textarea'
 
@@ -82,111 +80,96 @@ export default function Declaration({ params }: { params: { id: string } }) {
 
 	return (
 		<>
-			<Border $flip tw='-mt-2' />
-			<div tw='container'>
-				<div tw='px-3 pt-16 pb-20 space-y-10'>
-					<div>
-						{isInitialLoading ? (
-							'Loading..'
-						) : !declaration ? (
-							'Declaration not found..'
-						) : isLoading ? (
-							<Card>
-								<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
-							</Card>
-						) : (
-							<>
-								<Prose>
-									<h1 tw='mt-0'>{declaration.summary}</h1>
-								</Prose>
-								<Prose>
-									<p tw='whitespace-pre-line'>{declaration.description}</p>
-									<p tw='text-secondary mt-0'>
-										Collateral: {formatEther(declaration.collateral.value)} ETH
-										<br />
-										Status:&nbsp;
-										<span className={declarationStatusClasses[declaration.status]}>
-											{declarationStatusLabels[declaration.status]}
-										</span>
-										<br />
-										Proof:&nbsp;
-										{declaration.proof}
-										<br />
-										Start date:&nbsp;
-										{formatISO(new Date(Number(declaration.startDate)), {
-											representation: 'date',
-										})}
-										<br />
-										End date:&nbsp;
-										{formatISO(new Date(Number(declaration.endDate)), {
-											representation: 'date',
-										})}
-										<br />
-										Witness by date:&nbsp;
-										{formatISO(new Date(Number(declaration.witnessByDate)), {
-											representation: 'date',
-										})}
-										<br />
-										Actor: {declaration.actor}
-										<br />
-										Witness: {declaration.witness}
-										<br />
-									</p>
-								</Prose>
-								{isDisconnected ? (
-									'connect wallet to interact'
-								) : address === declaration.actor && declaration.status === declarationStatus.active ? (
-									<Form {...proofForm}>
-										<form onSubmit={submitProof} tw='space-y-4'>
-											<Card>
-												<CardHeader>
-													<Prose>
-														<h3 tw='m-0'>proof:</h3>
-													</Prose>
-												</CardHeader>
-												<CardContent>
-													<FormField
-														control={proofForm.control}
-														name='proof'
-														render={({ field }) => (
-															<FormItem>
-																<FormControl>
-																	<Textarea placeholder='description of or link to proof' {...field} />
-																</FormControl>
-																<FormMessage />
-															</FormItem>
-														)}
-													/>
-												</CardContent>
-												<CardFooter>
-													<Button type='submit'>Submit →</Button>
-												</CardFooter>
-											</Card>
-										</form>
-									</Form>
-								) : address === declaration.witness &&
-								  declaration.status === declarationStatus.proofSubmitted ? (
-									<div tw='space-x-4'>
-										<Button onClick={witnessApprove}>Witness (approve)</Button>
-										<Button onClick={witnessReject}>Witness (reject)</Button>
-									</div>
-								) : null}
-							</>
-						)}
-					</div>
+			<div tw='space-y-10'>
+				<div>
+					{isInitialLoading ? (
+						'Loading..'
+					) : !declaration ? (
+						'Declaration not found..'
+					) : isLoading ? (
+						<Card>
+							<CardContent className='space-y-6 pt-8'>Signing...</CardContent>
+						</Card>
+					) : (
+						<>
+							<Prose>
+								<h1 tw='mt-0'>{declaration.summary}</h1>
+							</Prose>
+							<Prose>
+								<p tw='whitespace-pre-line'>{declaration.description}</p>
+								<p tw='text-secondary mt-0'>
+									Collateral: {formatEther(declaration.collateral.value)} ETH
+									<br />
+									Status:&nbsp;
+									<span className={declarationStatusClasses[declaration.status]}>
+										{declarationStatusLabels[declaration.status]}
+									</span>
+									<br />
+									Proof:&nbsp;
+									{declaration.proof}
+									<br />
+									Start date:&nbsp;
+									{formatISO(new Date(Number(declaration.startDate)), {
+										representation: 'date',
+									})}
+									<br />
+									End date:&nbsp;
+									{formatISO(new Date(Number(declaration.endDate)), {
+										representation: 'date',
+									})}
+									<br />
+									Witness by date:&nbsp;
+									{formatISO(new Date(Number(declaration.witnessByDate)), {
+										representation: 'date',
+									})}
+									<br />
+									Actor: {declaration.actor}
+									<br />
+									Witness: {declaration.witness}
+									<br />
+								</p>
+							</Prose>
+							{isDisconnected ? (
+								<w3m-button />
+							) : address === declaration.actor && declaration.status === declarationStatus.active ? (
+								<Form {...proofForm}>
+									<form onSubmit={submitProof} tw='space-y-4'>
+										<Card>
+											<CardHeader>
+												<Prose>
+													<h3 tw='m-0'>proof:</h3>
+												</Prose>
+											</CardHeader>
+											<CardContent>
+												<FormField
+													control={proofForm.control}
+													name='proof'
+													render={({ field }) => (
+														<FormItem>
+															<FormControl>
+																<Textarea placeholder='description of or link to proof' {...field} />
+															</FormControl>
+															<FormMessage />
+														</FormItem>
+													)}
+												/>
+											</CardContent>
+											<CardFooter>
+												<Button type='submit'>Submit →</Button>
+											</CardFooter>
+										</Card>
+									</form>
+								</Form>
+							) : address === declaration.witness && declaration.status === declarationStatus.proofSubmitted ? (
+								<div tw='space-x-4'>
+									<Button onClick={witnessApprove}>Witness (approve)</Button>
+									<Button onClick={witnessReject}>Witness (reject)</Button>
+								</div>
+							) : null}
+						</>
+					)}
 				</div>
 			</div>
 		</>
 	)
 }
-
-const Border = styled.div<{ $flip?: boolean }>`
-	background: url(${borderImage.src});
-	background-size: ${borderImage.width / 3}px ${borderImage.height / 3}px;
-	height: ${borderImage.height / 3}px;
-	${({ $flip }) =>
-		$flip &&
-		css`
-			transform: scaleY(-1);
-		`}
-`
