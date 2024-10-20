@@ -1,13 +1,7 @@
 import { Inter } from 'next/font/google'
-import { cookieToInitialState } from 'wagmi'
-import { headers } from 'next/headers'
-import { TRPCReactProvider } from '~/trpc/react'
 import '~/styles/globals.css'
-import { ClientProviders } from '~/app/_components/client-providers'
-import StyledComponentsRegistry from '~/styles/registry'
-import { wagmiConfig } from '~/lib/wagmi-config'
-import { getServerAuthSession } from '~/server/auth'
 import { FocusLayout } from '~/app/_components/layouts/FocusLayout'
+import { Providers } from '~/app/_components/providers'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -31,19 +25,12 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-	const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
-	const session = await getServerAuthSession()
-
 	return (
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0, background: 'hsl(33, 10%, 100%)' }}>
-				<TRPCReactProvider>
-					<StyledComponentsRegistry>
-						<ClientProviders initialState={initialState} session={session}>
-							<FocusLayout>{children}</FocusLayout>
-						</ClientProviders>
-					</StyledComponentsRegistry>
-				</TRPCReactProvider>
+				<Providers>
+					<FocusLayout>{children}</FocusLayout>
+				</Providers>
 			</body>
 		</html>
 	)

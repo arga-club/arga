@@ -28,9 +28,9 @@ export const ClientProviders = ({
 	return (
 		<SessionProvider session={session}>
 			<AuthKitProvider config={farcasterConfig}>
-    			<WagmiProvider config={wagmiConfig} initialState={initialState}>
-    				<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    			</WagmiProvider>
+				<WagmiProvider config={wagmiConfig} initialState={initialState}>
+					<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+				</WagmiProvider>
 			</AuthKitProvider>
 		</SessionProvider>
 	)
