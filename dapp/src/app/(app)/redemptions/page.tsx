@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
-import { useAppKit } from '@reown/appkit/react';
+import { useAppKit } from '@reown/appkit/react'
 import { useRouter } from 'next/navigation'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
