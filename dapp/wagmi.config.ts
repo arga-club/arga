@@ -1,7 +1,7 @@
 import { defineConfig } from '@wagmi/cli'
 import { hardhat as hardhatPlugin, react, actions } from '@wagmi/cli/plugins'
 import { hardhat, optimism, optimismSepolia } from 'viem/chains'
-import { getContractAddress } from '~/lib/config-utils'
+import { getContractAddress } from '~/lib/arga-utils'
 
 export default defineConfig({
 	out: 'src/lib/generated.ts',

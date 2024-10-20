@@ -10,7 +10,7 @@ import { format } from 'date-fns'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { useAccount, useReconnect } from 'wagmi'
 import { useRouter } from 'next/navigation'
-import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAppKit } from '@reown/appkit/react';
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter } from '~/app/_components/ui/card'
 import {
@@ -47,7 +47,7 @@ const formSchema = z.object({
 
 export default function DeclarationNew() {
 	const router = useRouter()
-	const { open } = useWeb3Modal()
+	const { open } = useAppKit()
 	const { reconnectAsync } = useReconnect()
 	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading } = useWriteArgaDiamondDeclareWithEther()

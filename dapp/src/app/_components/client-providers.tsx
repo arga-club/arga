@@ -1,18 +1,12 @@
 'use client'
 
-import { createWeb3Modal } from '@web3modal/wagmi/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { type State, WagmiProvider } from 'wagmi'
 import { SessionProvider } from 'next-auth/react'
 import { type Session } from 'next-auth'
 import { AuthKitProvider } from '@farcaster/auth-kit'
-import { wagmiConfig, walletConnectProjectId } from '~/lib/wagmi-config'
+import { wagmiConfig } from '~/lib/wagmi-config'
 import { farcasterConfig } from '~/lib/farcaster'
-
-createWeb3Modal({
-	wagmiConfig,
-	projectId: walletConnectProjectId,
-})
 
 const queryClient = new QueryClient()
 

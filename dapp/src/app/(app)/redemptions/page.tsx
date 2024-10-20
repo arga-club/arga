@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
-import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAppKit } from '@reown/appkit/react';
 import { useRouter } from 'next/navigation'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
@@ -16,7 +16,7 @@ import { Card, CardContent } from '~/app/_components/ui/card'
 
 export default function Home() {
 	const router = useRouter()
-	const { open } = useWeb3Modal()
+	const { open } = useAppKit()
 	const { reconnectAsync } = useReconnect()
 	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading: isSigning } = useWriteContract()

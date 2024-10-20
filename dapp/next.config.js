@@ -15,12 +15,8 @@ const config = withTwin({
 	compiler: {
 		styledComponents: true,
 	},
-	webpack: (config, context) => {
-		config.plugins?.push(
-			new context.webpack.IgnorePlugin({
-				resourceRegExp: /^(pino-pretty|encoding)$/,
-			}),
-		)
+	webpack: config => {
+		config.externals.push('pino-pretty', 'lokijs', 'encoding')
 		return config
 	},
 })

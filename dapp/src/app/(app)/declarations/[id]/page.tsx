@@ -4,7 +4,7 @@
 import styled, { css } from 'styled-components'
 import { useAccount, useReconnect, useWriteContract } from 'wagmi'
 import { z } from 'zod'
-import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAppKit } from '@reown/appkit/react'
 import { useRouter } from 'next/navigation'
 import { formatISO } from 'date-fns'
 import { formatEther } from 'viem'
@@ -29,7 +29,7 @@ const proofFormSchema = z.object({
 export default function Declaration({ params }: { params: { id: string } }) {
 	const router = useRouter()
 	useAutoReconnect()
-	const { open } = useWeb3Modal()
+	const { open } = useAppKit()
 	const { reconnectAsync } = useReconnect()
 	const { address, isDisconnected } = useAccount()
 	const { writeContractAsync, isLoading } = useWriteContract()
