@@ -3,13 +3,14 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSignIn, QRCode } from '@farcaster/auth-kit'
 import { getCsrfToken, signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { fire } from '@jgjp/fire'
 import { Button } from '~/app/_components/ui/button'
 import { useIsMobile } from '~/hooks/use-mobile'
 import { FarcasterLogo } from '~/app/_components/FarcasterLogo'
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '~/app/_components/ui/dialog'
 import { registerCredentialsSchema } from '~/types/auth'
 
-export function FarcasterSignInButton() {
+export function FarcasterSignInButton({ authType }: { authType: 'sign-in' | 'register' }) {
 	const [shouldDialogOpen, setShouldDialogOpen] = useState(false)
 	const nonceRef = useRef<null | string>(null)
 	const router = useRouter()
@@ -25,24 +26,26 @@ export function FarcasterSignInButton() {
 		nonce: getNonce,
 		onStatusResponse: ({ state, nonce, ...res }) => {
 			if (state !== 'completed') return
-			console.log('onStatusResponse', res)
-			void fetch('/api/register', {
-				method: 'POST',
-				body: JSON.stringify(
-					registerCredentialsSchema.parse({
-						message: res.message,
-						signature: res.signature,
-						username: res.username,
-						fid: res.fid,
-						image: res.pfpUrl,
-						nonce,
-						displayName: res.displayName,
-					}),
-				),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}).then(async () => {
+			void fire(async () => {
+				if (authType === 'register') {
+					await fetch('/api/register', {
+						method: 'POST',
+						body: JSON.stringify(
+							registerCredentialsSchema.parse({
+								message: res.message,
+								signature: res.signature,
+								username: res.username,
+								fid: res.fid,
+								image: res.pfpUrl,
+								nonce,
+								displayName: res.displayName,
+							}),
+						),
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					})
+				}
 				setShouldDialogOpen(false)
 				await signIn('farcaster-credentials', {
 					redirect: false,

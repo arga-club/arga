@@ -10,6 +10,7 @@ import { Prose } from '~/app/_components/ui/prose'
 import { Button } from '~/app/_components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/app/_components/ui/form'
 import { Input } from '~/app/_components/ui/input'
+import { FarcasterSignInButton } from '~/app/_components/FarcasterSignInButton'
 
 const formSchema = z.object({
 	preferredName: z.string().min(2).max(50).optional(),
@@ -72,17 +73,18 @@ export default function LogInPage() {
 							)}
 						/>
 					</div>
-					<Button type='submit'>Sign In →</Button>
-					<div>
-						<Prose>
-							<p>Don&#039;t have an account?</p>
-							<Link tw='block' href='/register'>
-								<Button variant='outline'>Register</Button>
-							</Link>
-						</Prose>
-					</div>
 				</form>
 			</Form>
+			<div tw='flex space-x-2'>
+				<Button onClick={submit}>Sign In →</Button>
+				<FarcasterSignInButton authType='sign-in' />
+			</div>
+			<Prose>
+				<p>Don&#039;t have an account?</p>
+				<Link tw='block' href='/register'>
+					<Button variant='outline'>Register</Button>
+				</Link>
+			</Prose>
 		</>
 	)
 }

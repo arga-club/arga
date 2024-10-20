@@ -41,7 +41,6 @@ export default function LogInPage() {
 			email: values.email,
 			password: values.password,
 		})
-		console.log("push");
 		router.push(callbackUrl)
 	})
 
@@ -84,7 +83,7 @@ export default function LogInPage() {
 			</Form>
 			<div tw='flex space-x-2'>
 				<Button onClick={submit}>Register with email →</Button>
-				<FarcasterSignInButton />
+				<FarcasterSignInButton authType='register' />
 			</div>
 			<Prose>
 				<p>Already have an account?</p>
