@@ -41,6 +41,7 @@ const config = {
 		'@typescript-eslint/no-unsafe-return': 'off',
 		'@typescript-eslint/no-unsafe-argument': 'off',
 		'@typescript-eslint/no-unsafe-member-access': 'off',
+		'@typescript-eslint/prefer-nullish-coalescing': 'off',
 		// react
 		'react/no-unknown-property': ['error', { ignore: ['tw', 'css'], requireDataLowercase: true }],
 		'react/self-closing-comp': 'error',
