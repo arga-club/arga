@@ -1,6 +1,7 @@
 'use client'
 
 import tw, { styled } from 'twin.macro'
+import { Logo } from '~/app/_components/Logo'
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -8,7 +9,6 @@ import {
 	NavigationMenuList,
 	navigationMenuTriggerStyle,
 } from '~/app/_components/ui/navigation-menu'
-import { Prose } from '~/app/_components/ui/prose'
 
 export const MenuTop = () => {
 	return (
@@ -17,9 +17,7 @@ export const MenuTop = () => {
 				<NavigationMenuList>
 					<NavigationMenuItem>
 						<NavigationMenuLink className={navigationMenuTriggerStyle()} href='/'>
-							<Prose>
-								<h1 tw='mb-2 md:-mt-4 -mt-2 mr-4 text-6xl'>Arga</h1>
-							</Prose>
+							<Logo />
 						</NavigationMenuLink>
 					</NavigationMenuItem>
 				</NavigationMenuList>

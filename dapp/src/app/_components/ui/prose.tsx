@@ -4,7 +4,7 @@ import tw from 'twin.macro'
 export const Prose = styled.div<{ $large?: boolean }>`
 	${tw`prose prose-slate`}
 	// h1
-	${tw`prose-h1:font-serif prose-h1:font-normal`}
+	${tw`prose-h1:font-serif prose-h1:font-normal prose-h1:text-4xl`}
 	// h2
 	${tw`prose-h2:font-serif prose-h2:font-normal`}
 	// h3

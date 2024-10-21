@@ -1,53 +1,49 @@
 import assert from 'assert'
-import { hardhat, optimismSepolia, optimism } from 'viem/chains'
-import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
+import { createAppKit } from '@reown/appkit/react'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
+import { cookieStorage, createStorage, http } from 'wagmi'
 import { createConfig as createConfigCore } from '@wagmi/core'
-import { coinbaseWallet, walletConnect } from 'wagmi/connectors'
-import contracts from '~/lib/contracts'
-import { getContractAddress } from '~/lib/config-utils'
+import { hardhat, optimism, optimismSepolia } from '@reown/appkit/networks'
 
-export const walletConnectProjectId = '94c503a4bc0400523c25e21e615cad4d'
-
-const metadata = {
-	name: 'Arga',
-	description: 'DeMo',
-	url: 'https://web3modal.com', // TODO: set to domain
-	icons: ['https://avatars.githubusercontent.com/u/37784886'], // TODO: set to logo
-}
-
+assert(process.env.NEXT_PUBLIC_URL)
 assert(process.env.NEXT_PUBLIC_CHAIN_NAME)
 
-export const chainId = { hardhat, optimismSepolia, optimism }[process.env.NEXT_PUBLIC_CHAIN_NAME]?.id
+export const chain = { hardhat, optimismSepolia, optimism }[process.env.NEXT_PUBLIC_CHAIN_NAME]
+assert(chain)
+export const chainId = chain.id
 assert(chainId)
 
-export const argaInstance = {
-	address: getContractAddress({ chainId }),
-	abi: contracts[chainId][0].contracts.Arga.abi,
-	chainId,
-} as const
-
-const chain = [hardhat, optimismSepolia, optimism].find(chain => chain.id === chainId)
-assert(chain)
-
-const commonConfig = {
-	chains: [chain],
-	transports: {
-		[hardhat.id]: http('http://127.0.0.1:8545/'),
-		[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
-		[optimism.id]: http(`https://optimism-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
-	},
-} as const
-
-export const wagmiConfig = createConfig({
-	...commonConfig,
-	connectors: [
-		walletConnect({ projectId: walletConnectProjectId, metadata, showQrModal: false }),
-		coinbaseWallet({ appName: metadata.name, appLogoUrl: metadata.icons[0] }),
-	],
+const projectId = '94c503a4bc0400523c25e21e615cad4d'
+const transports = {
+	[hardhat.id]: http('http://127.0.0.1:8545/'),
+	[optimismSepolia.id]: http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
+	[optimism.id]: http(`https://optimism-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`),
+}
+const wagmiAdapter = new WagmiAdapter({
 	ssr: true,
 	storage: createStorage({
 		storage: cookieStorage,
 	}),
+	networks: [chain],
+	projectId,
+	transports,
 })
 
-export const wagmiCoreConfig = createConfigCore(commonConfig)
+createAppKit({
+	adapters: [wagmiAdapter],
+	networks: [chain],
+	metadata: {
+		name: 'Arga',
+		description: 'Declare your way to the future you want',
+		url: process.env.NEXT_PUBLIC_URL,
+		icons: [`${process.env.NEXT_PUBLIC_URL}/favicon-128x128.png`],
+	},
+	projectId,
+})
+
+export const wagmiConfig = wagmiAdapter.wagmiConfig
+
+export const wagmiCoreConfig = createConfigCore({
+	chains: [chain],
+	transports,
+})

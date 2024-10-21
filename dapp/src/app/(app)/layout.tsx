@@ -1,14 +1,8 @@
 import { Inter } from 'next/font/google'
-import { cookieToInitialState } from 'wagmi'
-import { headers } from 'next/headers'
-import { TRPCReactProvider } from '~/trpc/react'
+import { SidebarLayout } from '~/app/_components/layouts/SidebarLayout'
+import { Providers } from '~/app/_components/providers'
+import { SidebarProvider } from '~/app/_components/ui/sidebar'
 import '~/styles/globals.css'
-import { ClientProviders } from '~/app/_components/client-providers'
-import StyledComponentsRegistry from '~/styles/registry'
-import { wagmiConfig } from '~/lib/wagmi-config'
-import { DeclarationWatcher } from '~/app/_components/declaration-watcher'
-import { MenuApp } from '~/app/_components/menu-app'
-import { getServerAuthSession } from '~/server/auth'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -32,20 +26,14 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-	const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
-	const session = await getServerAuthSession()
-
 	return (
 		<html lang='en'>
 			<body className={`font-sans ${inter.variable}`} style={{ margin: 0 }}>
-				<TRPCReactProvider>
-					<StyledComponentsRegistry>
-						<ClientProviders initialState={initialState} session={session}>
-							<MenuApp />
-							<DeclarationWatcher>{children}</DeclarationWatcher>
-						</ClientProviders>
-					</StyledComponentsRegistry>
-				</TRPCReactProvider>
+				<Providers>
+					<SidebarProvider>
+						<SidebarLayout>{children}</SidebarLayout>
+					</SidebarProvider>
+				</Providers>
 			</body>
 		</html>
 	)

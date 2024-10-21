@@ -6,7 +6,8 @@ import { compare } from 'bcryptjs'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { env } from '~/env'
 import { db } from '~/server/db'
-import { type FIXME } from '~/types/utils'
+import { verifyFarcasterSignature } from '~/lib/farcaster'
+import { type User, userSchema } from '~/types/auth'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -16,11 +17,7 @@ import { type FIXME } from '~/types/utils'
  */
 declare module 'next-auth' {
 	interface Session extends DefaultSession {
-		user: {
-			id: string
-			// ...other properties
-			// role: UserRole;
-		} & DefaultSession['user']
+		user: User
 	}
 
 	// interface User {
@@ -37,7 +34,8 @@ declare module 'next-auth' {
 export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(db) as Adapter,
 	pages: {
-		signIn: '/login',
+		signIn: '/sign-in',
+		signOut: '/sign-out',
 	},
 	session: {
 		strategy: 'jwt',
@@ -63,7 +61,7 @@ export const authOptions: NextAuthOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials) {
-				if (!credentials?.email || !credentials.password) {
+				if (!credentials?.email || !credentials?.password) {
 					return null
 				}
 
@@ -77,32 +75,61 @@ export const authOptions: NextAuthOptions = {
 					return null
 				}
 
-				return {
-					id: user.id,
-					email: user.email,
-				}
+				const userParsed = userSchema.safeParse(user)
+
+				return !userParsed.success ? null : userParsed.data
+			},
+		}),
+		CredentialsProvider({
+			id: 'farcaster-credentials',
+			name: 'Sign in with Farcaster',
+			credentials: {
+				message: {
+					label: 'Message',
+					type: 'text',
+					placeholder: '0x0',
+				},
+				signature: {
+					label: 'Signature',
+					type: 'text',
+					placeholder: '0x0',
+				},
+				nonce: {
+					label: 'Nonce',
+					type: 'text',
+					placeholder: '0x0',
+				},
+			},
+			async authorize(credentials) {
+				if (!credentials) throw 'no credentials'
+
+				const { success, fid } = await verifyFarcasterSignature({
+					message: credentials.message,
+					signature: credentials.signature as `0x${string}`,
+					nonce: credentials.nonce,
+				})
+				if (!success) return null
+
+				const user = await db.user.findUnique({
+					where: { fid },
+				})
+
+				const userParsed = userSchema.safeParse(user)
+
+				return !userParsed.success ? null : userParsed.data
 			},
 		}),
 	],
 	callbacks: {
-		session: ({ session, token }) => {
-			return {
-				...session,
-				user: {
-					email: session.user.email,
-					id: token.id,
-				},
+		jwt: ({ token, trigger, user }) => {
+			if (trigger !== 'signUp' && trigger !== 'signIn') {
+				return token
 			}
+			return { user }
 		},
-		jwt: ({ token, user }) => {
-			if (user) {
-				const u = user as unknown as FIXME
-				return {
-					email: token.email,
-					id: u.id,
-				}
-			}
-			return token
+		session: ({ session, token }) => {
+			const user = userSchema.safeParse(token.user)
+			return !user.success ? session : { ...session, user: user.data }
 		},
 	},
 }

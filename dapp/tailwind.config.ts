@@ -9,18 +9,18 @@ export default {
 	theme: {
 		colors: {
 			primary: {
+				'50': '#CCD5F4',
+				'100': '#BBC7F1',
+				'200': '#99ABEA',
+				'300': '#788FE3',
+				'400': '#5673DC',
+				'500': '#3457D5',
+				'600': '#2442AD',
+				'700': '#1A307F',
+				'800': '#111E50',
+				'900': '#070D22',
+				'950': '#02040A',
 				DEFAULT: '#3457D5',
-				50: '#CCD5F4',
-				100: '#BBC7F1',
-				200: '#99ABEA',
-				300: '#788FE3',
-				400: '#5673DC',
-				500: '#3457D5',
-				600: '#2442AD',
-				700: '#1A307F',
-				800: '#111E50',
-				900: '#070D22',
-				950: '#02040A',
 			},
 		},
 		container: {
@@ -69,6 +69,16 @@ export default {
 					foreground: 'hsl(var(--card-foreground))',
 				},
 				...colors,
+				sidebar: {
+					DEFAULT: 'hsl(var(--sidebar-background))',
+					foreground: 'hsl(var(--sidebar-foreground))',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					accent: 'hsl(var(--sidebar-accent))',
+					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					border: 'hsl(var(--sidebar-border))',
+					ring: 'hsl(var(--sidebar-ring))',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -77,12 +87,20 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: { height: '0' },
-					to: { height: 'var(--radix-accordion-content-height)' },
+					from: {
+						height: '0',
+					},
+					to: {
+						height: 'var(--radix-accordion-content-height)',
+					},
 				},
 				'accordion-up': {
-					from: { height: 'var(--radix-accordion-content-height)' },
-					to: { height: '0' },
+					from: {
+						height: 'var(--radix-accordion-content-height)',
+					},
+					to: {
+						height: '0',
+					},
 				},
 			},
 			animation: {

@@ -1,16 +1,16 @@
 'use client'
 
-import { useAccount } from 'wagmi'
+import { useAppKitAccount } from '@reown/appkit/react'
 import { useReadArgaDiamondWitnessDeclarations } from '~/lib/generated'
 import { chainId } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
 
 export default function WitnessingDeclarations() {
-	const { address, isConnecting } = useAccount()
+	const { address, isConnected } = useAppKitAccount()
 	const { isInitialLoading: isWitnessDeclarationsInitialLoading, data: witnessDeclarations } =
 		useReadArgaDiamondWitnessDeclarations({
 			query: { enabled: !!address },
-			args: address ? [address] : undefined,
+			args: address ? ([address] as [`0x${string}`]) : undefined,
 			chainId,
 		})
 
@@ -18,8 +18,8 @@ export default function WitnessingDeclarations() {
 		<div tw='space-y-8'>
 			{isWitnessDeclarationsInitialLoading ? (
 				'Loading..'
-			) : isConnecting ? (
-				'Connecting..'
+			) : !isConnected ? (
+				<w3m-button />
 			) : !witnessDeclarations?.length ? (
 				'No declarations..'
 			) : (

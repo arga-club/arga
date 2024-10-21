@@ -1,3 +1,17 @@
+import contracts from '~/lib/contracts'
+import { chainId } from '~/lib/wagmi-config'
+
+type ChainId = 31337 | 11155420 | 10
+
+export const getContractAddress = <Id extends ChainId>({ chainId }: { chainId: Id }) =>
+	contracts[chainId][0].contracts.Arga.address
+
+export const argaInstance = {
+	address: getContractAddress({ chainId }),
+	abi: contracts[chainId][0].contracts.Arga.abi,
+	chainId,
+} as const
+
 export const declarationStatus = {
 	active: 0,
 	proofSubmitted: 1,
