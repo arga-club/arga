@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
 import CommunityDeclarations from '~/app/_components/data/community-declarations'
