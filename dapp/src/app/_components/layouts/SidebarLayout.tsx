@@ -1,6 +1,19 @@
 'use client'
 
-import { Eye, Sword, LogIn, UserPlus, Zap, ChevronsUpDown, LogOut, Users, DollarSign } from 'lucide-react'
+import {
+	Eye,
+	Sword,
+	LogIn,
+	UserPlus,
+	Zap,
+	ChevronsUpDown,
+	LogOut,
+	Users,
+	DollarSign,
+	BadgeCheck,
+	Wallet,
+	Bell,
+} from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
@@ -23,34 +36,27 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '~/app/_components/ui/dropdown-menu'
-import { Card, CardContent } from '~/app/_components/ui/card'
-import { Prose } from '~/app/_components/ui/prose'
-import { normalizeBigJSON } from '~/lib/ethereum-utils'
-import { LazyReactJSON } from '~/lib/react-utils'
-import { useReadArgaDiamondPool } from '~/lib/generated'
-import { chainId } from '~/lib/wagmi-config'
-import { Button } from '~/app/_components/ui/button'
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
+	const pathname = location.pathname
 	const { data: session } = useSession()
 	const user = session?.user
 	const { isMobile } = useSidebar()
-	const { data: pool } = useReadArgaDiamondPool({ chainId })
 	return (
-		<div tw='container'>
-			<div tw='md:flex md:items-start'>
-				<div tw='w-1/5 py-24 pr-4 space-y-4 flex flex-col items-start'>
-					<Link href='/declarations' tw='pl-7'>
+		<div tw='container py-24'>
+			<div tw='md:flex md:gap-8 md:items-start'>
+				<div tw='w-1/5 space-y-4'>
+					<Link href='/declarations' tw='pl-7 block'>
 						<Logo />
 					</Link>
-					<Sidebar collapsible='none' tw='pt-4 pb-14 pl-3 pr-4'>
+					<Sidebar collapsible='none' tw='pt-4 pb-14 pl-3 pr-4 rounded'>
 						<SidebarContent>
 							<SidebarGroup>
 								<SidebarGroupLabel>Declarations</SidebarGroupLabel>
 								<SidebarGroupContent>
 									<SidebarMenu>
 										<SidebarMenuItem>
-											<SidebarMenuButton asChild>
+											<SidebarMenuButton asChild isActive={pathname === '/declarations/new'}>
 												<Link tw='flex pr-4' href='/declarations/new'>
 													<Zap />
 													<span>Make new</span>
@@ -58,7 +64,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 										<SidebarMenuItem>
-											<SidebarMenuButton asChild>
+											<SidebarMenuButton asChild isActive={pathname === '/declarations'}>
 												<Link tw='flex pr-4' href='/declarations'>
 													<Users />
 													<span>Community</span>
@@ -66,7 +72,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 										<SidebarMenuItem>
-											<SidebarMenuButton asChild>
+											<SidebarMenuButton asChild isActive={pathname === '/acting'}>
 												<Link tw='flex pr-4' href='/acting'>
 													<Sword />
 													Acting
@@ -74,10 +80,18 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 										<SidebarMenuItem>
-											<SidebarMenuButton asChild>
+											<SidebarMenuButton asChild isActive={pathname === '/witnessing'}>
 												<Link tw='flex pr-4' href='/witnessing'>
 													<Eye />
 													Witnessing
+												</Link>
+											</SidebarMenuButton>
+										</SidebarMenuItem>
+										<SidebarMenuItem>
+											<SidebarMenuButton asChild isActive={pathname === '/notifications'}>
+												<Link tw='flex pr-4' href='/notifications'>
+													<Bell />
+													Notifications
 												</Link>
 											</SidebarMenuButton>
 										</SidebarMenuItem>
@@ -109,8 +123,8 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 											</>
 										) : (
 											<>
-												{/*<SidebarMenuItem>
-													<SidebarMenuButton asChild>
+												<SidebarMenuItem>
+													<SidebarMenuButton asChild isActive={pathname === '/account'}>
 														<Link tw='flex pr-4' href='/account'>
 															<BadgeCheck />
 															Account
@@ -118,15 +132,15 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 													</SidebarMenuButton>
 												</SidebarMenuItem>
 												<SidebarMenuItem>
-													<SidebarMenuButton asChild>
+													<SidebarMenuButton asChild isActive={pathname === '/wallets'}>
 														<Link tw='flex pr-4' href='/wallets'>
 															<Wallet />
 															Wallets
 														</Link>
 													</SidebarMenuButton>
-												</SidebarMenuItem>*/}
+												</SidebarMenuItem>
 												<SidebarMenuItem>
-													<SidebarMenuButton asChild>
+													<SidebarMenuButton asChild isActive={pathname === '/redemptions'}>
 														<Link tw='flex pr-4' href='/redemptions'>
 															<DollarSign />
 															Redemptions
@@ -180,36 +194,8 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 						)}
 					</Sidebar>
 				</div>
-				<div tw='md:w-3/5 py-24 pl-4'>
+				<div tw='md:w-4/5'>
 					<div tw='pt-2'>{children}</div>
-				</div>
-				<div tw='md:w-1/5 py-24 pl-4'>
-					<div tw='pt-2'>
-						<div tw='space-y-10'>
-							<Prose>
-								<h1>Pool</h1>
-								<p>
-									When a declaration is rejected by its witness, its collateral is sent to this pool instead of
-									returned to the user. All actors concluding a declaration when assets are in the pool have a
-									chance to win those assets.
-								</p>
-							</Prose>
-							<Card className='max-w-screen-sm'>
-								{!pool?.length ? (
-									<CardContent className='space-y-6 pt-8'>
-										<Prose>0 ETH</Prose>
-									</CardContent>
-								) : (
-									<CardContent className='space-y-6 pt-8'>
-										<LazyReactJSON src={normalizeBigJSON(pool)} name='pool' />
-									</CardContent>
-								)}
-							</Card>
-							<Link tw='block' href='/declarations/new'>
-								<Button>New Declaration</Button>
-							</Link>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
