@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import registerBG from '~/images/register-bg.jpg'
 import signInBG from '~/images/sign-in-bg-04.jpg'
 import { Logo } from '~/app/_components/Logo'
+import { PictureBackground } from '~/app/_components/PictureBackground'
 
 export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
@@ -15,10 +16,7 @@ export const FocusLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<WholeScreenDiv>
 			<div tw='md:flex md:items-center'>
-				<PictureBackground
-					$backgroundImageSrc={backgroundImageSrc}
-					tw='hidden md:block md:self-stretch md:bg-black w-[45%]'
-				/>
+				<PictureBackground $backgroundImageSrc={backgroundImageSrc} tw='hidden md:block md:self-stretch w-[45%]' />
 				<div tw='md:w-[55%]'>
 					<div tw='container'>
 						<Logo />
@@ -36,10 +34,4 @@ const WholeScreenDiv = styled.div`
 	> * {
 		height: 100%;
 	}
-`
-
-const PictureBackground = styled.div<{ $backgroundImageSrc?: string }>`
-	background: url(${({ $backgroundImageSrc }) => $backgroundImageSrc});
-	background-size: cover;
-	background-position: center center;
 `
