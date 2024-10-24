@@ -10,7 +10,7 @@ import { FarcasterLogo } from '~/app/_components/FarcasterLogo'
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '~/app/_components/ui/dialog'
 import { registerCredentialsSchema } from '~/types/auth'
 
-export function FarcasterSignInButton({ authType }: { authType: 'sign-in' | 'register' }) {
+export function FarcasterSignInButton() {
 	const [shouldDialogOpen, setShouldDialogOpen] = useState(false)
 	const router = useRouter()
 
@@ -25,25 +25,23 @@ export function FarcasterSignInButton({ authType }: { authType: 'sign-in' | 'reg
 		onStatusResponse: ({ state, nonce, ...res }) => {
 			if (state !== 'completed') return
 			void fire(async () => {
-				if (authType === 'register') {
-					await fetch('/api/register', {
-						method: 'POST',
-						body: JSON.stringify(
-							registerCredentialsSchema.parse({
-								message: res.message,
-								signature: res.signature,
-								username: res.username,
-								fid: res.fid,
-								image: res.pfpUrl,
-								nonce,
-								displayName: res.displayName,
-							}),
-						),
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					})
-				}
+				await fetch('/api/register', {
+					method: 'POST',
+					body: JSON.stringify(
+						registerCredentialsSchema.parse({
+							message: res.message,
+							signature: res.signature,
+							username: res.username,
+							fid: res.fid,
+							image: res.pfpUrl,
+							nonce,
+							displayName: res.displayName,
+						}),
+					),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 				setShouldDialogOpen(false)
 				await signIn('farcaster-credentials', {
 					redirect: false,

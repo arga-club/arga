@@ -77,7 +77,7 @@ export default function LogInPage() {
 			</Form>
 			<div tw='flex space-x-2'>
 				<Button onClick={submit}>Sign In →</Button>
-				<FarcasterSignInButton authType='sign-in' />
+				<FarcasterSignInButton />
 			</div>
 			<Prose>
 				<p>Don&#039;t have an account?</p>

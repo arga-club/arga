@@ -29,14 +29,18 @@ export async function POST(req: Request) {
 				if (!success) {
 					throw new Error('could not verify signature')
 				}
-				return db.user.create({
-					data: {
-						displayName: credentials.displayName,
-						username: credentials.username,
-						fid,
-						image: credentials.image,
-					},
-				})
+				const existingUser = await db.user.findUnique({ where: { fid } })
+				return (
+					existingUser ??
+					db.user.create({
+						data: {
+							displayName: credentials.displayName,
+							username: credentials.username,
+							fid,
+							image: credentials.image,
+						},
+					})
+				)
 			}
 		})
 		console.log({ user })
