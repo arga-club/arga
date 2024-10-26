@@ -2,13 +2,11 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import styled from 'styled-components'
-import tw from 'twin.macro'
-import { z } from 'zod'
 import { format } from 'date-fns'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react'
+import { z } from 'zod'
 import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter } from '~/app/_components/ui/card'
 import {
@@ -29,6 +27,7 @@ import { useWriteArgaDiamondDeclareWithEther } from '~/lib/generated'
 import { bigIntDateSchema, ethAddressSchema, ethValueSchema } from '~/lib/validation-utils'
 import { chainId } from '~/lib/wagmi-config'
 import { Prose } from '~/app/_components/ui/prose'
+import { InputWithElement } from '~/app/_components/InputWithElement'
 
 const formSchema = z.object({
 	summary: z.string().min(2).max(50),
@@ -137,12 +136,12 @@ export default function DeclarationNew() {
 											<FormLabel>Actor address</FormLabel>
 											<FormDescription>Address of person carrying out declaration</FormDescription>
 											<FormControl>
-												<InputWithButtonWrapper>
+												<InputWithElement>
 													<Input placeholder='0xA1B2C3..' {...field} />
 													<Button onClick={() => setMyAddress({ fieldName: field.name })}>
 														use my address
 													</Button>
-												</InputWithButtonWrapper>
+												</InputWithElement>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -156,12 +155,12 @@ export default function DeclarationNew() {
 											<FormLabel>Witness address</FormLabel>
 											<FormDescription>Address of person witnessing declaration</FormDescription>
 											<FormControl>
-												<InputWithButtonWrapper>
+												<InputWithElement>
 													<Input placeholder='0xA1B2C3..' {...field} />
 													<Button onClick={() => setMyAddress({ fieldName: field.name })}>
 														use my address
 													</Button>
-												</InputWithButtonWrapper>
+												</InputWithElement>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -314,13 +313,3 @@ export default function DeclarationNew() {
 		</>
 	)
 }
-
-const InputWithButtonWrapper = styled.div`
-	${tw`flex space-x-4`}
-	> input {
-		flex: 1 1 auto;
-	}
-	> button {
-		flex: 0 0 auto;
-	}
-`

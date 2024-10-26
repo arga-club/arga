@@ -86,7 +86,11 @@ export function FarcasterSignInButton() {
 				<div>authed</div>
 			) : (
 				<>
-					<Button onClick={onClick} tw='space-x-1 bg-[hsl(262,44%,56%)] hover:bg-[hsl(262,44%,65%)]'>
+					<Button
+						onClick={onClick}
+						disabled={!url}
+						tw='space-x-1 bg-[hsl(262,44%,56%)] hover:bg-[hsl(262,44%,65%)]'
+					>
 						<FarcasterLogo height={20} fill='white' />
 						<span>Farcaster</span>
 					</Button>

@@ -34,8 +34,8 @@ export default function Page() {
 				) : (
 					<>
 						<p>The following wallets are linked to your account</p>
-						<div tw="space-y-4">
-						{wallets?.map(wallet => <WalletDisplay key={wallet.address} wallet={wallet} />)}
+						<div tw='space-y-4'>
+							{wallets?.map(wallet => <WalletDisplay key={wallet.address} wallet={wallet} />)}
 						</div>
 						<Button onClick={addWallet} tw='mt-8'>
 							Add another wallet

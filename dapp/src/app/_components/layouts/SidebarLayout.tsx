@@ -37,6 +37,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '~/app/_components/ui/dropdown-menu'
+import avatarDefaultSmall from '~/images/avatar-default-small.png'
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
@@ -135,8 +136,8 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 													className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
 												>
 													<Avatar className='h-8 w-8 rounded-lg'>
-														<AvatarImage src={user.image || '/avatardefault.png'} />
-														<AvatarFallback className='rounded-lg'>{user.username}</AvatarFallback>
+														<AvatarImage src={user.image || avatarDefaultSmall.src} tw='rounded' />
+														<AvatarFallback tw='rounded'>{user.username}</AvatarFallback>
 													</Avatar>
 													<div className='grid flex-1 text-left text-sm leading-tight'>
 														<span className='truncate font-semibold'>
