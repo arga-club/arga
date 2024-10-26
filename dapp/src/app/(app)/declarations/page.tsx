@@ -13,7 +13,7 @@ import { chainId } from '~/lib/wagmi-config'
 export default function Home() {
 	const { data: pool } = useReadArgaDiamondPool({ chainId })
 	return (
-		<div tw="flex gap-8">
+		<div tw='flex gap-8'>
 			<div tw='md:w-3/4'>
 				<Prose>
 					<h1>Declarations</h1>
