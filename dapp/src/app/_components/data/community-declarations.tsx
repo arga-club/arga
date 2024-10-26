@@ -6,9 +6,10 @@ import { useReadArgaDiamondCommunityDeclarations } from '~/lib/generated'
 import { usePendingTransactions } from '~/stores/pending-transactions'
 import { chainId } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
+import { Skeleton } from '~/app/_components/ui/skeleton'
 
 export default function CommunityDeclarations() {
-	const { address, isConnecting } = useAccount()
+	const { address } = useAccount()
 	const { pendingTransactions } = usePendingTransactions()
 	const { isInitialLoading, data: communityDeclarations } = useReadArgaDiamondCommunityDeclarations({
 		query: { refetchInterval: pendingTransactions.length ? 2000 : undefined },
@@ -18,15 +19,19 @@ export default function CommunityDeclarations() {
 
 	return (
 		<div tw='space-y-8'>
-			{isInitialLoading
-				? 'Loading..'
-				: isConnecting
-					? 'Connecting..'
-					: !communityDeclarations?.length
-						? 'No declarations..'
-						: communityDeclarations?.map(declaration => (
-								<DeclarationCard key={declaration.id} declaration={declaration} />
-							))}
+			{isInitialLoading ? (
+				<div tw='space-y-8'>
+					<Skeleton tw='w-full h-52' />
+					<Skeleton tw='w-full h-52' />
+					<Skeleton tw='w-full h-52' />
+				</div>
+			) : !communityDeclarations?.length ? (
+				'No declarations...'
+			) : (
+				communityDeclarations?.map(declaration => (
+					<DeclarationCard key={declaration.id} declaration={declaration} />
+				))
+			)}
 		</div>
 	)
 }

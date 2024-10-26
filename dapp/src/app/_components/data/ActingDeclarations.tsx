@@ -5,9 +5,9 @@ import { useReadArgaDiamondActorDeclarations } from '~/lib/generated'
 import { chainId } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
 
-export default function WitnessingDeclarations() {
+export default function ActingDeclarations() {
 	const { address, isConnected } = useAppKitAccount()
-	const { isInitialLoading: isWitnessDeclarationsInitialLoading, data: witnessDeclarations } =
+	const { isInitialLoading: isActingDeclarationsInitialLoading, data: actingDeclarations } =
 		useReadArgaDiamondActorDeclarations({
 			query: { enabled: !!address },
 			args: address ? ([address] as [`0x${string}`]) : undefined,
@@ -16,15 +16,15 @@ export default function WitnessingDeclarations() {
 
 	return (
 		<div tw='space-y-8'>
-			{isWitnessDeclarationsInitialLoading ? (
+			{isActingDeclarationsInitialLoading ? (
 				'Loading..'
 			) : !isConnected ? (
 				<w3m-button />
-			) : !witnessDeclarations?.length ? (
+			) : !actingDeclarations?.length ? (
 				'No declarations..'
 			) : (
 				<>
-					{witnessDeclarations
+					{actingDeclarations
 						?.slice()
 						.reverse()
 						.map(declaration => <DeclarationCard key={declaration.id} declaration={declaration} />)}
