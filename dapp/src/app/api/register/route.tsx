@@ -19,6 +19,7 @@ export async function POST(req: Request) {
 						email: credentials.email.toLowerCase(),
 						password: await hash(credentials.password, 12),
 					},
+					include: { wallets: true },
 				})
 			} else {
 				const { success, fid } = await verifyFarcasterSignature({
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
 							fid,
 							image: credentials.image,
 						},
+						include: { wallets: true },
 					})
 				)
 			}

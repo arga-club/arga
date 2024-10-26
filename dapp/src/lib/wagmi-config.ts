@@ -39,6 +39,10 @@ createAppKit({
 		icons: [`${process.env.NEXT_PUBLIC_URL}/favicon-128x128.png`],
 	},
 	projectId,
+	features: {
+		email: false,
+		socials: false,
+	},
 })
 
 export const wagmiConfig = wagmiAdapter.wagmiConfig

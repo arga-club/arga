@@ -17,6 +17,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Logo } from '~/app/_components/Logo'
 import {
 	Sidebar,
@@ -38,7 +39,7 @@ import {
 } from '~/app/_components/ui/dropdown-menu'
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
-	const pathname = location.pathname
+	const pathname = usePathname()
 	const { data: session } = useSession()
 	const user = session?.user
 	const { isMobile } = useSidebar()
@@ -49,7 +50,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 					<Link href='/declarations' tw='pl-7 block'>
 						<Logo />
 					</Link>
-					<Sidebar collapsible='none' tw='pt-4 pb-14 pl-3 pr-4 rounded'>
+					<Sidebar collapsible='none' tw='py-4 pl-3 pr-4 rounded'>
 						<SidebarContent>
 							<SidebarGroup>
 								<SidebarGroupLabel>Declarations</SidebarGroupLabel>
@@ -98,60 +99,30 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</SidebarGroup>
-							<SidebarGroup>
-								<SidebarGroupLabel>Account</SidebarGroupLabel>
-								<SidebarGroupContent>
-									<SidebarMenu>
-										{!user ? (
-											<>
-												<SidebarMenuItem>
-													<SidebarMenuButton asChild>
-														<Link tw='flex pr-4' href='/sign-in'>
-															<LogIn />
-															Sign in
-														</Link>
-													</SidebarMenuButton>
-												</SidebarMenuItem>
-												<SidebarMenuItem>
-													<SidebarMenuButton asChild>
-														<Link tw='flex pr-4' href='/register'>
-															<UserPlus />
-															Register
-														</Link>
-													</SidebarMenuButton>
-												</SidebarMenuItem>
-											</>
-										) : (
-											<>
-												<SidebarMenuItem>
-													<SidebarMenuButton asChild isActive={pathname === '/account'}>
-														<Link tw='flex pr-4' href='/account'>
-															<BadgeCheck />
-															Account
-														</Link>
-													</SidebarMenuButton>
-												</SidebarMenuItem>
-												<SidebarMenuItem>
-													<SidebarMenuButton asChild isActive={pathname === '/wallets'}>
-														<Link tw='flex pr-4' href='/wallets'>
-															<Wallet />
-															Wallets
-														</Link>
-													</SidebarMenuButton>
-												</SidebarMenuItem>
-												<SidebarMenuItem>
-													<SidebarMenuButton asChild isActive={pathname === '/redemptions'}>
-														<Link tw='flex pr-4' href='/redemptions'>
-															<DollarSign />
-															Redemptions
-														</Link>
-													</SidebarMenuButton>
-												</SidebarMenuItem>
-											</>
-										)}
-									</SidebarMenu>
-								</SidebarGroupContent>
-							</SidebarGroup>
+							{!user && (
+								<SidebarGroup>
+									<SidebarGroupContent>
+										<SidebarMenu>
+											<SidebarMenuItem>
+												<SidebarMenuButton asChild>
+													<Link tw='flex pr-4' href='/sign-in'>
+														<LogIn />
+														Sign in
+													</Link>
+												</SidebarMenuButton>
+											</SidebarMenuItem>
+											<SidebarMenuItem>
+												<SidebarMenuButton asChild>
+													<Link tw='flex pr-4' href='/register'>
+														<UserPlus />
+														Register
+													</Link>
+												</SidebarMenuButton>
+											</SidebarMenuItem>
+										</SidebarMenu>
+									</SidebarGroupContent>
+								</SidebarGroup>
+							)}
 						</SidebarContent>
 						{user && (
 							<SidebarFooter>
@@ -182,6 +153,24 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 												align='end'
 												sideOffset={4}
 											>
+												<DropdownMenuItem asChild>
+													<Link tw='flex pr-4 cursor-pointer' href='/account'>
+														<BadgeCheck />
+														Account
+													</Link>
+												</DropdownMenuItem>
+												<DropdownMenuItem asChild>
+													<Link tw='flex pr-4 cursor-pointer' href='/wallets'>
+														<Wallet />
+														Linked Wallets
+													</Link>
+												</DropdownMenuItem>
+												<DropdownMenuItem asChild>
+													<Link tw='flex pr-4 cursor-pointer' href='/redemptions'>
+														<DollarSign />
+														Redemptions
+													</Link>
+												</DropdownMenuItem>
 												<DropdownMenuItem tw='cursor-pointer' onClick={() => signOut()}>
 													<LogOut />
 													Log out
