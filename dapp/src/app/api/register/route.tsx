@@ -8,9 +8,7 @@ import { registerCredentialsSchema } from '~/types/auth'
 
 export async function POST(req: Request) {
 	try {
-		console.log('POST')
 		const credentials = registerCredentialsSchema.parse(await req.json())
-		console.log({ credentials })
 
 		const user = await fire(async () => {
 			if ('email' in credentials) {
@@ -45,7 +43,6 @@ export async function POST(req: Request) {
 				)
 			}
 		})
-		console.log({ user })
 
 		return NextResponse.json({ user })
 	} catch (e) {
