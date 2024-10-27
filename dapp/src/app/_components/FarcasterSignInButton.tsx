@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-// import { type StatusAPIResponse } from '@farcaster/auth-client'
 import { useSignIn, QRCode } from '@farcaster/auth-kit'
 import { getCsrfToken, signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -8,10 +7,10 @@ import { Button } from '~/app/_components/ui/button'
 import { useIsMobile } from '~/hooks/use-mobile'
 import { FarcasterLogo } from '~/app/_components/FarcasterLogo'
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '~/app/_components/ui/dialog'
-import { registerCredentialsSchema } from '~/types/auth'
+import { linkFarcasterSchema, registerCredentialsSchema } from '~/types/auth'
 import { trpc } from '~/trpc/react'
 
-export function FarcasterSignInButton() {
+export function FarcasterSignInButton({ alreadySignedIn }: { alreadySignedIn?: boolean }) {
 	const [shouldDialogOpen, setShouldDialogOpen] = useState(false)
 	const router = useRouter()
 
@@ -22,32 +21,51 @@ export function FarcasterSignInButton() {
 	}, [])
 
 	const addUser = trpc.user.add.useMutation()
+	const linkFarcaster = trpc.user.linkFarcaster.useMutation()
+	const utils = trpc.useUtils()
 
 	const signInState = useSignIn({
 		nonce: getNonce,
 		onStatusResponse: ({ state, nonce, ...res }) => {
 			if (state !== 'completed') return
-			void fire(async () => {
-				await addUser.mutateAsync(
-					registerCredentialsSchema.parse({
+			if (alreadySignedIn) {
+				void fire(async () => {
+					await linkFarcaster.mutateAsync(
+						linkFarcasterSchema.parse({
+							message: res.message,
+							signature: res.signature,
+							username: res.username,
+							fid: res.fid,
+							image: res.pfpUrl,
+							nonce,
+							displayName: res.displayName,
+						}),
+					)
+					await utils.user.invalidate()
+				})
+			} else {
+				void fire(async () => {
+					await addUser.mutateAsync(
+						registerCredentialsSchema.parse({
+							message: res.message,
+							signature: res.signature,
+							username: res.username,
+							fid: res.fid,
+							image: res.pfpUrl,
+							nonce,
+							displayName: res.displayName,
+						}),
+					)
+					setShouldDialogOpen(false)
+					await signIn('farcaster-credentials', {
+						redirect: false,
 						message: res.message,
 						signature: res.signature,
-						username: res.username,
-						fid: res.fid,
-						image: res.pfpUrl,
 						nonce,
-						displayName: res.displayName,
-					}),
-				)
-				setShouldDialogOpen(false)
-				await signIn('farcaster-credentials', {
-					redirect: false,
-					message: res.message,
-					signature: res.signature,
-					nonce,
+					})
+					router.push('/declarations')
 				})
-				router.push('/declarations')
-			})
+			}
 		},
 		onError: res => {
 			console.log('onError')
