@@ -1,6 +1,6 @@
 import { useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
-import { useSession } from 'next-auth/react'
 import { useEffect, useRef } from 'react'
+import { useCurrentUser } from '~/hooks/useCurrentUser'
 import { sleep } from '~/lib/react-utils'
 import { trpc } from '~/trpc/react'
 
@@ -8,8 +8,7 @@ export const useLinkWallet = () => {
 	const { address, status } = useAppKitAccount()
 	const { walletInfo } = useWalletInfo()
 
-	const { data: session } = useSession()
-	const user = session?.user
+	const { user } = useCurrentUser()
 	const triedToUpdate = useRef(false)
 	const { data: wallets } = trpc.wallet.getAll.useQuery()
 	const utils = trpc.useUtils()

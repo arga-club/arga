@@ -15,7 +15,7 @@ import {
 	Bell,
 } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
-import { useSession, signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '~/app/_components/Logo'
@@ -38,12 +38,12 @@ import {
 	DropdownMenuTrigger,
 } from '~/app/_components/ui/dropdown-menu'
 import avatarDefaultSmall from '~/images/avatar-default-small.png'
+import { useCurrentUser } from '~/hooks/useCurrentUser'
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
-	const { data: session } = useSession()
-	const user = session?.user
 	const { isMobile } = useSidebar()
+	const { user } = useCurrentUser()
 	return (
 		<div tw='container py-24'>
 			<div tw='md:flex md:gap-8 md:items-start'>

@@ -7,7 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { env } from '~/env'
 import { db } from '~/server/db'
 import { verifyFarcasterSignature } from '~/lib/farcaster'
-import { type User, userSchema } from '~/types/auth'
+import { type User, sessionUserSchema } from '~/types/auth'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
 					return null
 				}
 
-				const userParsed = userSchema.safeParse(user)
+				const userParsed = sessionUserSchema.safeParse(user)
 
 				return !userParsed.success ? null : userParsed.data
 			},
@@ -114,7 +114,7 @@ export const authOptions: NextAuthOptions = {
 					where: { fid },
 				})
 
-				const userParsed = userSchema.safeParse(user)
+				const userParsed = sessionUserSchema.safeParse(user)
 
 				return !userParsed.success ? null : userParsed.data
 			},
@@ -128,7 +128,7 @@ export const authOptions: NextAuthOptions = {
 			return { user }
 		},
 		session: ({ session, token }) => {
-			const user = userSchema.safeParse(token.user)
+			const user = sessionUserSchema.safeParse(token.user)
 			return !user.success ? session : { ...session, user: user.data }
 		},
 	},
