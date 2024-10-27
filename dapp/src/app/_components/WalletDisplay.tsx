@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import { WalletIcon } from 'lucide-react'
+import { Addreth, AddrethConfig } from 'addreth'
+import 'addreth/styles.css'
 import { type Wallet } from '~/types/auth'
 
 export const WalletDisplay = ({ wallet, className, key }: { wallet: Wallet; className?: string; key?: string }) => {
@@ -11,11 +13,11 @@ export const WalletDisplay = ({ wallet, className, key }: { wallet: Wallet; clas
 				) : (
 					<WalletIcon size='40' />
 				)}
-				<div tw='space-y-6'>
-					<p tw='m-0'>
-						{wallet.address}
-						<br /> <span tw='text-secondary'>{wallet.name}</span>{' '}
-					</p>
+				<div>
+					<AddrethConfig externalCss>
+						<Addreth address={wallet.address} label={wallet.name} theme='simple-light' />
+					</AddrethConfig>
+					<p tw='m-0 text-secondary'>{wallet.name}</p>
 				</div>
 			</div>
 		</div>

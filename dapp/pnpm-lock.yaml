@@ -91,6 +91,9 @@ importers:
       '@wagmi/core':
         specifier: ^2.13.9
         version: 2.13.9(@tanstack/query-core@5.51.21)(@types/react@18.2.57)(react@18.2.0)(typescript@5.3.3)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4))
+      addreth:
+        specifier: ^3.0.1
+        version: 3.0.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(wagmi@2.12.20(@react-native-async-storage/async-storage@1.22.3(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.51.21)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0))(@types/react@18.2.57)(bufferutil@4.0.8)(ioredis@5.3.2)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4))
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -3184,6 +3187,13 @@ packages:
     resolution: {integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  addreth@3.0.1:
+    resolution: {integrity: sha512-I+unUQCOilLunbx7xhZl08u/3vfEt7aMfH/kmpmtkT7SmE2s/KSnmJu0QdWWNahlTmD/y5RAG55+RmlSX4tI0w==}
+    peerDependencies:
+      react: '18'
+      react-dom: '18'
+      wagmi: '2'
 
   aes-js@4.0.0-beta.5:
     resolution: {integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==}
@@ -11411,6 +11421,12 @@ snapshots:
 
   acorn@8.12.1: {}
 
+  addreth@3.0.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(wagmi@2.12.20(@react-native-async-storage/async-storage@1.22.3(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.51.21)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0))(@types/react@18.2.57)(bufferutil@4.0.8)(ioredis@5.3.2)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)):
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      wagmi: 2.12.20(@react-native-async-storage/async-storage@1.22.3(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.51.21)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0))(@types/react@18.2.57)(bufferutil@4.0.8)(ioredis@5.3.2)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.5(@babel/core@7.24.0)(@babel/preset-env@7.24.0(@babel/core@7.24.0))(bufferutil@4.0.8)(react@18.2.0)(utf-8-validate@5.0.10))(react@18.2.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.7.18(bufferutil@4.0.8)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
+
   aes-js@4.0.0-beta.5: {}
 
   ajv-formats@2.1.1(ajv@8.12.0):
@@ -12629,7 +12645,7 @@ snapshots:
       debug: 4.3.4
       enhanced-resolve: 5.15.1
       eslint: 8.56.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-plugin-i@2.29.1)(eslint@8.56.0))(eslint@8.56.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-plugin-i@2.29.1)(eslint@8.56.0))(eslint@8.56.0)
       eslint-plugin-import: eslint-plugin-i@2.29.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.2
@@ -12659,6 +12675,16 @@ snapshots:
       '@typescript-eslint/parser': 7.0.2(eslint@8.56.0)(typescript@5.3.3)
       eslint: 8.56.0
       eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-plugin-i@2.29.1)(eslint@8.56.0)
+    transitivePeerDependencies:
+      - supports-color
+
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-plugin-i@2.29.1)(eslint@8.56.0))(eslint@8.56.0):
+    dependencies:
+      debug: 3.2.7
+    optionalDependencies:
+      '@typescript-eslint/parser': 7.0.2(eslint@8.56.0)(typescript@5.3.3)
+      eslint: 8.56.0
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.0.2(eslint@8.56.0)(typescript@5.3.3))(eslint-plugin-i@2.29.1)(eslint@8.56.0)
     transitivePeerDependencies:
       - supports-color
