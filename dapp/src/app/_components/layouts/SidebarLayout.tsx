@@ -58,18 +58,10 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 								<SidebarGroupContent>
 									<SidebarMenu>
 										<SidebarMenuItem>
-											<SidebarMenuButton asChild isActive={pathname === '/declarations/new'}>
-												<Link tw='flex pr-4' href='/declarations/new'>
-													<Zap />
-													<span>Make new</span>
-												</Link>
-											</SidebarMenuButton>
-										</SidebarMenuItem>
-										<SidebarMenuItem>
 											<SidebarMenuButton asChild isActive={pathname === '/declarations'}>
 												<Link tw='flex pr-4' href='/declarations'>
 													<Users />
-													<span>Community</span>
+													<span>My Feed</span>
 												</Link>
 											</SidebarMenuButton>
 										</SidebarMenuItem>
@@ -86,6 +78,14 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 												<Link tw='flex pr-4' href='/witnessing'>
 													<Eye />
 													Witnessing
+												</Link>
+											</SidebarMenuButton>
+										</SidebarMenuItem>
+										<SidebarMenuItem>
+											<SidebarMenuButton asChild isActive={pathname === '/declarations/new'}>
+												<Link tw='flex pr-4' href='/declarations/new'>
+													<Zap />
+													<span>Make new</span>
 												</Link>
 											</SidebarMenuButton>
 										</SidebarMenuItem>
