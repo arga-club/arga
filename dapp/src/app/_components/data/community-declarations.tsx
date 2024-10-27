@@ -28,9 +28,9 @@ export default function CommunityDeclarations() {
 			) : !communityDeclarations?.length ? (
 				'No declarations...'
 			) : (
-				communityDeclarations?.map(declaration => (
-					<DeclarationCard key={declaration.id} declaration={declaration} />
-				))
+				communityDeclarations
+					.filter(declaration => declaration.actor !== zeroAddress)
+					.map(declaration => <DeclarationCard key={declaration.id} declaration={declaration} />)
 			)}
 		</div>
 	)
