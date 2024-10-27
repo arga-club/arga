@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '~/app/_components/ui/input'
 import '@farcaster/auth-kit/styles.css'
 import { FarcasterSignInButton } from '~/app/_components/FarcasterSignInButton'
+import { trpc } from '~/trpc/react'
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -28,14 +29,10 @@ export default function LogInPage() {
 		resolver: zodResolver(formSchema),
 	})
 
+	const addUser = trpc.user.add.useMutation()
+
 	const submit = form.handleSubmit(async values => {
-		await fetch('/api/register', {
-			method: 'POST',
-			body: JSON.stringify(values),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
+		await addUser.mutateAsync(values)
 		await signIn('credentials', {
 			redirect: false,
 			email: values.email,

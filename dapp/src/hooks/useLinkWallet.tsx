@@ -29,7 +29,7 @@ export const useLinkWallet = () => {
 		if (!wallets) return
 		if (wallets.some(wallet => wallet.address === address)) return
 		triedToUpdate.current = true
-		addWallet.mutate({
+		void addWallet.mutateAsync({
 			address,
 			icon: walletInfo?.icon,
 			name: walletInfo?.name,

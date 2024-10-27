@@ -9,6 +9,7 @@ import { useIsMobile } from '~/hooks/use-mobile'
 import { FarcasterLogo } from '~/app/_components/FarcasterLogo'
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '~/app/_components/ui/dialog'
 import { registerCredentialsSchema } from '~/types/auth'
+import { trpc } from '~/trpc/react'
 
 export function FarcasterSignInButton() {
 	const [shouldDialogOpen, setShouldDialogOpen] = useState(false)
@@ -20,28 +21,24 @@ export function FarcasterSignInButton() {
 		return nonce
 	}, [])
 
+	const addUser = trpc.user.add.useMutation()
+
 	const signInState = useSignIn({
 		nonce: getNonce,
 		onStatusResponse: ({ state, nonce, ...res }) => {
 			if (state !== 'completed') return
 			void fire(async () => {
-				await fetch('/api/register', {
-					method: 'POST',
-					body: JSON.stringify(
-						registerCredentialsSchema.parse({
-							message: res.message,
-							signature: res.signature,
-							username: res.username,
-							fid: res.fid,
-							image: res.pfpUrl,
-							nonce,
-							displayName: res.displayName,
-						}),
-					),
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				await addUser.mutateAsync(
+					registerCredentialsSchema.parse({
+						message: res.message,
+						signature: res.signature,
+						username: res.username,
+						fid: res.fid,
+						image: res.pfpUrl,
+						nonce,
+						displayName: res.displayName,
+					}),
+				)
 				setShouldDialogOpen(false)
 				await signIn('farcaster-credentials', {
 					redirect: false,
