@@ -1245,7 +1245,7 @@ export default {
 					],
 				},
 				DeclarationFacet: {
-					address: '0x32a194f34493CEd690517Dc183202F16353071f5',
+					address: '0xdf9f68b9a9f601bF0b0da0FaBC8a4E6E77A7258B',
 					abi: [
 						{
 							inputs: [
@@ -1465,6 +1465,104 @@ export default {
 								},
 							],
 							name: 'actorDeclarations',
+							outputs: [
+								{
+									components: [
+										{
+											internalType: 'uint256',
+											name: 'id',
+											type: 'uint256',
+										},
+										{
+											internalType: 'enum ArgaLibrary.DeclarationStatus',
+											name: 'status',
+											type: 'uint8',
+										},
+										{
+											internalType: 'string',
+											name: 'summary',
+											type: 'string',
+										},
+										{
+											internalType: 'string',
+											name: 'description',
+											type: 'string',
+										},
+										{
+											internalType: 'address',
+											name: 'actor',
+											type: 'address',
+										},
+										{
+											internalType: 'address',
+											name: 'witness',
+											type: 'address',
+										},
+										{
+											internalType: 'uint256',
+											name: 'startDate',
+											type: 'uint256',
+										},
+										{
+											internalType: 'uint256',
+											name: 'endDate',
+											type: 'uint256',
+										},
+										{
+											internalType: 'uint256',
+											name: 'witnessByDate',
+											type: 'uint256',
+										},
+										{
+											components: [
+												{
+													internalType: 'uint256',
+													name: 'value',
+													type: 'uint256',
+												},
+												{
+													internalType: 'address',
+													name: 'erc20Address',
+													type: 'address',
+												},
+											],
+											internalType: 'struct ArgaLibrary.Collateral',
+											name: 'collateral',
+											type: 'tuple',
+										},
+										{
+											internalType: 'string',
+											name: 'proof',
+											type: 'string',
+										},
+										{
+											internalType: 'uint64',
+											name: 'drawId',
+											type: 'uint64',
+										},
+									],
+									internalType: 'struct ArgaLibrary.Declaration[]',
+									name: '',
+									type: 'tuple[]',
+								},
+							],
+							stateMutability: 'view',
+							type: 'function',
+						},
+						{
+							inputs: [
+								{
+									internalType: 'uint256',
+									name: 'page',
+									type: 'uint256',
+								},
+								{
+									internalType: 'uint256',
+									name: 'size',
+									type: 'uint256',
+								},
+							],
+							name: 'allDeclarations',
 							outputs: [
 								{
 									components: [
@@ -2207,7 +2305,7 @@ export default {
 					],
 				},
 				DiamondInit: {
-					address: '0x087D7FB62285c4C02Eb857C0835859A0Ce66Aa97',
+					address: '0xad908644f9bcAa43DE36783C7291C1cEdcfb209f',
 					abi: [
 						{
 							inputs: [
@@ -2439,7 +2537,7 @@ export default {
 					],
 				},
 				PoolFacet: {
-					address: '0xC696AffF913f70DBa95eD82065f61F12a259cD58',
+					address: '0xD5f7493a3eED295C9154eBbBA2499a1C91c0E569',
 					abi: [
 						{
 							inputs: [
@@ -2652,7 +2750,7 @@ export default {
 					],
 				},
 				TreasuryFacet: {
-					address: '0x44167d6D5cCeD7558740fC590b6677dfE917d01F',
+					address: '0x4608a4bF1C6979f13C182ACA9DF5CC13aC23013f',
 					abi: [
 						{
 							inputs: [

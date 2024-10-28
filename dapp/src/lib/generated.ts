@@ -176,6 +176,52 @@ export const argaDiamondAbi = [
 	{
 		type: 'function',
 		inputs: [
+			{ name: 'page', internalType: 'uint256', type: 'uint256' },
+			{ name: 'size', internalType: 'uint256', type: 'uint256' },
+		],
+		name: 'allDeclarations',
+		outputs: [
+			{
+				name: '',
+				internalType: 'struct ArgaLibrary.Declaration[]',
+				type: 'tuple[]',
+				components: [
+					{ name: 'id', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'status',
+						internalType: 'enum ArgaLibrary.DeclarationStatus',
+						type: 'uint8',
+					},
+					{ name: 'summary', internalType: 'string', type: 'string' },
+					{ name: 'description', internalType: 'string', type: 'string' },
+					{ name: 'actor', internalType: 'address', type: 'address' },
+					{ name: 'witness', internalType: 'address', type: 'address' },
+					{ name: 'startDate', internalType: 'uint256', type: 'uint256' },
+					{ name: 'endDate', internalType: 'uint256', type: 'uint256' },
+					{ name: 'witnessByDate', internalType: 'uint256', type: 'uint256' },
+					{
+						name: 'collateral',
+						internalType: 'struct ArgaLibrary.Collateral',
+						type: 'tuple',
+						components: [
+							{ name: 'value', internalType: 'uint256', type: 'uint256' },
+							{
+								name: 'erc20Address',
+								internalType: 'address',
+								type: 'address',
+							},
+						],
+					},
+					{ name: 'proof', internalType: 'string', type: 'string' },
+					{ name: 'drawId', internalType: 'uint64', type: 'uint64' },
+				],
+			},
+		],
+		stateMutability: 'view',
+	},
+	{
+		type: 'function',
+		inputs: [
 			{ name: 'actor', internalType: 'address', type: 'address' },
 			{ name: 'amount', internalType: 'uint256', type: 'uint256' },
 		],
@@ -660,6 +706,19 @@ export const useReadArgaDiamondActorDeclarations = /*#__PURE__*/ createUseReadCo
 	abi: argaDiamondAbi,
 	address: argaDiamondAddress,
 	functionName: 'actorDeclarations',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"allDeclarations"`
+ *
+ * - [__View Contract on Op Mainnet Optimism Explorer__](https://optimistic.etherscan.io/address/0x87356f30ee14515F467bb6c263593080775880d2)
+ * -
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
+ */
+export const useReadArgaDiamondAllDeclarations = /*#__PURE__*/ createUseReadContract({
+	abi: argaDiamondAbi,
+	address: argaDiamondAddress,
+	functionName: 'allDeclarations',
 })
 
 /**
@@ -1167,6 +1226,19 @@ export const readArgaDiamondActorDeclarations = /*#__PURE__*/ createReadContract
 	abi: argaDiamondAbi,
 	address: argaDiamondAddress,
 	functionName: 'actorDeclarations',
+})
+
+/**
+ * Wraps __{@link readContract}__ with `abi` set to __{@link argaDiamondAbi}__ and `functionName` set to `"allDeclarations"`
+ *
+ * - [__View Contract on Op Mainnet Optimism Explorer__](https://optimistic.etherscan.io/address/0x87356f30ee14515F467bb6c263593080775880d2)
+ * -
+ * - [__View Contract on Op Sepolia Blockscout__](https://optimism-sepolia.blockscout.com/address/0x29314a5679B32FcF529A14136AD2b50A82eE7f94)
+ */
+export const readArgaDiamondAllDeclarations = /*#__PURE__*/ createReadContract({
+	abi: argaDiamondAbi,
+	address: argaDiamondAddress,
+	functionName: 'allDeclarations',
 })
 
 /**
