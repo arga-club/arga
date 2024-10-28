@@ -18,7 +18,7 @@
 		"console": "nr hardhat:dev console",
 		"size-contracts": "hardhat size-contracts",
 		"deploy:hardhat": "nr hardhat:dev deploy --export-all ../dapp/src/lib/contracts.ts",
-		"deploy:optimism": "hardhat deploy --network optimism --export-all ../dapp/src/lib/contracts.ts",
+		"deploy:optimism": "nr prettier:fix && hardhat deploy --network optimism --export-all ../dapp/src/lib/contracts.ts",
 		"verify:optimism": "hardhat etherscan-verify --network optimism",
 		"deploy:optimism-sepolia": "hardhat deploy --network optimismSepolia --export-all ../dapp/src/lib/contracts.ts",
 		"verify:optimism-sepolia": "hardhat etherscan-verify --network optimismSepolia",
