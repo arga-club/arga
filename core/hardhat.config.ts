@@ -6,7 +6,6 @@ import '@nomicfoundation/hardhat-ignition-viem'
 import '@openzeppelin/hardhat-upgrades'
 import 'hardhat-contract-sizer'
 import 'hardhat-deploy'
-import 'hardhat-preprocessor'
 
 export default {
 	solidity: {
@@ -70,10 +69,5 @@ export default {
 				},
 			},
 		},
-	},
-	preprocess: {
-		eachLine: () => ({
-			transform: line => line.replace(/\r/g, ''),
-		}),
 	},
 } satisfies HardhatUserConfig

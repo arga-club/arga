@@ -7,7 +7,6 @@ import '@openzeppelin/hardhat-upgrades'
 import 'hardhat-ethernal'
 import 'hardhat-contract-sizer'
 import 'hardhat-deploy'
-import 'hardhat-preprocessor'
 
 export default {
 	solidity: {
@@ -68,10 +67,5 @@ export default {
 		uploadAst: false,
 		resetOnStart: 'hardhat',
 		apiToken: vars.get('ETHERNAL_API_TOKEN'),
-	},
-	preprocess: {
-		eachLine: () => ({
-			transform: line => line.replace(/\r/g, ''),
-		}),
 	},
 } satisfies HardhatUserConfig
