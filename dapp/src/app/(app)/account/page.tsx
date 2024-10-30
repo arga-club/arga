@@ -1,9 +1,9 @@
 'use client'
 
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import { FarcasterSignInButton } from '~/app/_components/FarcasterSignInButton'
+import { PictureBackground } from '~/app/_components/PictureBackground'
 import { Input } from '~/app/_components/ui/input'
 import { Prose } from '~/app/_components/ui/prose'
 import avatarDefault from '~/images/avatar-default.png'
@@ -19,10 +19,10 @@ export default function Home() {
 				'Loading...'
 			) : (
 				<div tw='flex flex-col m-0'>
-					<Avatar tw='size-36 rounded-lg mb-8 bg-gray-400'>
-						<AvatarImage src={user.image || avatarDefault.src} tw='m-0 rounded-lg' />
-						<AvatarFallback className='rounded-lg'>{user.username}</AvatarFallback>
-					</Avatar>
+					<PictureBackground
+						$backgroundImageSrc={user.image || avatarDefault.src}
+						tw='size-36 rounded-lg mb-8 bg-gray-400'
+					/>
 					<div tw='space-y-8'>
 						<div tw='space-y-2'>
 							<p tw='m-0 text-sm'>

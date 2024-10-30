@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Addreth } from 'addreth'
 import { readArgaDiamondActorDeclarations } from '~/lib/generated'
 import { chainId, wagmiCoreConfig } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
@@ -34,19 +33,7 @@ export default function ActingDeclarations() {
 					{declarations
 						?.slice()
 						.reverse()
-						.map(declaration => (
-							<>
-								<div tw='space-y-2'>
-									<div tw='flex items-center space-x-2'>
-										<p tw='text-sm'>Acting as</p>
-										<div tw='pt-1'>
-											<Addreth address={declaration.actor} theme='simple-light' actions='none' />
-										</div>
-									</div>
-									<DeclarationCard key={declaration.id} declaration={declaration} />
-								</div>
-							</>
-						))}
+						.map(declaration => <DeclarationCard key={declaration.id} declaration={declaration} />)}
 				</>
 			)}
 		</div>

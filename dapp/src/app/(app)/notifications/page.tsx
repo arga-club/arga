@@ -1,6 +1,5 @@
 'use client'
 
-import WitnessingDeclarations from '~/app/_components/data/WitnessingDeclarations'
 import { Prose } from '~/app/_components/ui/prose'
 
 export default function Home() {
@@ -8,9 +7,11 @@ export default function Home() {
 		<>
 			<div tw='space-y-10'>
 				<Prose>
-					<h1>Witnessing</h1>
+					<h1>Notifications</h1>
+					<p>
+						Coming soon
+					</p>
 				</Prose>
-				<WitnessingDeclarations />
 			</div>
 		</>
 	)

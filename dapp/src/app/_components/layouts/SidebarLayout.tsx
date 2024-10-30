@@ -14,7 +14,6 @@ import {
 	Wallet,
 	Bell,
 } from 'lucide-react'
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -39,6 +38,7 @@ import {
 } from '~/app/_components/ui/dropdown-menu'
 import avatarDefaultSmall from '~/images/avatar-default-small.png'
 import { useCurrentUser } from '~/hooks/useCurrentUser'
+import { PictureBackground } from '~/app/_components/PictureBackground'
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
@@ -135,10 +135,10 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 													size='lg'
 													className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
 												>
-													<Avatar className='h-8 w-8 rounded-lg'>
-														<AvatarImage src={user.image || avatarDefaultSmall.src} tw='rounded' />
-														<AvatarFallback tw='rounded'>{user.username}</AvatarFallback>
-													</Avatar>
+													<PictureBackground
+														$backgroundImageSrc={user.image || avatarDefaultSmall.src}
+														tw='h-8 w-8 rounded'
+													/>
 													<div className='grid flex-1 text-left text-sm leading-tight'>
 														<span className='truncate font-semibold'>
 															{user.displayName || user.email}

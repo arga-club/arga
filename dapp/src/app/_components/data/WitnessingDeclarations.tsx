@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Addreth } from 'addreth'
 import { readArgaDiamondWitnessDeclarations } from '~/lib/generated'
 import { chainId, wagmiCoreConfig } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
@@ -34,19 +33,7 @@ export default function WitnessingDeclarations() {
 					{declarations
 						?.slice()
 						.reverse()
-						.map(declaration => (
-							<>
-								<div tw='space-y-2'>
-									<div tw='flex items-center space-x-2'>
-										<p tw='text-sm'>Witnessing as</p>
-										<div tw='pt-1'>
-											<Addreth address={declaration.witness} theme='simple-light' actions='none' />
-										</div>
-									</div>
-									<DeclarationCard key={declaration.id} declaration={declaration} />
-								</div>
-							</>
-						))}
+						.map(declaration => <DeclarationCard key={declaration.id} declaration={declaration} />)}
 				</>
 			)}
 		</div>

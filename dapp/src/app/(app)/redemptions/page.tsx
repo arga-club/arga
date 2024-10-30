@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
-import { useAppKit } from '@reown/appkit/react'
+import { useAppKit, useAppKitAccount } from '@reown/appkit/react'
 import { useRouter } from 'next/navigation'
-import { useAccount, useReconnect, useWriteContract } from 'wagmi'
+import { useWriteContract } from 'wagmi'
 import { zeroAddress } from 'viem'
 import { Prose } from '~/app/_components/ui/prose'
 import { useReadArgaDiamondRedemptionsForParty, useReadArgaDiamondPool } from '~/lib/generated'
@@ -17,24 +16,22 @@ import { argaInstance } from '~/lib/arga-utils'
 export default function Home() {
 	const router = useRouter()
 	const { open } = useAppKit()
-	const { reconnectAsync } = useReconnect()
-	const { address, isDisconnected } = useAccount()
+	const { address, isConnected } = useAppKitAccount()
 	const { writeContractAsync, isLoading: isSigning } = useWriteContract()
 	const { data: redemptions, isLoading } = useReadArgaDiamondRedemptionsForParty({
 		query: { enabled: !!address },
-		args: address ? [address] : undefined,
+		args: address as `0x${string}` ? [address as `0x${string}`] : undefined,
 		chainId,
 	})
 	useReadArgaDiamondPool({ chainId })
 
 	const redeem = async () => {
-		isDisconnected && (await open())
-		await reconnectAsync()
+		!isConnected && (await open())
 		if (!address) return
 		await writeContractAsync({
 			...argaInstance,
 			functionName: 'redeem',
-			args: [address, [zeroAddress]],
+			args: [address as `0x${string}`, [zeroAddress]],
 		})
 		router.push('/declarations')
 	}
