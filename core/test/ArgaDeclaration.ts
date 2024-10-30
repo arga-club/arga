@@ -140,6 +140,10 @@ describe('Declaration', function () {
 			expect(await arga.allDeclarations(2n, 2n)).to.have.length(0)
 			expect(await arga.allDeclarations(3n, 2n)).to.have.length(0)
 			expect(await arga.allDeclarations(1n, 3n)).to.have.length(1)
+			{
+				const declarations = await arga.allDeclarations(0n, 4n)
+				expect(declarations.map(d => Number(d.id))).to.deep.equal([3, 2, 1, 0])
+			}
 		})
 		it('all active declarations', () => {})
 		it('user declarations', () => {})
