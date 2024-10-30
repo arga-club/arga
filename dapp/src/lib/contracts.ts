@@ -1245,7 +1245,7 @@ export default {
 					],
 				},
 				DeclarationFacet: {
-					address: '0x1648aaD7901de8943115C130Da9D244C1D4d2088',
+					address: '0xeBCA45Ec86ccfd2fCF78Fb555e9b712539AaE1b7',
 					abi: [
 						{
 							inputs: [
@@ -2305,7 +2305,7 @@ export default {
 					],
 				},
 				DiamondInit: {
-					address: '0xfEE9948CE17735763373445572cc0C70f5c06193',
+					address: '0x5a912de505c987FC60bf6BE2e2dA49fdDD7CC06C',
 					abi: [
 						{
 							inputs: [
@@ -2537,7 +2537,7 @@ export default {
 					],
 				},
 				PoolFacet: {
-					address: '0x159a97F32A369a489fabBcc0044f197604855B68',
+					address: '0x57D7833C59E4636A5eD2698E8D03715D2982cC01',
 					abi: [
 						{
 							inputs: [
@@ -2750,7 +2750,7 @@ export default {
 					],
 				},
 				TreasuryFacet: {
-					address: '0x2CC0D39929F29b2f9ad5F14F73D1d30b38bdf13f',
+					address: '0xE84354DB7D2ceeaB2ccd0E063Fd1Ff0fE85DD6a2',
 					abi: [
 						{
 							inputs: [
