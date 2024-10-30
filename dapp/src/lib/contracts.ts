@@ -1245,7 +1245,7 @@ export default {
 					],
 				},
 				DeclarationFacet: {
-					address: '0x66df84e651E576153e78AE5C35b520E5401fF0f6',
+					address: '0x1648aaD7901de8943115C130Da9D244C1D4d2088',
 					abi: [
 						{
 							inputs: [
@@ -2305,7 +2305,7 @@ export default {
 					],
 				},
 				DiamondInit: {
-					address: '0x27823b87b8FdA05347e1d34324aD2d5C8991aa3A',
+					address: '0xfEE9948CE17735763373445572cc0C70f5c06193',
 					abi: [
 						{
 							inputs: [
@@ -2537,7 +2537,7 @@ export default {
 					],
 				},
 				PoolFacet: {
-					address: '0xA876c61c369ec68c41Ee9c31a84D61b76dF429C4',
+					address: '0x159a97F32A369a489fabBcc0044f197604855B68',
 					abi: [
 						{
 							inputs: [
@@ -2750,7 +2750,7 @@ export default {
 					],
 				},
 				TreasuryFacet: {
-					address: '0x74eE2cD1427F1dB40Cd244A647405970e9024142',
+					address: '0x2CC0D39929F29b2f9ad5F14F73D1d30b38bdf13f',
 					abi: [
 						{
 							inputs: [
@@ -3120,6 +3120,104 @@ export default {
 								},
 							],
 							name: 'actorDeclarations',
+							outputs: [
+								{
+									components: [
+										{
+											internalType: 'uint256',
+											name: 'id',
+											type: 'uint256',
+										},
+										{
+											internalType: 'enum ArgaLibrary.DeclarationStatus',
+											name: 'status',
+											type: 'uint8',
+										},
+										{
+											internalType: 'string',
+											name: 'summary',
+											type: 'string',
+										},
+										{
+											internalType: 'string',
+											name: 'description',
+											type: 'string',
+										},
+										{
+											internalType: 'address',
+											name: 'actor',
+											type: 'address',
+										},
+										{
+											internalType: 'address',
+											name: 'witness',
+											type: 'address',
+										},
+										{
+											internalType: 'uint256',
+											name: 'startDate',
+											type: 'uint256',
+										},
+										{
+											internalType: 'uint256',
+											name: 'endDate',
+											type: 'uint256',
+										},
+										{
+											internalType: 'uint256',
+											name: 'witnessByDate',
+											type: 'uint256',
+										},
+										{
+											components: [
+												{
+													internalType: 'uint256',
+													name: 'value',
+													type: 'uint256',
+												},
+												{
+													internalType: 'address',
+													name: 'erc20Address',
+													type: 'address',
+												},
+											],
+											internalType: 'struct ArgaLibrary.Collateral',
+											name: 'collateral',
+											type: 'tuple',
+										},
+										{
+											internalType: 'string',
+											name: 'proof',
+											type: 'string',
+										},
+										{
+											internalType: 'uint64',
+											name: 'drawId',
+											type: 'uint64',
+										},
+									],
+									internalType: 'struct ArgaLibrary.Declaration[]',
+									name: '',
+									type: 'tuple[]',
+								},
+							],
+							stateMutability: 'view',
+							type: 'function',
+						},
+						{
+							inputs: [
+								{
+									internalType: 'uint256',
+									name: 'page',
+									type: 'uint256',
+								},
+								{
+									internalType: 'uint256',
+									name: 'size',
+									type: 'uint256',
+								},
+							],
+							name: 'allDeclarations',
 							outputs: [
 								{
 									components: [
@@ -4278,6 +4376,104 @@ export default {
 								},
 							],
 							name: 'actorDeclarations',
+							outputs: [
+								{
+									components: [
+										{
+											internalType: 'uint256',
+											name: 'id',
+											type: 'uint256',
+										},
+										{
+											internalType: 'enum ArgaLibrary.DeclarationStatus',
+											name: 'status',
+											type: 'uint8',
+										},
+										{
+											internalType: 'string',
+											name: 'summary',
+											type: 'string',
+										},
+										{
+											internalType: 'string',
+											name: 'description',
+											type: 'string',
+										},
+										{
+											internalType: 'address',
+											name: 'actor',
+											type: 'address',
+										},
+										{
+											internalType: 'address',
+											name: 'witness',
+											type: 'address',
+										},
+										{
+											internalType: 'uint256',
+											name: 'startDate',
+											type: 'uint256',
+										},
+										{
+											internalType: 'uint256',
+											name: 'endDate',
+											type: 'uint256',
+										},
+										{
+											internalType: 'uint256',
+											name: 'witnessByDate',
+											type: 'uint256',
+										},
+										{
+											components: [
+												{
+													internalType: 'uint256',
+													name: 'value',
+													type: 'uint256',
+												},
+												{
+													internalType: 'address',
+													name: 'erc20Address',
+													type: 'address',
+												},
+											],
+											internalType: 'struct ArgaLibrary.Collateral',
+											name: 'collateral',
+											type: 'tuple',
+										},
+										{
+											internalType: 'string',
+											name: 'proof',
+											type: 'string',
+										},
+										{
+											internalType: 'uint64',
+											name: 'drawId',
+											type: 'uint64',
+										},
+									],
+									internalType: 'struct ArgaLibrary.Declaration[]',
+									name: '',
+									type: 'tuple[]',
+								},
+							],
+							stateMutability: 'view',
+							type: 'function',
+						},
+						{
+							inputs: [
+								{
+									internalType: 'uint256',
+									name: 'page',
+									type: 'uint256',
+								},
+								{
+									internalType: 'uint256',
+									name: 'size',
+									type: 'uint256',
+								},
+							],
+							name: 'allDeclarations',
 							outputs: [
 								{
 									components: [
