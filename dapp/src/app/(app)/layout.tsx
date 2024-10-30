@@ -6,6 +6,7 @@ import '~/styles/globals.css'
 
 const inter = Inter({
 	subsets: ['latin'],
+	display: 'swap',
 	variable: '--font-sans',
 })
 

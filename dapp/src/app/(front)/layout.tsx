@@ -6,6 +6,7 @@ import { MenuTop } from '~/app/_components/menu-top'
 
 const inter = Inter({
 	subsets: ['latin'],
+	display: 'swap',
 	variable: '--font-sans',
 })
 
