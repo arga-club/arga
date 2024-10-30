@@ -34,13 +34,10 @@ contract DeclarationFacet {
 	function allDeclarations(uint page, uint size) external view returns (ArgaLibrary.Declaration[] memory) {
 		DeclarationLibrary.State storage ds = DeclarationLibrary.diamondStorage();
 		uint min = page * size;
-		uint max = (page + 1) * size;
-		ArgaLibrary.Declaration[] memory result = new ArgaLibrary.Declaration[](size);
+		uint max = Math.min((page + 1) * size, ds.declarations.length);
+		ArgaLibrary.Declaration[] memory result = new ArgaLibrary.Declaration[](max > min ? max - min : 0);
 		for (uint index = min; index < max; index++) {
-			if (ds.declarations[index].actor == address(0)) {
-				continue;
-			}
-			result[index] = ds.declarations[index];
+			result[index - min] = ds.declarations[index];
 		}
 		return result;
 	}
