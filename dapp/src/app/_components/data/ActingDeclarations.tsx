@@ -4,16 +4,16 @@ import { useEffect, useState } from 'react'
 import { readArgaDiamondActorDeclarations } from '~/lib/generated'
 import { chainId, wagmiCoreConfig } from '~/lib/wagmi-config'
 import { DeclarationCard } from '~/app/_components/DeclarationCard'
-import { useCurrentUser } from '~/hooks/useCurrentUser'
 import { type Declaration } from '~/types/arga'
+import { trpc } from '~/trpc/react'
 
 export default function ActingDeclarations() {
-	const { user } = useCurrentUser()
+	const { data: wallets } = trpc.wallet.getAll.useQuery()
 	const [declarations, setDeclarations] = useState([] as Declaration[])
 	useEffect(() => {
-		if (!user) return
+		if (!wallets) return
 		void Promise.all(
-			user.wallets.map(wallet =>
+			wallets.map(wallet =>
 				readArgaDiamondActorDeclarations(wagmiCoreConfig, {
 					args: [wallet.address as `0x${string}`],
 					chainId,
@@ -22,7 +22,7 @@ export default function ActingDeclarations() {
 		).then(declarations => {
 			setDeclarations(declarations.flat().flat())
 		})
-	}, [user])
+	}, [wallets])
 
 	return (
 		<div tw='space-y-8'>

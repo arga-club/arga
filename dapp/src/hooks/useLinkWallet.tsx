@@ -1,6 +1,5 @@
 import { useAppKitAccount, useWalletInfo } from '@reown/appkit/react'
 import { useEffect, useRef } from 'react'
-import { useCurrentUser } from '~/hooks/useCurrentUser'
 import { sleep } from '~/lib/react-utils'
 import { trpc } from '~/trpc/react'
 
@@ -8,7 +7,7 @@ export const useLinkWallet = () => {
 	const { address, status } = useAppKitAccount()
 	const { walletInfo } = useWalletInfo()
 
-	const { user } = useCurrentUser()
+	const { data: user } = trpc.user.getCurrent.useQuery()
 	const triedToUpdate = useRef(false)
 	const { data: wallets } = trpc.wallet.getAll.useQuery()
 	const utils = trpc.useUtils()

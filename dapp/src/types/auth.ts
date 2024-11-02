@@ -1,13 +1,5 @@
 import { z } from 'zod'
 
-export const walletSchema = z.object({
-	address: z.string(),
-	icon: z.string().optional().nullable(),
-	name: z.string().optional().nullable(),
-})
-
-export type Wallet = z.infer<typeof walletSchema>
-
 export const sessionUserSchema = z.object({
 	id: z.string(),
 })

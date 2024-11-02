@@ -9,8 +9,8 @@ import { Button } from '~/app/_components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '~/app/_components/ui/card'
 import { Prose } from '~/app/_components/ui/prose'
 import { withDisplayName } from '~/app/_components/withDisplayName'
-import { useCurrentUser } from '~/hooks/useCurrentUser'
 import { declarationStatusClasses, declarationStatusLabels } from '~/lib/arga-utils'
+import { trpc } from '~/trpc/react'
 import { type Declaration } from '~/types/arga'
 
 export const DeclarationCard = withDisplayName(
@@ -23,30 +23,52 @@ export const DeclarationCard = withDisplayName(
 		},
 		ref: Ref<HTMLDivElement>,
 	) => {
-		const { user } = useCurrentUser()
-		const addresses = user?.wallets.map(wallet => wallet.address) ?? []
+		const { data: wallets } = trpc.wallet.getAll.useQuery()
+
+		const addresses = wallets?.map(wallet => wallet.address) ?? []
 
 		return (
 			<div tw='space-y-2'>
-				{addresses.includes(declaration.actor) && addresses.includes(declaration.witness) ? (
+				{wallets && addresses.includes(declaration.actor) && addresses.includes(declaration.witness) ? (
 					<div tw='flex items-center space-x-2'>
 						<p tw='text-sm'>Acting and witnessing as</p>
 						<div tw='pt-1'>
-							<Addreth address={declaration.actor} theme='simple-light' actions='none' />
+							<Addreth
+								address={declaration.actor}
+								label={(address: string) =>
+									wallets.find(wallet => wallet.address === declaration.actor)?.label || address
+								}
+								theme='simple-light'
+								actions='none'
+							/>
 						</div>
 					</div>
-				) : addresses.includes(declaration.actor) ? (
+				) : wallets && addresses.includes(declaration.actor) ? (
 					<div tw='flex items-center space-x-2'>
 						<p tw='text-sm'>Acting as</p>
 						<div tw='pt-1'>
-							<Addreth address={declaration.actor} theme='simple-light' actions='none' />
+							<Addreth
+								address={declaration.actor}
+								label={(address: string) =>
+									wallets.find(wallet => wallet.address === declaration.actor)?.label || address
+								}
+								theme='simple-light'
+								actions='none'
+							/>
 						</div>
 					</div>
-				) : addresses.includes(declaration.witness) ? (
+				) : wallets && addresses.includes(declaration.witness) ? (
 					<div tw='flex items-center space-x-2'>
 						<p tw='text-sm'>Witnessing as</p>
 						<div tw='pt-1'>
-							<Addreth address={declaration.witness} theme='simple-light' actions='none' />
+							<Addreth
+								address={declaration.witness}
+								label={(address: string) =>
+									wallets.find(wallet => wallet.address === declaration.witness)?.label || address
+								}
+								theme='simple-light'
+								actions='none'
+							/>
 						</div>
 					</div>
 				) : null}

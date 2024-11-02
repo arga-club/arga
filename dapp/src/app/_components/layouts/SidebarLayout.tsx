@@ -37,13 +37,13 @@ import {
 	DropdownMenuTrigger,
 } from '~/app/_components/ui/dropdown-menu'
 import avatarDefaultSmall from '~/images/avatar-default-small.png'
-import { useCurrentUser } from '~/hooks/useCurrentUser'
 import { PictureBackground } from '~/app/_components/PictureBackground'
+import { trpc } from '~/trpc/react'
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
 	const { isMobile } = useSidebar()
-	const { user } = useCurrentUser()
+	const { data: user } = trpc.user.getCurrent.useQuery()
 	return (
 		<div tw='container py-24'>
 			<div tw='md:flex md:gap-8 md:items-start'>

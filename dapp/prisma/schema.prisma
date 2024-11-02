@@ -85,6 +85,7 @@ model Wallet {
   userId  String
   address String
   name    String?
+  label   String?
   icon    String? @db.Text
 
   createdAt DateTime @default(now())
