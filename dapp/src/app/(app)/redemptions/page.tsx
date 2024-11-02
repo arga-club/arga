@@ -20,7 +20,7 @@ export default function Home() {
 	const { writeContractAsync, isLoading: isSigning } = useWriteContract()
 	const { data: redemptions, isLoading } = useReadArgaDiamondRedemptionsForParty({
 		query: { enabled: !!address },
-		args: address as `0x${string}` ? [address as `0x${string}`] : undefined,
+		args: (address as `0x${string}`) ? [address as `0x${string}`] : undefined,
 		chainId,
 	})
 	useReadArgaDiamondPool({ chainId })

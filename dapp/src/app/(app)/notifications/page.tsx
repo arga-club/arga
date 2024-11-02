@@ -8,9 +8,7 @@ export default function Home() {
 			<div tw='space-y-10'>
 				<Prose>
 					<h1>Notifications</h1>
-					<p>
-						Coming soon
-					</p>
+					<p>Coming soon</p>
 				</Prose>
 			</div>
 		</>
