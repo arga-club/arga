@@ -76,12 +76,12 @@ export default function LogInPage() {
 							)}
 						/>
 					</div>
+					<div tw='flex space-x-2'>
+						<Button onClick={submit}>Register with email →</Button>
+						<FarcasterSignInButton />
+					</div>
 				</form>
 			</Form>
-			<div tw='flex space-x-2'>
-				<Button onClick={submit}>Register with email →</Button>
-				<FarcasterSignInButton />
-			</div>
 			<Prose>
 				<p>Already have an account?</p>
 				<Link href='/sign-in'>
