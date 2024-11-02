@@ -35,7 +35,8 @@ export const EmailField = ({ user }: { user: User }) => {
 	})
 	const submit = form.handleSubmit(async ({ email }) => {
 		await changeEmailMutation.mutateAsync({ email })
-		await utils.user.invalidate()
+		await utils.user.getCurrent.invalidate()
+		await utils.user.getCurrent.refetch()
 		setIsDialogOpen(false)
 		form.reset()
 	})

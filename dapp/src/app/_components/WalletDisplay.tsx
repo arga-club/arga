@@ -23,6 +23,7 @@ export const WalletDisplay = ({ wallet, className, key }: { wallet: Wallet; clas
 	const removeWallet = async () => {
 		await removeWalletMutation.mutateAsync({ id: wallet.id })
 		await utils.wallet.getAll.invalidate()
+		await utils.wallet.getAll.refetch()
 	}
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -35,7 +36,8 @@ export const WalletDisplay = ({ wallet, className, key }: { wallet: Wallet; clas
 	})
 	const submitLabel = labelForm.handleSubmit(async ({ label }) => {
 		await editLabelMutation.mutateAsync({ id: wallet.id, label })
-		await utils.user.invalidate()
+		await utils.wallet.getAll.invalidate()
+		await utils.wallet.getAll.refetch()
 		setIsDialogOpen(false)
 	})
 

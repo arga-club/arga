@@ -13,7 +13,8 @@ export const useLinkWallet = () => {
 	const utils = trpc.useUtils()
 	const addWallet = trpc.wallet.add.useMutation({
 		onSuccess: async () => {
-			await utils.wallet.invalidate()
+			await utils.wallet.getAll.invalidate()
+			await utils.wallet.getAll.refetch()
 			await sleep()
 			triedToUpdate.current = false
 		},

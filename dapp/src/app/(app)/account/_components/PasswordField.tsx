@@ -34,7 +34,8 @@ export const PasswordField = ({ user }: { user: User }) => {
 	})
 	const submit = form.handleSubmit(async values => {
 		await changePasswordMutation.mutateAsync(values)
-		await utils.user.invalidate()
+		await utils.user.getCurrent.invalidate()
+		await utils.user.getCurrent.refetch()
 		setIsDialogOpen(false)
 		form.reset()
 	})

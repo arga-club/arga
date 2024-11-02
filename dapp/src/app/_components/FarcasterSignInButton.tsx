@@ -41,7 +41,8 @@ export function FarcasterSignInButton({ alreadySignedIn }: { alreadySignedIn?: b
 							displayName: res.displayName,
 						}),
 					)
-					await utils.user.invalidate()
+					await utils.user.getCurrent.invalidate()
+					await utils.user.getCurrent.refetch()
 				})
 			} else {
 				void fire(async () => {
