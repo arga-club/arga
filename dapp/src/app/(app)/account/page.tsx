@@ -1,16 +1,46 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import tw from 'twin.macro'
+import { z } from 'zod'
 import { FarcasterSignInButton } from '~/app/_components/FarcasterSignInButton'
+import { InputWithElement } from '~/app/_components/InputWithElement'
 import { PictureBackground } from '~/app/_components/PictureBackground'
+import { Button } from '~/app/_components/ui/button'
+import { Dialog, DialogContent, DialogTrigger } from '~/app/_components/ui/dialog'
+import { FormField, FormItem, FormDescription, FormControl, FormMessage, Form } from '~/app/_components/ui/form'
 import { Input } from '~/app/_components/ui/input'
 import { Prose } from '~/app/_components/ui/prose'
 import avatarDefault from '~/images/avatar-default.png'
 import { trpc } from '~/trpc/react'
 
+const changeEmailSchema = z.object({
+	email: z.string().email(),
+})
+
 export default function Home() {
 	const { data: user } = trpc.user.getCurrent.useQuery()
+
+	const [isDialogOpen, setIsDialogOpen] = useState(false)
+	const changeEmailMutation = trpc.user.changeEmail.useMutation()
+	const utils = trpc.useUtils()
+	const labelForm = useForm<z.infer<typeof changeEmailSchema>>({
+		defaultValues: async () => {
+			const data = await utils.user.getCurrent.fetch()
+			return {
+				email: data?.email ?? ''
+			}
+		},
+		resolver: zodResolver(changeEmailSchema),
+	})
+	const submitProof = labelForm.handleSubmit(async ({ email }) => {
+		await changeEmailMutation.mutateAsync({ email })
+		await utils.user.invalidate()
+		setIsDialogOpen(false)
+	})
 
 	return (
 		<Prose>
@@ -28,7 +58,41 @@ export default function Home() {
 							<p tw='m-0 text-sm'>
 								<strong>Email</strong>
 							</p>
-							<Input placeholder='no email registered' value={user.email ?? ''} />
+							<InputWithElement>
+								<Input placeholder='no email registered' value={user.email ?? ''} readOnly />
+								<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+									<DialogTrigger asChild>
+										<Button tw='cursor-pointer'>
+											Edit email
+										</Button>
+									</DialogTrigger>
+									<DialogContent>
+										<Form {...labelForm}>
+											<form onSubmit={submitProof} tw='space-y-4'>
+												<Prose>
+													<h3 tw='m-0'>Wallet email:</h3>
+												</Prose>
+												<FormField
+													control={labelForm.control}
+													name='email'
+													render={({ field }) => (
+														<FormItem>
+															<FormDescription>
+																Enter your new email address
+															</FormDescription>
+															<FormControl>
+																<Input placeholder='riches@patricians.ro' {...field} autoFocus />
+															</FormControl>
+															<FormMessage />
+														</FormItem>
+													)}
+												/>
+												<Button type='submit'>Update →</Button>
+											</form>
+										</Form>
+									</DialogContent>
+								</Dialog>
+							</InputWithElement>
 						</div>
 						<Divider />
 						{!user.fid ? (

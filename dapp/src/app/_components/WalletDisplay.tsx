@@ -33,9 +33,9 @@ export const WalletDisplay = ({ wallet, className, key }: { wallet: Wallet; clas
 		},
 		resolver: zodResolver(labelFormSchema),
 	})
-	const submitProof = labelForm.handleSubmit(async ({ label }) => {
+	const submitLabel = labelForm.handleSubmit(async ({ label }) => {
 		await editLabelMutation.mutateAsync({ id: wallet.id, label })
-		await utils.wallet.getAll.invalidate()
+		await utils.user.invalidate()
 		setIsDialogOpen(false)
 	})
 
@@ -66,9 +66,9 @@ export const WalletDisplay = ({ wallet, className, key }: { wallet: Wallet; clas
 								Edit label
 							</Button>
 						</DialogTrigger>
-						<DialogContent tw='w-min'>
+						<DialogContent>
 							<Form {...labelForm}>
-								<form onSubmit={submitProof} tw='space-y-4'>
+								<form onSubmit={submitLabel} tw='space-y-4'>
 									<Prose>
 										<h3 tw='m-0'>Wallet label:</h3>
 									</Prose>

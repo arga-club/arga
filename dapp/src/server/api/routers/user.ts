@@ -1,4 +1,5 @@
 import { hash } from 'bcryptjs'
+import { z } from 'zod'
 import { verifyFarcasterSignature } from '~/lib/farcaster'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '~/server/api/trpc'
 import { linkFarcasterSchema, registerCredentialsSchema } from '~/types/auth'
@@ -71,4 +72,19 @@ export const userRouter = createTRPCRouter({
 			},
 		})
 	}),
+	changeEmail: protectedProcedure
+		.input(
+			z.object({
+				email: z.string().email(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { db, session } = ctx
+			await db.user.update({
+				where: { id: session.user.id },
+				data: {
+					email: input.email,
+				},
+			})
+		}),
 })

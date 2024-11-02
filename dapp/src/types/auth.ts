@@ -17,7 +17,7 @@ export const registerCredentialsSchema = z.union([
 		nonce: z.string(),
 	}),
 	z.object({
-		email: z.string(),
+		email: z.string().email(),
 		password: z.string(),
 	}),
 ])
