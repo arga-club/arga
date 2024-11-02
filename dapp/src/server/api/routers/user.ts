@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs'
+import { compare, hash } from 'bcryptjs'
 import { z } from 'zod'
 import { verifyFarcasterSignature } from '~/lib/farcaster'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '~/server/api/trpc'
@@ -7,16 +7,26 @@ import { linkFarcasterSchema, registerCredentialsSchema } from '~/types/auth'
 export const userRouter = createTRPCRouter({
 	getCurrent: protectedProcedure.query(async ({ ctx }) => {
 		const { db, session } = ctx
-		return db.user.findUnique({
-			where: { id: session?.user.id },
-			select: {
-				displayName: true,
-				username: true,
-				email: true,
-				fid: true,
-				image: true,
-			},
-		})
+		return db.user
+			.findUnique({
+				where: { id: session?.user.id },
+				select: {
+					displayName: true,
+					username: true,
+					email: true,
+					fid: true,
+					image: true,
+					password: true,
+				},
+			})
+			.then(user =>
+				!user
+					? user
+					: {
+							...user,
+							password: !!user.password,
+						},
+			)
 	}),
 	add: publicProcedure.input(registerCredentialsSchema).mutation(async ({ ctx, input }) => {
 		const { db } = ctx
@@ -84,6 +94,38 @@ export const userRouter = createTRPCRouter({
 				where: { id: session.user.id },
 				data: {
 					email: input.email,
+				},
+			})
+		}),
+	changePassword: protectedProcedure
+		.input(
+			z.object({
+				currentPassword: z.string(),
+				newPassword: z.string(),
+				newPasswordConfirmation: z.string(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { db, session } = ctx
+			const user = await db.user.findUnique({
+				where: { id: session.user.id },
+			})
+			if (!user) {
+				throw new Error('could not find existing user')
+			}
+			if (user.password) {
+				const passwordMatches = await compare(input.currentPassword, user.password)
+				if (!passwordMatches) {
+					throw new Error('password is not correct')
+				}
+			}
+			if (input.newPassword !== input.newPasswordConfirmation) {
+				throw new Error("passwords don't match")
+			}
+			await db.user.update({
+				where: { id: session.user.id },
+				data: {
+					password: await hash(input.newPassword, 12),
 				},
 			})
 		}),
